@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Certificado, SolicitudCertificado
 
-# Register your models here.
+admin.site.register(SolicitudCertificado)
+admin.site.register(Certificado)
