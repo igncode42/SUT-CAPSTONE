@@ -2,38 +2,45 @@
 
 ## Estado del proyecto
 
-Se ha completado la definición inicial y se dispone de una base técnica funcional del Sistema Unidad Territorial.
+SUT v0.1 constituye una base técnica y documental verificable para continuar el desarrollo incremental. Esta versión no se presenta como un producto terminado ni como una implementación completa de todos los procesos definidos.
 
-## Completado
+## Diseñado / documentado
 
-- Fundamentación y problemática.
-- Solución y objetivos.
-- Alcance y factibilidad.
-- Procesos principales.
-- Requisitos funcionales y no funcionales.
-- Historias de usuario.
-- Arquitectura preliminar.
-- Modelo de datos.
-- Stack tecnológico.
-- Aplicación Django inicial.
-- Base de datos PostgreSQL.
-- Interfaz web inicial.
-- Panel administrativo.
-- Controles básicos de seguridad.
-- Pruebas iniciales.
-- Repositorio Git/GitHub.
-- Evidencias técnicas.
+- Fundamentación, problemática, solución, objetivos, alcance y factibilidad.
+- Procesos principales de proyectos vecinales, reservas y actividades con cupos.
+- Requisitos funcionales y no funcionales, reglas de negocio e historias de usuario.
+- Product Backlog y criterios de priorización.
+- Arquitectura del sistema, incluido el componente de correo como diseño.
+- Modelo conceptual de datos.
+- Stack tecnológico y organización modular de la solución.
+- Matriz de trazabilidad, documentación de pruebas y cierre del avance.
 
-## Pendiente / siguientes iteraciones
+Los diagramas de procesos expresan el comportamiento esperado del sistema y no acreditan flujos completos implementados.
 
-- Implementar flujos funcionales completos.
-- Completar permisos específicos por rol.
-- Ampliar pruebas automatizadas.
-- Completar Carta Gantt con fechas oficiales.
-- Refinar interfaz de usuario.
-- Validar reglas de negocio pendientes.
-- Completar documentación y presentación final.
+## Implementado / verificado
 
-## Conclusión
+- Proyecto Django inicial con las siete aplicaciones definidas: `usuarios`, `vecinos`, `certificados`, `proyectos`, `reservas`, `actividades` y `comunicaciones`.
+- Modelos Django, migraciones y tablas asociadas en PostgreSQL.
+- Usuario PostgreSQL dedicado y configuración de conexión mediante variables de entorno.
+- Interfaz web inicial con Django Templates y Bootstrap.
+- Registro de modelos en Django Admin y autenticación administrativa.
+- Exclusión de `.env`, entornos virtuales, cachés y archivos compilados mediante `.gitignore`.
+- Dos pruebas automatizadas iniciales ejecutadas y documentadas.
+- Evidencias técnicas organizadas y numeradas para la versión v0.1.
 
-El avance permite demostrar la factibilidad técnica de la solución y establece una base funcional y documentada para continuar el desarrollo incremental del proyecto.
+## Pendiente
+
+- Completar los flujos funcionales para usuarios finales.
+- Aplicar permisos específicos y validaciones finas según rol.
+- Implementar notificaciones funcionales por correo y WhatsApp.
+- Implementar calendario, disponibilidad y validaciones de reservas.
+- Implementar el control funcional de cupos e inscripciones.
+- Completar la solicitud y emisión funcional de certificados.
+- Completar la publicación de comunicaciones para usuarios finales.
+- Incorporar reglas de negocio adicionales y ampliar la cobertura de pruebas.
+- Refinar la interfaz de usuario.
+- Completar la Carta Gantt con fechas oficiales y la presentación final.
+
+## Conclusión del avance
+
+La versión v0.1 demuestra la factibilidad técnica de la arquitectura, la persistencia en PostgreSQL, la administración inicial, la configuración segura y dos comportamientos básicos verificados. El desarrollo pendiente corresponde principalmente a flujos de usuario, reglas y permisos; por ello, la entrega debe defenderse como una base coherente y documentada para las siguientes iteraciones.

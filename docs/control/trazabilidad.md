@@ -1,13 +1,16 @@
 # Matriz de trazabilidad — SUT
 
-| Necesidad / regla | Requisito | Implementación / diseño | Evidencia |
-|---|---|---|---|
-| Gestionar vecinos | RF-01 | Modelo Vecino | PostgreSQL + Admin |
-| Solicitar certificados | RF-03 / RF-04 | SolicitudCertificado / Certificado | ERD + Admin + BD |
-| Sólo miembros postulan proyectos | RN-01 / RF-05 | ProyectoVecinal + roles | Proceso proyecto + modelo |
-| Directorio aprueba o rechaza | RN-02 / RF-06 | Estado ProyectoVecinal | Diagrama de proceso |
-| Reservas mediante calendario | RN-04 / RF-09 | Espacio / Reserva | ERD + proceso reserva |
-| Inscripción depende de cupos | RN-05 / RF-11 | Actividad / InscripcionActividad | ERD + proceso actividad |
-| Publicar noticias y avisos | RF-13 | Noticia / Aviso | Admin + BD |
-| Proteger acceso administrativo | RS-01 | Django Authentication | Test + panel admin |
-| Proteger secretos | RS-05 | .env + .gitignore | Git |
+La columna **Estado** distingue el diseño documental de la base implementada y de los flujos aún pendientes. Los diagramas de procesos representan el diseño del sistema; no constituyen evidencia de ejecución funcional.
+
+| Necesidad / regla | Requisito | Implementación / diseño | Estado | Evidencia |
+|---|---|---|---|---|
+| Gestionar vecinos | RF-01 | Modelo `Vecino`, migración, tabla y registro administrativo | Implementado parcialmente: base de datos y administración; flujo de usuario pendiente | `vecinos/`; `docs/diagrams/02-modelo-datos-sut.*`; `docs/evidence/02-panel-administracion.png`; `docs/evidence/03-tablas-postgresql.png` |
+| Solicitar certificados | RF-03 / RF-04 | Modelos `SolicitudCertificado` y `Certificado`, migraciones y administración | Implementado parcialmente: estructura de datos; solicitud y emisión funcional pendientes | `certificados/`; `docs/diagrams/02-modelo-datos-sut.*`; `docs/evidence/02-panel-administracion.png` |
+| Sólo miembros postulan proyectos | RN-01 / RF-05 | Regla y proceso definidos; modelo `ProyectoVecinal` disponible | Diseñado: la restricción no está verificada en un flujo funcional | `docs/diagrams/03-proceso-proyecto-vecinal.*`; `proyectos/` |
+| Directorio aprueba o rechaza | RN-02 / RF-06 | Estados del proyecto y proceso de aprobación definidos | Diseñado: permisos y aprobación funcional por rol pendientes | `docs/diagrams/03-proceso-proyecto-vecinal.*`; `proyectos/` |
+| Reservas mediante calendario | RN-04 / RF-09 | Modelos `Espacio` y `Reserva`, migraciones y administración | Implementado parcialmente: persistencia y administración; calendario y validación de disponibilidad pendientes | `reservas/`; `docs/diagrams/04-proceso-reserva-espacio.*`; `docs/evidence/05-listado-espacios-admin.png`; `docs/evidence/06-formulario-espacio-admin.png` |
+| Inscripción depende de cupos | RN-05 / RF-11 | Modelos `Actividad` e `InscripcionActividad`; proceso de cupos diseñado | Implementado parcialmente: estructura de datos; control funcional de cupos pendiente | `actividades/`; `docs/diagrams/05-proceso-actividad-cupos.*` |
+| Publicar noticias y avisos | RF-13 | Modelos `Noticia` y `Aviso`, migraciones y administración | Implementado parcialmente: gestión administrativa; publicación para usuarios finales pendiente | `comunicaciones/`; `docs/evidence/02-panel-administracion.png`; `docs/evidence/03-tablas-postgresql.png` |
+| Proteger acceso administrativo | RS-01 | Autenticación integrada de Django para el panel administrativo | Implementado y verificado | `docs/testing/pruebas.md`; `docs/evidence/02-panel-administracion.png`; `docs/evidence/07-ejecucion-pruebas.png` |
+| Proteger secretos | RS-05 | Configuración mediante variables de entorno y exclusiones del repositorio | Implementado y documentado | `.gitignore`; `config/settings.py`; `docs/evidence/08-proteccion-secretos-gitignore.png`; `docs/evidence/09-configuracion-django-entorno.png`; `docs/evidence/10-estructura-env-sin-secretos.png` |
+| Notificar por correo o WhatsApp | Propuesta APT | Componente considerado en el diseño de arquitectura | Pendiente: no existe integración funcional en la versión v0.1 | `docs/diagrams/01-arquitectura-sut.*` |
