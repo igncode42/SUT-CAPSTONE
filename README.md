@@ -4,7 +4,7 @@ Proyecto Capstone de Ingeniería en Informática orientado a apoyar la gestión 
 
 ## Objetivo
 
-Mejorar la gestión de la unidad territorial mediante una solución digital centralizada, trazable y acorde con los procesos definidos para la organización vecinal.
+Mejorar la gestión de la unidad territorial de una junta de vecinos.
 
 ## Estado de la versión v0.1
 
