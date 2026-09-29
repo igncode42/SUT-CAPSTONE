@@ -1,0 +1,19 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Panel | SUT{% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bold">
+    Panel del SUT
+</h1>
+
+<p class="text-secondary">
+    Sesión iniciada como <strong>{{ user.username }}</strong>.
+</p>
+
+<div class="alert alert-success">
+    Acceso autenticado correctamente.
+</div>
+
+{% endblock %}

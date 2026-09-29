@@ -101,3 +101,8 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = "usuarios.Usuario"
+
+LOGIN_REDIRECT_URL = "panel"
+LOGOUT_REDIRECT_URL = "home"
+
+LOGIN_URL = "login"
