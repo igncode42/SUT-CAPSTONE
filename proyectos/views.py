@@ -10,6 +10,7 @@ from usuarios.permisos import (
 
 from .forms import ProyectoVecinalForm
 from .models import ProyectoVecinal
+from .notificaciones import enviar_resolucion_proyecto
 
 
 @permiso_requerido(es_miembro_junta)
@@ -66,7 +67,10 @@ def proyectos_pendientes(request):
     proyectos = (
         ProyectoVecinal.objects
         .filter(estado=ProyectoVecinal.Estado.PENDIENTE)
-        .select_related("vecino")
+        .select_related(
+            "vecino",
+            "vecino__usuario",
+        )
         .order_by("fecha_postulacion")
     )
 
@@ -84,26 +88,41 @@ def proyectos_pendientes(request):
 def resolver_proyecto(request, pk, decision):
 
     proyecto = get_object_or_404(
-        ProyectoVecinal,
+        ProyectoVecinal.objects.select_related(
+            "vecino",
+            "vecino__usuario",
+        ),
         pk=pk,
     )
 
     if proyecto.estado != ProyectoVecinal.Estado.PENDIENTE:
+
         return HttpResponseBadRequest(
             "El proyecto ya fue resuelto."
         )
 
     if decision == "aprobar":
+
         proyecto.estado = ProyectoVecinal.Estado.APROBADO
 
     elif decision == "rechazar":
+
         proyecto.estado = ProyectoVecinal.Estado.RECHAZADO
 
     else:
+
         return HttpResponseBadRequest(
             "Decisión no válida."
         )
 
-    proyecto.save(update_fields=["estado"])
+    proyecto.save(
+        update_fields=["estado"]
+    )
 
-    return redirect("proyectos:pendientes")
+    enviar_resolucion_proyecto(
+        proyecto
+    )
+
+    return redirect(
+        "proyectos:pendientes"
+    )

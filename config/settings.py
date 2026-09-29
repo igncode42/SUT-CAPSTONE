@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 import os
 
 from dotenv import load_dotenv
@@ -94,15 +94,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
-
 AUTH_USER_MODEL = "usuarios.Usuario"
 
 LOGIN_REDIRECT_URL = "panel"
 LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
+
+# Email local/desarrollo.
+# Para producción se reemplazará por un backend SMTP.
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@sut.local"
