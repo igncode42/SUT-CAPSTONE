@@ -1,0 +1,100 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Gestión de certificados | SUT{% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bold mb-1">
+    Gestión de certificados
+</h1>
+
+<p class="text-secondary mb-4">
+    Estado y emisión de solicitudes.
+</p>
+
+
+<div class="mb-3">
+
+    <a
+        href="{% url 'certificados:pendientes' %}"
+        class="btn btn-outline-primary"
+    >
+        Ver pendientes
+    </a>
+
+</div>
+
+
+{% if solicitudes %}
+
+    <div class="row g-3">
+
+        {% for solicitud in solicitudes %}
+
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between gap-3">
+
+                            <div>
+
+                                <h2 class="h5">
+                                    Solicitud #{{ solicitud.pk }}
+                                </h2>
+
+                                <p class="text-secondary mb-2">
+                                    Vecino: {{ solicitud.vecino }}
+                                </p>
+
+                                <span class="badge text-bg-secondary">
+                                    {{ solicitud.get_estado_display }}
+                                </span>
+
+                            </div>
+
+
+                            {% if solicitud.estado == "APROBADA" %}
+
+                                <div>
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'certificados:emitir' solicitud.pk %}"
+                                    >
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary"
+                                        >
+                                            Emitir certificado
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No existen solicitudes.
+    </div>
+
+{% endif %}
+
+{% endblock %}

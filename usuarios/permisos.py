@@ -70,3 +70,17 @@ def puede_resolver_proyectos(usuario):
         "directiva",
         "personal autorizado",
     )
+
+
+def puede_gestionar_certificados(usuario):
+    if not usuario.is_authenticated:
+        return False
+
+    if usuario.is_superuser or usuario.is_staff:
+        return True
+
+    return tiene_rol(
+        usuario,
+        "directiva",
+        "personal autorizado",
+    )

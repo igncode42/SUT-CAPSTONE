@@ -1,0 +1,83 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Solicitudes pendientes | SUT{% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bold mb-1">
+    Solicitudes pendientes
+</h1>
+
+<p class="text-secondary mb-4">
+    Revisión de solicitudes de certificado.
+</p>
+
+{% if solicitudes %}
+
+    <div class="row g-3">
+
+        {% for solicitud in solicitudes %}
+
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <h2 class="h5">
+                            Solicitud #{{ solicitud.pk }}
+                        </h2>
+
+                        <p class="text-secondary">
+                            Vecino: {{ solicitud.vecino }}
+                        </p>
+
+                        <div class="d-flex gap-2">
+
+                            <form
+                                method="post"
+                                action="{% url 'certificados:resolver' solicitud.pk 'aprobar' %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success"
+                                >
+                                    Aprobar
+                                </button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="{% url 'certificados:resolver' solicitud.pk 'rechazar' %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    Rechazar
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No existen solicitudes pendientes.
+    </div>
+
+{% endif %}
+
+{% endblock %}

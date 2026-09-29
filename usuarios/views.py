@@ -5,6 +5,7 @@ from .permisos import (
     es_miembro_junta,
     es_vecino,
     permiso_requerido,
+    puede_gestionar_certificados,
     puede_resolver_proyectos,
 )
 
@@ -17,7 +18,12 @@ def panel(request):
         {
             "es_vecino": es_vecino(request.user),
             "es_miembro_junta": es_miembro_junta(request.user),
+
             "puede_resolver_proyectos": puede_resolver_proyectos(
+                request.user
+            ),
+
+            "puede_gestionar_certificados": puede_gestionar_certificados(
                 request.user
             ),
         },

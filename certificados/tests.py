@@ -141,7 +141,7 @@ class SolicitudCertificadoTests(TestCase):
             "vecino_b"
         )
 
-        SolicitudCertificado.objects.create(
+        solicitud_a = SolicitudCertificado.objects.create(
             vecino=vecino_a,
         )
 
@@ -164,7 +164,7 @@ class SolicitudCertificadoTests(TestCase):
 
         self.assertContains(
             response,
-            "Solicitud #1",
+            f"Solicitud #{solicitud_a.pk}",
         )
 
         self.assertNotContains(
