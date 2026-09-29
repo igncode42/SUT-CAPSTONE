@@ -1,0 +1,82 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Mis certificados | SUT{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1 class="fw-bold mb-1">
+            Mis solicitudes de certificado
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Consulta el estado de tus solicitudes.
+        </p>
+    </div>
+
+    <form
+        method="post"
+        action="{% url 'certificados:solicitar' %}"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            Solicitar certificado
+        </button>
+    </form>
+
+</div>
+
+
+{% if solicitudes %}
+
+    <div class="row g-3">
+
+        {% for solicitud in solicitudes %}
+
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between">
+
+                            <div>
+                                <strong>
+                                    Solicitud #{{ solicitud.pk }}
+                                </strong>
+
+                                <div class="text-secondary small">
+                                    {{ solicitud.fecha_solicitud }}
+                                </div>
+                            </div>
+
+                            <span class="badge text-bg-secondary">
+                                {{ solicitud.get_estado_display }}
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        Todavía no tienes solicitudes de certificado.
+    </div>
+
+{% endif %}
+
+{% endblock %}
