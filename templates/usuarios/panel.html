@@ -16,6 +16,7 @@
     Acceso autenticado correctamente.
 </div>
 
+
 {% if es_miembro_junta %}
 
     <div class="card shadow-sm mt-4">
@@ -26,7 +27,7 @@
             </h2>
 
             <p class="text-secondary">
-                Tu cuenta posee permisos de miembro de junta.
+                Puedes gestionar tus postulaciones vecinales.
             </p>
 
             <a
@@ -34,6 +35,32 @@
                 class="btn btn-primary"
             >
                 Ir a zona de miembro
+            </a>
+
+        </div>
+    </div>
+
+{% endif %}
+
+
+{% if puede_resolver_proyectos %}
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Revisión de proyectos
+            </h2>
+
+            <p class="text-secondary">
+                Tienes autorización para resolver postulaciones.
+            </p>
+
+            <a
+                href="{% url 'proyectos:pendientes' %}"
+                class="btn btn-warning"
+            >
+                Revisar proyectos pendientes
             </a>
 
         </div>

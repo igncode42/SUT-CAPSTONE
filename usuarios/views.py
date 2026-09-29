@@ -1,7 +1,11 @@
 ﻿from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from .permisos import es_miembro_junta, permiso_requerido
+from .permisos import (
+    es_miembro_junta,
+    permiso_requerido,
+    puede_resolver_proyectos,
+)
 
 
 @login_required
@@ -11,6 +15,9 @@ def panel(request):
         "usuarios/panel.html",
         {
             "es_miembro_junta": es_miembro_junta(request.user),
+            "puede_resolver_proyectos": puede_resolver_proyectos(
+                request.user
+            ),
         },
     )
 

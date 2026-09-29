@@ -1,0 +1,89 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Proyectos pendientes | SUT{% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bold mb-1">
+    Proyectos pendientes
+</h1>
+
+<p class="text-secondary mb-4">
+    Revisión y resolución de postulaciones vecinales.
+</p>
+
+
+{% if proyectos %}
+
+    <div class="row g-3">
+
+        {% for proyecto in proyectos %}
+
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <h2 class="h5">
+                            {{ proyecto.titulo }}
+                        </h2>
+
+                        <p class="mb-2">
+                            {{ proyecto.descripcion }}
+                        </p>
+
+                        <p class="text-secondary small">
+                            Postulado por:
+                            {{ proyecto.vecino }}
+                        </p>
+
+                        <div class="d-flex gap-2">
+
+                            <form
+                                method="post"
+                                action="{% url 'proyectos:resolver' proyecto.pk 'aprobar' %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success"
+                                >
+                                    Aprobar
+                                </button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="{% url 'proyectos:resolver' proyecto.pk 'rechazar' %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    Rechazar
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No existen proyectos pendientes.
+    </div>
+
+{% endif %}
+
+{% endblock %}
