@@ -13,15 +13,33 @@
 </div>
 
 <p class="text-secondary">
-    Desde esta zona se habilitarán las funciones
-    asociadas a proyectos vecinales.
+    Desde esta zona puedes gestionar tus postulaciones
+    de proyectos vecinales.
 </p>
 
-<a
-    href="{% url 'panel' %}"
-    class="btn btn-outline-secondary"
->
-    Volver al panel
-</a>
+<div class="d-flex gap-2 flex-wrap">
+
+    <a
+        href="{% url 'proyectos:crear' %}"
+        class="btn btn-primary"
+    >
+        Postular proyecto
+    </a>
+
+    <a
+        href="{% url 'proyectos:mis_proyectos' %}"
+        class="btn btn-outline-primary"
+    >
+        Mis proyectos
+    </a>
+
+    <a
+        href="{% url 'panel' %}"
+        class="btn btn-outline-secondary"
+    >
+        Volver al panel
+    </a>
+
+</div>
 
 {% endblock %}

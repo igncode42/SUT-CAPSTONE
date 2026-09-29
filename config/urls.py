@@ -17,5 +17,9 @@ urlpatterns = [
         "panel/",
         include("usuarios.urls"),
     ),
+    path(
+        "proyectos/",
+        include("proyectos.urls"),
+    ),
     path("admin/", admin.site.urls),
 ]
