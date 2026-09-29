@@ -1,0 +1,27 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Miembro de junta | SUT{% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bold">
+    Zona de miembro de junta
+</h1>
+
+<div class="alert alert-primary">
+    Permiso de miembro de junta validado por el servidor.
+</div>
+
+<p class="text-secondary">
+    Desde esta zona se habilitarán las funciones
+    asociadas a proyectos vecinales.
+</p>
+
+<a
+    href="{% url 'panel' %}"
+    class="btn btn-outline-secondary"
+>
+    Volver al panel
+</a>
+
+{% endblock %}

@@ -16,4 +16,29 @@
     Acceso autenticado correctamente.
 </div>
 
+{% if es_miembro_junta %}
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Miembro de junta
+            </h2>
+
+            <p class="text-secondary">
+                Tu cuenta posee permisos de miembro de junta.
+            </p>
+
+            <a
+                href="{% url 'panel_miembro' %}"
+                class="btn btn-primary"
+            >
+                Ir a zona de miembro
+            </a>
+
+        </div>
+    </div>
+
+{% endif %}
+
 {% endblock %}
