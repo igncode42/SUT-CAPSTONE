@@ -71,7 +71,7 @@ Docker Compose
 
 El backend de correo actual es de desarrollo. La conexión SMTP externa permanece pendiente.
 
-Respaldo gráfico: `docs/diagrams/01-arquitectura-sut.*`.
+Respaldo gráfico: `docs/diagramas/01-arquitectura-sut.*`.
 
 ---
 
@@ -156,6 +156,6 @@ Pruebas        41/41 OK
 
 ## 8. Evidencia y límites del avance
 
-La evidencia técnica se mantiene en `docs/evidence/` y el detalle de pruebas en `docs/testing/`.
+La evidencia técnica se mantiene en `docs/evidencias/` y el detalle de pruebas en `docs/pruebas/`.
 
 Este documento describe el avance actual de Fase 2. No presenta Reservas, Actividades, Comunicaciones, SMTP externo ni certificado PDF como funcionalidades terminadas.

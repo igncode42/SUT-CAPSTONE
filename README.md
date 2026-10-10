@@ -301,7 +301,7 @@ docs/
 
 ### Diagramas
 
-`docs/diagrams/`
+`docs/diagramas/`
 
 Contiene:
 
@@ -313,13 +313,13 @@ Contiene:
 
 ### Evidencias
 
-`docs/evidence/`
+`docs/evidencias/`
 
 Contiene evidencias técnicas del proceso de desarrollo, incluyendo pruebas automatizadas, Docker/HTTP y recorridos funcionales de Proyectos y Certificados.
 
 ### Pruebas
 
-`docs/testing/`
+`docs/pruebas/`
 
 Documenta la estrategia y ejecución de pruebas.
 
@@ -331,13 +331,13 @@ Mantiene la relación entre necesidades, reglas, implementación y evidencias.
 
 ### Avances
 
-`docs/closure/`
+`docs/cierre/`
 
 Mantiene checkpoints documentales del desarrollo del proyecto.
 
 ### Especificaciones técnicas
 
-`docs/technical/especificaciones-tecnicas.md`
+`docs/especificaciones/especificaciones-tecnicas.md`
 
 Consolida arquitectura, tecnologías, alcance actual y requisitos no funcionales verificables.
 

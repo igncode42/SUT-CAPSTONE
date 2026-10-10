@@ -18,13 +18,13 @@ Un diagrama o modelo representa diseño; por sí solo no demuestra que una funci
 
 | Necesidad / regla | Requisito | Implementación actual | Estado | Evidencia técnica |
 |---|---|---|---|---|
-| Gestionar vecinos | RF-01 | Modelo `Vecino`, relación con `Usuario`, migración, tabla PostgreSQL y administración Django | **Implementado parcialmente:** base de datos y perfil disponibles; registro/autogestión para usuario final pendiente | `vecinos/models.py`; `vecinos/admin.py`; `docs/diagrams/02-modelo-datos-sut.*` |
+| Gestionar vecinos | RF-01 | Modelo `Vecino`, relación con `Usuario`, migración, tabla PostgreSQL y administración Django | **Implementado parcialmente:** base de datos y perfil disponibles; registro/autogestión para usuario final pendiente | `vecinos/models.py`; `vecinos/admin.py`; `docs/diagramas/02-modelo-datos-sut.*` |
 | Solicitar y emitir certificados | RF-03 / RF-04 | `SolicitudCertificado` y `Certificado`; solicitud por vecino autenticado; seguimiento; revisión; aprobación/rechazo; emisión lógica | **Implementado y probado:** flujo principal funcional. Generación de PDF/archivo descargable pendiente | `certificados/models.py`; `certificados/views.py`; `certificados/tests.py`; `certificados/test_gestion.py`; `templates/certificados/` |
 | Sólo miembros postulan proyectos | RN-01 / RF-05 | Permiso de miembro de junta aplicado en servidor; creación asociada automáticamente al vecino autenticado | **Implementado y probado** | `usuarios/permisos.py`; `proyectos/forms.py`; `proyectos/views.py`; `proyectos/tests.py` |
 | Directiva aprueba o rechaza proyectos | RN-02 / RF-06 | Acceso restringido a personal autorizado; listado de pendientes; aprobación/rechazo; protección contra doble resolución | **Implementado y probado** | `usuarios/permisos.py`; `proyectos/views.py`; `proyectos/test_revision.py`; `templates/proyectos/pendientes.html` |
 | Notificar resolución de proyectos | Propuesta APT | Servicio de correo Django ejecutado al aprobar o rechazar proyectos | **Implementado y probado en entorno de desarrollo:** integración SMTP externa pendiente | `proyectos/notificaciones.py`; `proyectos/test_notificaciones.py`; `config/settings.py` |
-| Reservar espacios comunitarios | RN-04 / RF-09 | Modelos `Espacio` y `Reserva`, migraciones, persistencia y administración | **Implementado parcialmente:** calendario, flujo para usuario final y validación funcional de disponibilidad pendientes | `reservas/models.py`; `reservas/admin.py`; `docs/diagrams/04-proceso-reserva-espacio.*` |
-| Inscripción depende de cupos | RN-05 / RF-11 | Modelos `Actividad` e `InscripcionActividad`; estructura de datos y proceso diseñados | **Implementado parcialmente:** flujo de inscripción y control funcional de cupos pendientes | `actividades/models.py`; `docs/diagrams/05-proceso-actividad-cupos.*` |
+| Reservar espacios comunitarios | RN-04 / RF-09 | Modelos `Espacio` y `Reserva`, migraciones, persistencia y administración | **Implementado parcialmente:** calendario, flujo para usuario final y validación funcional de disponibilidad pendientes | `reservas/models.py`; `reservas/admin.py`; `docs/diagramas/04-proceso-reserva-espacio.*` |
+| Inscripción depende de cupos | RN-05 / RF-11 | Modelos `Actividad` e `InscripcionActividad`; estructura de datos y proceso diseñados | **Implementado parcialmente:** flujo de inscripción y control funcional de cupos pendientes | `actividades/models.py`; `docs/diagramas/05-proceso-actividad-cupos.*` |
 | Publicar noticias y avisos | RF-13 | Modelos `Noticia` y `Aviso`, migraciones y administración | **Implementado parcialmente:** gestión de datos disponible; publicación para usuarios finales pendiente | `comunicaciones/models.py`; `comunicaciones/admin.py` |
 | Notificar por WhatsApp | Propuesta APT | Integración considerada dentro del alcance del proyecto | **Pendiente** | No existe integración funcional actual |
 
@@ -47,13 +47,13 @@ Un diagrama o modelo representa diseño; por sí solo no demuestra que una funci
 
 | Elemento | Implementación actual | Estado | Evidencia |
 |---|---|---|---|
-| Arquitectura del sistema | Monolito modular Django conectado mediante ORM a PostgreSQL | **Implementada y documentada con Docker Compose** | `config/`; aplicaciones Django; `docs/diagrams/01-arquitectura-sut.*` |
-| Modelo de datos | Modelos Django, migraciones y tablas PostgreSQL | **Implementado** | `models.py`; `migrations/`; `docs/diagrams/02-modelo-datos-sut.*` |
-| Diagramas UML/BPM mínimos | Procesos de Proyectos, Reservas y Actividades documentados | **Disponibles** | `docs/diagrams/03-*`; `04-*`; `05-*` |
+| Arquitectura del sistema | Monolito modular Django conectado mediante ORM a PostgreSQL | **Implementada y documentada con Docker Compose** | `config/`; aplicaciones Django; `docs/diagramas/01-arquitectura-sut.*` |
+| Modelo de datos | Modelos Django, migraciones y tablas PostgreSQL | **Implementado** | `models.py`; `migrations/`; `docs/diagramas/02-modelo-datos-sut.*` |
+| Diagramas UML/BPM mínimos | Procesos de Proyectos, Reservas y Actividades documentados | **Disponibles** | `docs/diagramas/03-*`; `04-*`; `05-*` |
 | Dockerización | Django y PostgreSQL ejecutados mediante Docker Compose | **Implementado y verificado** | `Dockerfile`; `compose.yml`; `.dockerignore` |
-| Requisitos no funcionales | Seguridad, mantenibilidad, reproducibilidad, integridad, trazabilidad y disponibilidad de demostración | **Documentados según estado verificable** | `docs/technical/especificaciones-tecnicas.md` |
-| Pruebas automatizadas | Suite Django para autenticación, autorización, proyectos y certificados | **Implementado y verificado: 41/41** | `docs/testing/pruebas.md`; archivos de tests |
-| Plan formal de pruebas | Plantilla entregada por el docente | **Completado para el checkpoint actual** | `docs/testing/Plan_de_Pruebas_SUT_v0.1.xlsx` |
+| Requisitos no funcionales | Seguridad, mantenibilidad, reproducibilidad, integridad, trazabilidad y disponibilidad de demostración | **Documentados según estado verificable** | `docs/especificaciones/especificaciones-tecnicas.md` |
+| Pruebas automatizadas | Suite Django para autenticación, autorización, proyectos y certificados | **Implementado y verificado: 41/41** | `docs/pruebas/pruebas.md`; archivos de tests |
+| Plan formal de pruebas | Plantilla entregada por el docente | **Completado para el checkpoint actual** | `docs/pruebas/Plan_de_Pruebas_SUT_v0.1.xlsx` |
 | Control de versiones | Desarrollo versionado mediante Git/GitHub | **Implementado** | historial Git y repositorio |
 | Gestión del trabajo | Scrum apoyado mediante Jira | **Implementado; sincronización del último avance pendiente** | tablero Jira |
 
