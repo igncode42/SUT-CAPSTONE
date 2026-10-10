@@ -46,6 +46,20 @@ Actualmente se utilizan:
 
 ---
 
+## 3.1 Niveles de prueba y estado
+
+| Nivel | Estado actual |
+|---|---|
+| Unitarias aisladas | No se mantienen como suite separada; las reglas se verifican principalmente mediante `TestCase` |
+| Integración | Implementadas sobre vistas, modelos, base de datos y correo de testing |
+| Funcionales | Implementadas y registradas en el Plan de Pruebas |
+| Aceptación / UAT | Pendiente de ejecución formal |
+| End to End | Casos definidos; ejecución automatizada mediante navegador pendiente |
+
+Esta clasificación documenta el estado real del proyecto y no presenta como ejecutados niveles que todavía están pendientes.
+
+---
+
 ## 4. Cobertura automatizada actual
 
 La suite automatizada contiene actualmente:
@@ -152,7 +166,7 @@ Los casos negativos permiten verificar que las reglas de negocio también se cum
 
 ---
 
-## 6. Ejecución local
+## 6. Ejecución local disponible
 
 Con el entorno virtual del proyecto activo:
 
@@ -160,13 +174,7 @@ Con el entorno virtual del proyecto activo:
 python manage.py test --verbosity 1
 ```
 
-Resultado verificado:
-
-```text
-Found 41 test(s).
-.........................................
-OK
-```
+Este comando permite ejecutar la misma suite desde el entorno virtual local. El checkpoint de esta entrega se verificó en Docker.
 
 ---
 
@@ -188,7 +196,7 @@ Found 41 test(s).
 OK
 ```
 
-Esto permite comprobar que las pruebas funcionan también dentro del entorno dockerizado del SUT y no únicamente desde el entorno local de desarrollo.
+Este es el entorno utilizado para verificar el checkpoint actual de la entrega.
 
 ---
 

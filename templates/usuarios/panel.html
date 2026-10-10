@@ -1,59 +1,6 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
-{% block title %}Panel | SUT
-
-{% if es_vecino %}
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-
-            <h2 class="h5">
-                Certificados de residencia
-            </h2>
-
-            <p class="text-secondary">
-                Solicita y revisa tus certificados.
-            </p>
-
-            <a
-                href="{% url 'certificados:mis_solicitudes' %}"
-                class="btn btn-outline-primary"
-            >
-                Mis certificados
-            </a>
-
-        </div>
-    </div>
-
-{% endif %}
-
-
-
-{% if puede_gestionar_certificados %}
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-
-            <h2 class="h5">
-                Gestión de certificados
-            </h2>
-
-            <p class="text-secondary">
-                Revisa, resuelve y emite certificados.
-            </p>
-
-            <a
-                href="{% url 'certificados:gestion' %}"
-                class="btn btn-warning"
-            >
-                Gestionar certificados
-            </a>
-
-        </div>
-    </div>
-
-{% endif %}
-{% endblock %}
+{% block title %}Panel | SUT{% endblock %}
 
 {% block content %}
 

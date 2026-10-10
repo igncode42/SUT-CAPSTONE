@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 import os
 
 from dotenv import load_dotenv
@@ -84,9 +84,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "es-cl"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "America/Santiago"
 
 USE_I18N = True
 

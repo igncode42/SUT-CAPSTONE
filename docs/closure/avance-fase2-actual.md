@@ -1,7 +1,7 @@
 # Avance Fase 2 — Sistema Unidad Territorial
 
-**Fecha de referencia:** 29 de septiembre de 2026  
-**Proyecto:** Sistema Unidad Territorial — SUT  
+**Fecha de referencia:** 10 de octubre de 2026
+**Proyecto:** Sistema Unidad Territorial — SUT
 **Estado:** Desarrollo en progreso
 
 ---
@@ -75,13 +75,13 @@ Dockerización completa del entorno
 | Correo de resolución de proyectos | Implementado y probado en entorno de desarrollo |
 | Pruebas automatizadas | 41 aprobadas |
 | Modelo de datos | Implementado |
-| Diagramas base | Disponibles |
+| Diagramas base | Disponibles; arquitectura actualizada con Docker Compose |
 | Reservas | Implementación parcial |
 | Actividades | Implementación parcial |
 | Comunicaciones | Implementación parcial |
-| Plan formal de pruebas | En actualización |
-| Evidencias visuales | Requieren actualización |
-| Jira / Scrum | Requiere sincronización con los últimos incrementos |
+| Plan formal de pruebas | Completado para el checkpoint actual |
+| Evidencias visuales | Actualizadas para los flujos principales y entorno técnico |
+| Jira / Scrum | Requiere sincronización final antes del envío |
 
 ---
 
@@ -251,7 +251,7 @@ Las pruebas consideran:
 - operaciones duplicadas;
 - notificaciones.
 
-La suite fue ejecutada correctamente tanto desde el entorno local como dentro del contenedor Docker de Django.
+El checkpoint actual de la suite fue ejecutado correctamente dentro del contenedor Docker de Django.
 
 ---
 
@@ -398,19 +398,24 @@ Evidenciado
 
 Esta distinción permite representar el estado real del proyecto sin presentar como terminadas funcionalidades que todavía se encuentran en desarrollo.
 
+Evidencias principales del checkpoint:
+
+- `17-pruebas-automatizadas-41-ok.png`: ejecución de la suite automatizada;
+- `18-docker-servicios-healthy.png`: servicios Docker saludables;
+- `19-http-200-ok.png`: respuesta HTTP 200;
+- `20-proyecto-postulacion.png` a `22-proyecto-resuelto-aprobado.png`: flujo de Proyectos;
+- `23-certificado-solicitud-pendiente.png` a `25-certificado-emitido.png`: flujo de Certificados.
+
 ---
 
 ## 10. Desarrollo pendiente
 
 ### Prioridad inmediata
 
-- actualizar documentación técnica;
-- completar el Plan de Pruebas;
-- actualizar evidencias visuales;
-- actualizar el diagrama de arquitectura con Docker;
-- consolidar requisitos no funcionales;
 - sincronizar Jira/Scrum con los últimos incrementos;
-- actualizar material de presentación y demostración.
+- realizar commit y push del checkpoint;
+- preparar la carpeta compartida solicitada por el docente;
+- grabar el video breve de demostración del producto.
 
 ### Desarrollo funcional posterior
 
@@ -450,22 +455,18 @@ Git / GitHub                   operativo
 
 ## 12. Próximo checkpoint
 
-El siguiente objetivo no consiste en incorporar funcionalidades indiscriminadamente.
+El checkpoint técnico queda consolidado con código, pruebas, documentación y evidencias alineadas.
 
-La prioridad inmediata es alinear:
+Antes del envío de avance corresponde cerrar únicamente:
 
 ```text
-Código
-↓
-Pruebas
-↓
-Documentación
-↓
-Evidencias
-↓
 Jira
 ↓
-Presentación
+Commit / push
+↓
+Carpeta compartida
+↓
+Video de demostración
 ```
 
-Una vez consolidado este estado, se continuará con nuevos incrementos según la prioridad académica y la retroalimentación recibida.
+Los nuevos incrementos funcionales se retomarán después de recibir retroalimentación docente.

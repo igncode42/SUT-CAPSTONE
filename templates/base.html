@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 
 <head>
@@ -66,12 +66,16 @@
 
             {% endif %}
 
-            <a
-                class="btn btn-outline-light btn-sm"
-                href="/admin/"
-            >
-                Administración
-            </a>
+            {% if user.is_staff %}
+
+                <a
+                    class="btn btn-outline-light btn-sm"
+                    href="/admin/"
+                >
+                    Administración
+                </a>
+
+            {% endif %}
 
         </div>
 

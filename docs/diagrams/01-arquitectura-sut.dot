@@ -1,0 +1,32 @@
+digraph SUT {
+  graph [rankdir=TB, bgcolor="white", pad="0.35", nodesep="0.35", ranksep="0.55", fontname="Arial", fontsize=18, label="Arquitectura actual del Sistema Unidad Territorial (SUT)\nEntorno de desarrollo y demostración", labelloc=t];
+  node [shape=box, style="rounded,filled", fillcolor="#F6F7FB", color="#374151", fontname="Arial", fontsize=12, margin="0.16,0.10"];
+  edge [color="#4B5563", arrowsize=0.8, penwidth=1.2, fontname="Arial", fontsize=10];
+
+  user [label="Usuario\nVecino / Miembro / Directiva"];
+  browser [label="Navegador web\nDjango Templates + Bootstrap"];
+
+  subgraph cluster_compose {
+    label="Docker Compose";
+    color="#7C3AED";
+    penwidth=1.6;
+    style="rounded,dashed";
+
+    web [label="sut-web\nDjango 6.1\nPuerto 8000", fillcolor="#EEF2FF"];
+    apps [label="Aplicaciones Django\nusuarios · vecinos · proyectos · certificados\nreservas · actividades · comunicaciones", fillcolor="#F5F3FF"];
+    orm [label="Django ORM", fillcolor="#F9FAFB"];
+    db [label="sut-postgres\nPostgreSQL 18\nServicio db:5432", shape=cylinder, fillcolor="#ECFDF5"];
+
+    web -> apps;
+    apps -> orm;
+    orm -> db;
+  }
+
+  mail [label="Backend de correo de desarrollo\nNotificaciones de proyectos", fillcolor="#FFF7ED"];
+  smtp [label="SMTP externo\nPendiente", style="rounded,dashed", fillcolor="#FFFFFF", color="#9CA3AF", fontcolor="#6B7280"];
+
+  user -> browser;
+  browser -> web [label=" HTTP "];
+  apps -> mail [label=" resolución "];
+  mail -> smtp [style=dashed, color="#9CA3AF", label=" futura integración "];
+}

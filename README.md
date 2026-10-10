@@ -106,7 +106,7 @@ Resultado verificado:
 0 fallidas
 ```
 
-Las pruebas fueron ejecutadas correctamente tanto en el entorno local como dentro del contenedor Docker de Django.
+El checkpoint actual fue verificado dentro del contenedor Docker de Django.
 
 ## Stack tecnológico
 
@@ -295,6 +295,7 @@ docs/
 ├── control/
 ├── diagrams/
 ├── evidence/
+├── technical/
 └── testing/
 ```
 
@@ -314,7 +315,7 @@ Contiene:
 
 `docs/evidence/`
 
-Contiene evidencias técnicas del proceso de desarrollo y versiones anteriores del sistema.
+Contiene evidencias técnicas del proceso de desarrollo, incluyendo pruebas automatizadas, Docker/HTTP y recorridos funcionales de Proyectos y Certificados.
 
 ### Pruebas
 
@@ -333,6 +334,12 @@ Mantiene la relación entre necesidades, reglas, implementación y evidencias.
 `docs/closure/`
 
 Mantiene checkpoints documentales del desarrollo del proyecto.
+
+### Especificaciones técnicas
+
+`docs/technical/especificaciones-tecnicas.md`
+
+Consolida arquitectura, tecnologías, alcance actual y requisitos no funcionales verificables.
 
 ## Metodología de desarrollo
 
@@ -375,13 +382,11 @@ Docker Compose          operativo
 
 ## Próximos pasos
 
-Prioridades inmediatas:
+Para el cierre del checkpoint actual:
 
-1. Formalizar el Plan de Pruebas.
-2. Actualizar evidencias visuales.
-3. Actualizar arquitectura y documentación técnica.
-4. Consolidar requisitos no funcionales.
-5. Mantener Jira/Scrum sincronizado con el desarrollo.
-6. Evaluar implementación de reservas y actividades.
-7. Generar certificado descargable.
-8. Configurar correo SMTP externo si es requerido para demostración.
+1. sincronizar Jira/Scrum con el estado real;
+2. realizar commit y push del avance;
+3. preparar la carpeta compartida solicitada;
+4. grabar el video breve de demostración.
+
+Los siguientes incrementos funcionales se priorizarán después de la retroalimentación docente. Entre ellos permanecen Reservas, Actividades, Comunicaciones para usuario final, certificado descargable y SMTP externo.
