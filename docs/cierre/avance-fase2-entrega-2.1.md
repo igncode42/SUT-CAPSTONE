@@ -1,14 +1,14 @@
-# Avance Fase 2 — Sistema Unidad Territorial
+# Avance Fase 2 — Entrega 2.1 — Sistema Unidad Territorial
 
-**Fecha de referencia:** 10 de octubre de 2026
-**Proyecto:** Sistema Unidad Territorial — SUT
-**Estado:** Desarrollo en progreso
+**Fecha de referencia:** 10 de octubre de 2026  
+**Proyecto:** Sistema Unidad Territorial — SUT  
+**Estado:** Checkpoint histórico correspondiente a la Entrega 2.1
 
 ---
 
 ## 1. Propósito del documento
 
-Registrar el estado actual del proyecto durante la Fase 2 de Capstone, identificando:
+Registrar el estado del proyecto durante la Fase 2 de Capstone, identificando:
 
 - avances realizados;
 - funcionalidades implementadas;
@@ -17,7 +17,7 @@ Registrar el estado actual del proyecto durante la Fase 2 de Capstone, identific
 - ajustes realizados durante el desarrollo;
 - elementos pendientes para las siguientes iteraciones.
 
-Este documento representa un checkpoint del proyecto y no corresponde al cierre final del SUT.
+Este documento conserva el estado verificable del proyecto al cierre de la Entrega 2.1. Se mantiene como evidencia histórica y no representa el estado vigente de la Entrega 2.2.
 
 ---
 
@@ -61,7 +61,7 @@ Dockerización completa del entorno
 
 ---
 
-## 3. Estado general actual
+## 3. Estado general al cierre de la Entrega 2.1
 
 | Área | Estado |
 |---|---|
@@ -79,7 +79,7 @@ Dockerización completa del entorno
 | Reservas | Implementación parcial |
 | Actividades | Implementación parcial |
 | Comunicaciones | Implementación parcial |
-| Plan formal de pruebas | Completado para el checkpoint actual |
+| Plan formal de pruebas | Completado para el checkpoint 2.1 |
 | Evidencias visuales | Actualizadas para los flujos principales y entorno técnico |
 | Jira / Scrum | Requiere sincronización final antes del envío |
 
@@ -180,7 +180,7 @@ Inicialmente PostgreSQL se ejecutaba mediante Docker mientras Django se ejecutab
 
 Durante esta iteración se amplió la dockerización para incluir ambos componentes.
 
-La arquitectura de ejecución actual es:
+La arquitectura de ejecución al cierre de la Entrega 2.1 era:
 
 ```text
 Docker Compose
@@ -210,7 +210,7 @@ HTTP           200
 Django check   OK
 ```
 
-La configuración actual está orientada a desarrollo y demostración del proyecto.
+La configuración estaba orientada a desarrollo y demostración del proyecto.
 
 No se presenta como una configuración de producción definitiva.
 
@@ -222,7 +222,7 @@ La suite automatizada evolucionó desde dos pruebas iniciales hasta:
 
 **41 pruebas automatizadas.**
 
-Distribución actual:
+Distribución:
 
 ```text
 Autenticación y autorización   11
@@ -251,13 +251,13 @@ Las pruebas consideran:
 - operaciones duplicadas;
 - notificaciones.
 
-El checkpoint actual de la suite fue ejecutado correctamente dentro del contenedor Docker de Django.
+El checkpoint 2.1 de la suite fue ejecutado correctamente dentro del contenedor Docker de Django.
 
 ---
 
 ## 7. Factores que facilitaron el avance
 
-Los principales factores que han facilitado el desarrollo son:
+Los principales factores que facilitaron el desarrollo fueron:
 
 - arquitectura modular mediante aplicaciones Django;
 - uso de PostgreSQL desde las primeras etapas;
@@ -327,9 +327,9 @@ Se inició una etapa de sincronización documental para alinear documentación, 
 
 ### Desarrollo individual
 
-El proyecto se encuentra siendo desarrollado de forma individual.
+El proyecto se encontraba siendo desarrollado de forma individual.
 
-Esto requiere priorizar los elementos de mayor impacto y evitar implementar simultáneamente todos los módulos del sistema.
+Esto requirió priorizar los elementos de mayor impacto y evitar implementar simultáneamente todos los módulos del sistema.
 
 ---
 
@@ -339,7 +339,7 @@ Durante el desarrollo se realizaron los siguientes ajustes:
 
 ### Metodología
 
-La gestión actual se organiza mediante Scrum apoyado por Jira.
+La gestión se organizó mediante Scrum apoyado por Jira.
 
 ---
 
@@ -408,7 +408,7 @@ Evidencias principales del checkpoint:
 
 ---
 
-## 10. Desarrollo pendiente
+## 10. Desarrollo pendiente al cierre de la Entrega 2.1
 
 ### Prioridad inmediata
 
@@ -430,7 +430,7 @@ Evidencias principales del checkpoint:
 - integración WhatsApp;
 - pruebas End to End mediante navegador.
 
-La prioridad de estos elementos podrá ajustarse según retroalimentación docente y planificación de los siguientes Sprints.
+La prioridad de estos elementos podía ajustarse según retroalimentación docente y planificación de los siguientes Sprints.
 
 ---
 
@@ -453,11 +453,11 @@ Git / GitHub                   operativo
 
 ---
 
-## 12. Próximo checkpoint
+## 12. Cierre del checkpoint 2.1
 
-El checkpoint técnico queda consolidado con código, pruebas, documentación y evidencias alineadas.
+El checkpoint técnico quedó consolidado con código, pruebas, documentación y evidencias alineadas.
 
-Antes del envío de avance corresponde cerrar únicamente:
+Antes del envío de la Entrega 2.1 correspondía cerrar:
 
 ```text
 Jira
@@ -469,4 +469,4 @@ Carpeta compartida
 Video de demostración
 ```
 
-Los nuevos incrementos funcionales se retomarán después de recibir retroalimentación docente.
+Este checkpoint fue posteriormente entregado como Entrega 2.1. Los incrementos posteriores forman parte del desarrollo de la **Entrega 2.2**.

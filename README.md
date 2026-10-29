@@ -10,7 +10,9 @@ Mejorar la gestión de la unidad territorial de una junta de vecinos.
 
 El proyecto se encuentra en desarrollo incremental mediante Scrum.
 
-Actualmente existe una base funcional verificable con autenticación, autorización por roles, proyectos vecinales, certificados de residencia, PostgreSQL y ejecución mediante Docker Compose.
+La Entrega 2.1 consolidó una base funcional verificable con autenticación, autorización, proyectos vecinales, certificados de residencia, PostgreSQL, Docker Compose y pruebas automatizadas.
+
+La Entrega 2.2 continúa el desarrollo sobre esta base, priorizando los flujos funcionales pendientes, la trazabilidad, las pruebas y las evidencias necesarias para demostrar el producto.
 
 ## Funcionalidades implementadas
 
@@ -45,15 +47,15 @@ Flujo implementado:
 
 Incluye:
 
-- Postulación exclusiva para miembros de junta.
-- Estado inicial `PENDIENTE`.
-- Listado de proyectos propios.
-- Protección para evitar visualizar proyectos ajenos.
-- Revisión por personal autorizado.
-- Aprobación y rechazo.
-- Protección contra doble resolución.
-- Protección contra modificación manual del estado.
-- Generación de notificación por correo mediante Django.
+- postulación exclusiva para miembros de junta;
+- estado inicial `PENDIENTE`;
+- listado de proyectos propios;
+- protección para evitar visualizar proyectos ajenos;
+- revisión por personal autorizado;
+- aprobación y rechazo;
+- protección contra doble resolución;
+- protección contra modificación manual del estado;
+- generación de notificación por correo mediante Django.
 
 ### Certificados de residencia
 
@@ -63,20 +65,24 @@ Flujo implementado:
 
 Incluye:
 
-- Solicitud por vecinos autenticados.
-- Estado inicial `PENDIENTE`.
-- Seguimiento de solicitudes propias.
-- Protección para evitar visualizar solicitudes ajenas.
-- Revisión por personal autorizado.
-- Aprobación y rechazo.
-- Emisión lógica del certificado.
-- Estado `EMITIDA`.
-- Protección contra emisión de solicitudes rechazadas.
-- Protección contra emisión duplicada.
+- solicitud por vecinos autenticados;
+- estado inicial `PENDIENTE`;
+- seguimiento de solicitudes propias;
+- protección para evitar visualizar solicitudes ajenas;
+- revisión por personal autorizado;
+- aprobación y rechazo;
+- emisión lógica del certificado;
+- estado `EMITIDA`;
+- protección contra emisión de solicitudes rechazadas;
+- protección contra emisión duplicada.
+
+La emisión actual corresponde al registro del certificado dentro del sistema.
+
+La generación de un archivo o PDF descargable permanece pendiente.
 
 ## Pruebas automatizadas
 
-Actualmente el SUT posee:
+El baseline de inicio de la Entrega 2.2 posee:
 
 **41 pruebas automatizadas aprobadas.**
 
@@ -106,7 +112,7 @@ Resultado verificado:
 0 fallidas
 ```
 
-El checkpoint actual fue verificado dentro del contenedor Docker de Django.
+La suite fue verificada dentro del contenedor Docker de Django.
 
 ## Stack tecnológico
 
@@ -120,6 +126,7 @@ El checkpoint actual fue verificado dentro del contenedor Docker de Django.
 - Docker Compose
 - Git
 - GitHub
+- Jira
 
 ## Arquitectura
 
@@ -196,7 +203,7 @@ http://127.0.0.1:8000/
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Resultado actualmente verificado:
+Resultado verificado al inicio de la Entrega 2.2:
 
 ```text
 Found 41 test(s).
@@ -228,12 +235,12 @@ Actualmente se utilizan:
 - validadores de contraseña de Django;
 - protección CSRF;
 - middleware de autenticación;
-- control de acceso por servidor;
+- control de acceso del lado del servidor;
 - permisos reutilizables;
 - separación entre autenticación y autorización;
 - filtrado de información según el usuario autenticado.
 
-Los secretos reales no se almacenan en el repositorio.
+La configuración sensible utilizada para desarrollo se mantiene fuera del repositorio mediante variables de entorno.
 
 ## Correo
 
@@ -255,35 +262,39 @@ La integración con un servidor SMTP externo permanece pendiente.
 
 | Módulo | Estado |
 |---|---|
-| Autenticación | Implementado |
-| Autorización / RBAC | Implementado |
-| Vecinos | Base de datos y perfiles implementados |
-| Proyectos vecinales | Flujo principal implementado |
-| Certificados | Flujo principal implementado |
+| Autenticación | Implementado y probado |
+| Autorización / RBAC | Implementado y probado |
+| Vecinos | Base de datos y perfiles implementados; flujo de usuario pendiente |
+| Proyectos vecinales | Flujo principal implementado y probado |
+| Certificados | Flujo principal implementado y probado |
 | PostgreSQL | Implementado |
-| Docker Compose | Implementado |
+| Docker Compose | Implementado y verificado |
 | Pruebas automatizadas | 41 aprobadas |
-| Reservas | Base de datos implementada; flujo pendiente |
-| Actividades | Base de datos implementada; flujo pendiente |
-| Comunicaciones | Base de datos implementada; interfaz final pendiente |
+| Reservas | Base de datos implementada; flujo funcional pendiente |
+| Actividades | Base de datos implementada; flujo funcional pendiente |
+| Comunicaciones | Base de datos implementada; publicación para usuario final pendiente |
 | SMTP externo | Pendiente |
 | WhatsApp | Pendiente |
 | Certificado PDF descargable | Pendiente |
+| Pruebas End to End mediante navegador | Pendientes |
 
 ## Diseñado / pendiente de implementación funcional
 
 Actualmente permanecen pendientes o parcialmente desarrollados:
 
-- calendario de reservas;
+- registro/autogestión de vecinos desde interfaz;
+- calendario y flujo de reservas;
 - validación de disponibilidad de espacios;
-- actividades;
-- inscripciones;
+- actividades e inscripciones;
 - control funcional de cupos;
 - noticias y avisos para usuarios finales;
 - SMTP externo;
 - integración WhatsApp;
 - generación de certificado PDF descargable;
+- pruebas End to End mediante navegador;
 - refinamiento de interfaz.
+
+Estas funcionalidades no deben presentarse como terminadas hasta contar con implementación y evidencia verificable.
 
 ## Documentación
 
@@ -291,12 +302,12 @@ El repositorio mantiene documentación organizada en:
 
 ```text
 docs/
-├── closure/
+├── cierre/
 ├── control/
-├── diagrams/
-├── evidence/
-├── technical/
-└── testing/
+├── diagramas/
+├── especificaciones/
+├── evidencias/
+└── pruebas/
 ```
 
 ### Diagramas
@@ -311,43 +322,53 @@ Contiene:
 - proceso de reservas;
 - proceso de actividades y cupos.
 
+Los diagramas correspondientes a funcionalidades aún pendientes representan diseño y no acreditan por sí solos una implementación funcional.
+
 ### Evidencias
 
 `docs/evidencias/`
 
-Contiene evidencias técnicas del proceso de desarrollo, incluyendo pruebas automatizadas, Docker/HTTP y recorridos funcionales de Proyectos y Certificados.
+Contiene evidencias técnicas del proceso de desarrollo, incluyendo pruebas automatizadas, Docker, HTTP y recorridos funcionales de Proyectos y Certificados.
 
 ### Pruebas
 
 `docs/pruebas/`
 
-Documenta la estrategia y ejecución de pruebas.
+Documenta la estrategia, el plan y la ejecución de pruebas.
 
 ### Control y trazabilidad
 
 `docs/control/`
 
-Mantiene la relación entre necesidades, reglas, implementación y evidencias.
+Mantiene la relación entre necesidades, reglas, implementación, pruebas y evidencias.
 
-### Avances
+La matriz de trazabilidad distingue entre funcionalidades diseñadas, implementadas, probadas y evidenciadas.
+
+### Cierre y checkpoints
 
 `docs/cierre/`
 
-Mantiene checkpoints documentales del desarrollo del proyecto.
+Mantiene documentación histórica de los principales checkpoints del proyecto.
+
+Entre ellos:
+
+- cierre de la versión v0.1;
+- avance correspondiente a la Entrega 2.1;
+- futuros documentos de cierre de la Entrega 2.2.
 
 ### Especificaciones técnicas
 
 `docs/especificaciones/especificaciones-tecnicas.md`
 
-Consolida arquitectura, tecnologías, alcance actual y requisitos no funcionales verificables.
+Consolida arquitectura, tecnologías, alcance y requisitos no funcionales verificables.
 
 ## Metodología de desarrollo
 
-El desarrollo actual se gestiona mediante Scrum apoyado por Jira.
+El desarrollo se gestiona mediante Scrum apoyado por Jira.
 
 Git y GitHub se utilizan para control de versiones y trazabilidad técnica.
 
-El flujo de trabajo utilizado busca mantener la relación:
+El flujo de trabajo busca mantener la relación:
 
 ```text
 Requisito
@@ -361,13 +382,27 @@ Prueba
 Commit
     ↓
 Evidencia
+    ↓
+Documentación
 ```
 
 Los cambios se integran mediante incrementos funcionales verificables.
 
-## Estado técnico verificado
+Como criterio de trazabilidad se mantiene la distinción:
 
-Checkpoint actual:
+```text
+Diseñado
+≠
+Implementado
+≠
+Probado
+≠
+Evidenciado
+```
+
+## Baseline de inicio de la Entrega 2.2
+
+Estado técnico verificado antes de iniciar nuevos incrementos:
 
 ```text
 Django system check     OK
@@ -377,16 +412,22 @@ sut-postgres            healthy
 HTTP                    200
 Pruebas automatizadas   41/41
 Rama principal          main
+Commit base             edef585
 Docker Compose          operativo
 ```
 
+Este baseline constituye el punto de partida técnico de la Entrega 2.2.
+
 ## Próximos pasos
 
-Para el cierre del checkpoint actual:
+Durante la Entrega 2.2 se priorizarán las siguientes actividades:
 
-1. sincronizar Jira/Scrum con el estado real;
-2. realizar commit y push del avance;
-3. preparar la carpeta compartida solicitada;
-4. grabar el video breve de demostración.
+1. consolidar la coherencia entre documentación, Jira, GitHub, código y evidencias;
+2. definir y priorizar los incrementos funcionales pendientes según el alcance del proyecto;
+3. implementar cada incremento junto con sus reglas de negocio y permisos;
+4. ampliar las pruebas automatizadas y ejecutar pruebas funcionales de los nuevos flujos;
+5. generar evidencia verificable de cada funcionalidad implementada;
+6. actualizar Jira, trazabilidad y documentación conforme avance el desarrollo;
+7. preparar la retrospectiva y la demostración final del producto.
 
-Los siguientes incrementos funcionales se priorizarán después de la retroalimentación docente. Entre ellos permanecen Reservas, Actividades, Comunicaciones para usuario final, certificado descargable y SMTP externo.
+La prioridad de los módulos pendientes se definirá según impacto funcional, riesgo para la entrega y capacidad de ser implementados, probados y defendidos correctamente.

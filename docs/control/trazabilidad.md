@@ -1,4 +1,4 @@
-# Matriz de trazabilidad — Sistema Unidad Territorial
+﻿# Matriz de trazabilidad — Sistema Unidad Territorial
 
 ## 1. Objetivo
 
@@ -53,9 +53,9 @@ Un diagrama o modelo representa diseño; por sí solo no demuestra que una funci
 | Dockerización | Django y PostgreSQL ejecutados mediante Docker Compose | **Implementado y verificado** | `Dockerfile`; `compose.yml`; `.dockerignore` |
 | Requisitos no funcionales | Seguridad, mantenibilidad, reproducibilidad, integridad, trazabilidad y disponibilidad de demostración | **Documentados según estado verificable** | `docs/especificaciones/especificaciones-tecnicas.md` |
 | Pruebas automatizadas | Suite Django para autenticación, autorización, proyectos y certificados | **Implementado y verificado: 41/41** | `docs/pruebas/pruebas.md`; archivos de tests |
-| Plan formal de pruebas | Plantilla entregada por el docente | **Completado para el checkpoint actual** | `docs/pruebas/Plan_de_Pruebas_SUT_v0.1.xlsx` |
+| Plan formal de pruebas | Plantilla entregada por el docente | **Completado para la Entrega 2.1; sujeto a actualización durante la Entrega 2.2** | `docs/pruebas/Plan_de_Pruebas_SUT_v0.1.xlsx` |
 | Control de versiones | Desarrollo versionado mediante Git/GitHub | **Implementado** | historial Git y repositorio |
-| Gestión del trabajo | Scrum apoyado mediante Jira | **Implementado; sincronización del último avance pendiente** | tablero Jira |
+| Gestión del trabajo | Scrum apoyado mediante Jira | **Implementado y sincronizado hasta la Entrega 2.1; el nuevo avance se gestionará durante la Evaluación 3 / Entrega 2.2** | tablero Jira |
 
 ---
 
