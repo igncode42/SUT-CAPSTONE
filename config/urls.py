@@ -25,5 +25,9 @@ urlpatterns = [
         "certificados/",
         include("certificados.urls"),
     ),
+    path(
+        "vecinos/",
+        include("vecinos.urls"),
+    ),
     path("admin/", admin.site.urls),
 ]
