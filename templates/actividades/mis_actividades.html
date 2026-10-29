@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Mis actividades | SUT{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">Mis actividades</h1>
+
+        <p class="text-secondary mb-0">
+            Revisa las actividades en las que estás inscrito.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'actividades:disponibles' %}"
+        class="btn btn-outline-primary"
+    >
+        Ver actividades
+    </a>
+</div>
+
+{% if inscripciones %}
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+
+            <thead>
+                <tr>
+                    <th>Actividad</th>
+                    <th>Fecha</th>
+                    <th>Inscripción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for inscripcion in inscripciones %}
+                    <tr>
+                        <td>
+                            {{ inscripcion.actividad.nombre }}
+                        </td>
+
+                        <td>
+                            {{ inscripcion.actividad.fecha }}
+                        </td>
+
+                        <td>
+                            {{ inscripcion.fecha_inscripcion }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        Aún no estás inscrito en ninguna actividad.
+    </div>
+
+{% endif %}
+
+{% endblock %}

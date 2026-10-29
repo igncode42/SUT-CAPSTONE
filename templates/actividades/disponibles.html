@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Actividades disponibles | SUT{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">Actividades disponibles</h1>
+
+        <p class="text-secondary mb-0">
+            Revisa las actividades próximas e inscríbete mientras existan cupos.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'actividades:mis_actividades' %}"
+        class="btn btn-outline-primary"
+    >
+        Mis actividades
+    </a>
+</div>
+
+{% if actividades %}
+
+    <div class="row g-3">
+
+        {% for actividad in actividades %}
+
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ actividad.nombre }}
+                        </h5>
+
+                        <p class="text-secondary">
+                            {{ actividad.descripcion }}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Fecha:</strong>
+                            {{ actividad.fecha }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Cupos:</strong>
+                            {{ actividad.cantidad_inscritos }} / {{ actividad.cupo_maximo }}
+                        </p>
+
+                        {% if actividad.id in inscripciones_usuario %}
+
+                            <span class="badge bg-success">
+                                Ya inscrito
+                            </span>
+
+                        {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                            <span class="badge bg-secondary">
+                                Sin cupos
+                            </span>
+
+                        {% else %}
+
+                            <form
+                                method="post"
+                                action="{% url 'actividades:inscribir' actividad.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    Inscribirme
+                                </button>
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No hay actividades próximas disponibles.
+    </div>
+
+{% endif %}
+
+{% endblock %}

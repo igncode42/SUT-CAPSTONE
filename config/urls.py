@@ -34,6 +34,10 @@ urlpatterns = [
         include("reservas.urls"),
     ),
     path(
+        "actividades/",
+        include("actividades.urls"),
+    ),
+    path(
         "admin/",
         admin.site.urls,
     ),
