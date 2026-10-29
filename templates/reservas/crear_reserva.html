@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva reserva | SUT{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h1 class="fw-bold">Nueva reserva</h1>
+
+    <p class="text-secondary">
+        Selecciona un espacio, fecha y horario para realizar tu reserva.
+    </p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <div class="d-flex gap-2">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Reservar espacio
+                </button>
+
+                <a
+                    href="{% url 'reservas:mis_reservas' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Volver
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

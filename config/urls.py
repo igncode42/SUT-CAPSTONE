@@ -29,5 +29,12 @@ urlpatterns = [
         "vecinos/",
         include("vecinos.urls"),
     ),
-    path("admin/", admin.site.urls),
+    path(
+        "reservas/",
+        include("reservas.urls"),
+    ),
+    path(
+        "admin/",
+        admin.site.urls,
+    ),
 ]
