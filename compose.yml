@@ -28,6 +28,9 @@
 
     container_name: sut-web
 
+    volumes:
+      - .:/app
+
     env_file:
       - .env
 
