@@ -38,6 +38,10 @@ urlpatterns = [
         include("actividades.urls"),
     ),
     path(
+        "comunicaciones/",
+        include("comunicaciones.urls"),
+    ),
+    path(
         "admin/",
         admin.site.urls,
     ),

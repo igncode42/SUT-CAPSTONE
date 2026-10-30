@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Comunicaciones | SUT{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h1 class="fw-bold">Comunicaciones</h1>
+
+    <p class="text-secondary">
+        Revisa las noticias y avisos publicados por la unidad territorial.
+    </p>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-7">
+        <h2 class="h4 mb-3">Noticias</h2>
+
+        {% if noticias %}
+
+            {% for noticia in noticias %}
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ noticia.titulo }}
+                        </h5>
+
+                        <p class="text-secondary small">
+                            Publicado el {{ noticia.fecha_publicacion }}
+                        </p>
+
+                        <p class="card-text">
+                            {{ noticia.contenido }}
+                        </p>
+
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% else %}
+
+            <div class="alert alert-info">
+                No hay noticias publicadas.
+            </div>
+
+        {% endif %}
+    </div>
+
+    <div class="col-lg-5">
+        <h2 class="h4 mb-3">Avisos</h2>
+
+        {% if avisos %}
+
+            {% for aviso in avisos %}
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ aviso.titulo }}
+                        </h5>
+
+                        <p class="text-secondary small">
+                            Publicado el {{ aviso.fecha_publicacion }}
+                        </p>
+
+                        <p class="card-text">
+                            {{ aviso.contenido }}
+                        </p>
+
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% else %}
+
+            <div class="alert alert-info">
+                No hay avisos publicados.
+            </div>
+
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
