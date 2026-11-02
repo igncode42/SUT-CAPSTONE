@@ -4,8 +4,7 @@ from django.urls import reverse
 
 from vecinos.models import Vecino
 
-from .models import SolicitudCertificado
-
+from .models import Certificado, SolicitudCertificado
 
 Usuario = get_user_model()
 
@@ -170,4 +169,173 @@ class SolicitudCertificadoTests(TestCase):
         self.assertNotContains(
             response,
             f"Solicitud #{solicitud_b.pk}",
+        )
+
+
+    def test_no_crea_otra_solicitud_si_existe_una_activa(self):
+        usuario, vecino = self.crear_vecino(
+            "vecino_solicitud_activa"
+        )
+
+        SolicitudCertificado.objects.create(
+            vecino=vecino,
+            estado=SolicitudCertificado.Estado.PENDIENTE,
+        )
+
+        self.login(usuario.username)
+
+        response = self.client.post(
+            reverse("certificados:solicitar"),
+            follow=True,
+        )
+
+        self.assertEqual(
+            SolicitudCertificado.objects.filter(
+                vecino=vecino
+            ).count(),
+            1,
+        )
+
+        self.assertContains(
+            response,
+            "Ya tienes una solicitud de certificado en proceso.",
+        )
+
+
+    def test_puede_solicitar_nuevamente_si_anterior_esta_emitida(self):
+        usuario, vecino = self.crear_vecino(
+            "vecino_certificado_emitido"
+        )
+
+        SolicitudCertificado.objects.create(
+            vecino=vecino,
+            estado=SolicitudCertificado.Estado.EMITIDA,
+        )
+
+        self.login(usuario.username)
+
+        response = self.client.post(
+            reverse("certificados:solicitar")
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("certificados:mis_solicitudes"),
+        )
+
+        solicitudes = SolicitudCertificado.objects.filter(
+            vecino=vecino
+        )
+
+        self.assertEqual(
+            solicitudes.count(),
+            2,
+        )
+
+        self.assertTrue(
+            solicitudes.filter(
+                estado=SolicitudCertificado.Estado.PENDIENTE,
+            ).exists()
+        )
+
+
+    def test_vecino_no_puede_ver_certificado_de_otro(self):
+        usuario_a, vecino_a = self.crear_vecino(
+            "vecino_certificado_a"
+        )
+
+        usuario_b, vecino_b = self.crear_vecino(
+            "vecino_certificado_b"
+        )
+
+        solicitud_b = SolicitudCertificado.objects.create(
+            vecino=vecino_b,
+            estado=SolicitudCertificado.Estado.EMITIDA,
+        )
+
+        Certificado.objects.create(
+            solicitud=solicitud_b,
+        )
+
+        self.login(usuario_a.username)
+
+        response = self.client.get(
+            reverse(
+                "certificados:ver",
+                args=[solicitud_b.pk],
+            )
+        )
+
+        self.assertEqual(
+            response.status_code,
+            404,
+        )
+
+
+    def test_vecino_puede_ver_su_certificado_emitido(self):
+        usuario, vecino = self.crear_vecino(
+            "vecino_certificado_propio"
+        )
+
+        solicitud = SolicitudCertificado.objects.create(
+            vecino=vecino,
+            estado=SolicitudCertificado.Estado.EMITIDA,
+        )
+
+        Certificado.objects.create(
+            solicitud=solicitud,
+        )
+
+        self.login(usuario.username)
+
+        response = self.client.get(
+            reverse(
+                "certificados:ver",
+                args=[solicitud.pk],
+            )
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        self.assertTemplateUsed(
+            response,
+            "certificados/ver_certificado.html",
+        )
+
+        self.assertContains(
+            response,
+            vecino.nombre,
+        )
+
+        self.assertContains(
+            response,
+            vecino.identificacion,
+        )
+
+
+    def test_no_puede_ver_certificado_si_solicitud_no_esta_emitida(self):
+        usuario, vecino = self.crear_vecino(
+            "vecino_pendiente"
+        )
+
+        solicitud = SolicitudCertificado.objects.create(
+            vecino=vecino,
+            estado=SolicitudCertificado.Estado.PENDIENTE,
+        )
+
+        self.login(usuario.username)
+
+        response = self.client.get(
+            reverse(
+                "certificados:ver",
+                args=[solicitud.pk],
+            )
+        )
+
+        self.assertEqual(
+            response.status_code,
+            404,
         )

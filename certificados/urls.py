@@ -7,6 +7,7 @@ from .views import (
     resolver_solicitud,
     solicitudes_pendientes,
     solicitar_certificado,
+    ver_certificado,
 )
 
 
@@ -43,5 +44,10 @@ urlpatterns = [
         "<int:pk>/emitir/",
         emitir_certificado,
         name="emitir",
+    ),
+    path(
+        "<int:pk>/ver/",
+        ver_certificado,
+        name="ver",
     ),
 ]

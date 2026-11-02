@@ -44,7 +44,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
 
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start">
 
                             <div>
                                 <strong>
@@ -61,6 +61,21 @@
                             </span>
 
                         </div>
+
+                        {% if solicitud.estado == "EMITIDA" %}
+
+                            <div class="mt-3">
+
+                                <a
+                                    href="{% url 'certificados:ver' solicitud.pk %}"
+                                    class="btn btn-outline-primary btn-sm"
+                                >
+                                    Ver certificado
+                                </a>
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
                 </div>
