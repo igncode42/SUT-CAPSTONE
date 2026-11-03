@@ -51,7 +51,7 @@ class ReservaTests(TestCase):
             "reservas/mis_reservas.html",
         )
 
-    def test_reserva_valida_se_crea_para_vecino_autenticado(self):
+    def test_reserva_valida_se_confirma_para_vecino_autenticado(self):
         response = self.client.post(
             reverse("reservas:crear"),
             {
@@ -70,7 +70,7 @@ class ReservaTests(TestCase):
         self.assertEqual(reserva.espacio, self.espacio)
         self.assertEqual(
             reserva.estado,
-            Reserva.Estado.PENDIENTE,
+            Reserva.Estado.CONFIRMADA,
         )
 
     def test_horario_invalido_es_rechazado(self):
@@ -99,6 +99,7 @@ class ReservaTests(TestCase):
             fecha=self.fecha,
             hora_inicio="15:00",
             hora_fin="17:00",
+            estado=Reserva.Estado.CONFIRMADA,
         )
 
         response = self.client.post(
@@ -139,6 +140,7 @@ class ReservaTests(TestCase):
             fecha=self.fecha,
             hora_inicio="10:00",
             hora_fin="11:00",
+            estado=Reserva.Estado.CONFIRMADA,
         )
 
         response = self.client.get(
@@ -148,4 +150,70 @@ class ReservaTests(TestCase):
         self.assertNotContains(
             response,
             "10:00",
+        )
+
+    def test_calendario_responde_200(self):
+        response = self.client.get(
+            reverse("reservas:calendario")
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "reservas/calendario.html",
+        )
+
+    def test_calendario_muestra_reserva_confirmada(self):
+        Reserva.objects.create(
+            vecino=self.vecino,
+            espacio=self.espacio,
+            fecha=self.fecha,
+            hora_inicio="15:00",
+            hora_fin="17:00",
+            estado=Reserva.Estado.CONFIRMADA,
+        )
+
+        response = self.client.get(
+            reverse("reservas:calendario"),
+            {
+                "mes": self.fecha.month,
+                "anio": self.fecha.year,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(
+            response,
+            "Sede Social",
+        )
+
+    def test_calendario_no_muestra_reserva_cancelada(self):
+        espacio_cancelado = Espacio.objects.create(
+            nombre="Sala Cancelada",
+            activo=True,
+        )
+
+        Reserva.objects.create(
+            vecino=self.vecino,
+            espacio=espacio_cancelado,
+            fecha=self.fecha,
+            hora_inicio="12:00",
+            hora_fin="13:00",
+            estado=Reserva.Estado.CANCELADA,
+        )
+
+        response = self.client.get(
+            reverse("reservas:calendario"),
+            {
+                "mes": self.fecha.month,
+                "anio": self.fecha.year,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertNotContains(
+            response,
+            "Sala Cancelada",
         )

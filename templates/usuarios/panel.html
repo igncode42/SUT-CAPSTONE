@@ -69,34 +69,6 @@
 {% endif %}
 
 
-
-{% if es_vecino %}
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-
-            <h2 class="h5">
-                Certificados de residencia
-            </h2>
-
-            <p class="text-secondary">
-                Solicita y revisa tus certificados.
-            </p>
-
-            <a
-                href="{% url 'certificados:mis_solicitudes' %}"
-                class="btn btn-outline-primary"
-            >
-                Mis certificados
-            </a>
-
-        </div>
-    </div>
-
-{% endif %}
-
-
-
 {% if puede_gestionar_certificados %}
 
     <div class="card shadow-sm mt-4">
@@ -121,4 +93,123 @@
     </div>
 
 {% endif %}
+
+
+{% if puede_publicar_comunicaciones %}
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Gestión de comunicaciones
+            </h2>
+
+            <p class="text-secondary">
+                Publica noticias y avisos para la comunidad.
+            </p>
+
+            <a
+                href="{% url 'comunicaciones:inicio' %}"
+                class="btn btn-warning"
+            >
+                Gestionar comunicaciones
+            </a>
+
+        </div>
+    </div>
+
+{% endif %}
+
+
+{% if es_vecino %}
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Certificados de residencia
+            </h2>
+
+            <p class="text-secondary">
+                Solicita y revisa tus certificados.
+            </p>
+
+            <a
+                href="{% url 'certificados:mis_solicitudes' %}"
+                class="btn btn-outline-primary"
+            >
+                Mis certificados
+            </a>
+
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Reservas de espacios
+            </h2>
+
+            <p class="text-secondary">
+                Consulta y solicita reservas de espacios comunitarios.
+            </p>
+
+            <a
+                href="{% url 'reservas:mis_reservas' %}"
+                class="btn btn-outline-primary"
+            >
+                Mis reservas
+            </a>
+
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Actividades vecinales
+            </h2>
+
+            <p class="text-secondary">
+                Consulta actividades disponibles y administra tus inscripciones.
+            </p>
+
+            <a
+                href="{% url 'actividades:disponibles' %}"
+                class="btn btn-outline-primary"
+            >
+                Ver actividades
+            </a>
+
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Noticias y avisos
+            </h2>
+
+            <p class="text-secondary">
+                Consulta las últimas noticias y avisos de la comunidad.
+            </p>
+
+            <a
+                href="{% url 'comunicaciones:inicio' %}"
+                class="btn btn-outline-primary"
+            >
+                Ver comunicaciones
+            </a>
+
+        </div>
+    </div>
+
+{% endif %}
+
 {% endblock %}

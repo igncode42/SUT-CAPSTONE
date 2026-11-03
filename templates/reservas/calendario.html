@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Calendario de reservas | SUT{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">
+            Calendario de reservas
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Consulta la disponibilidad de los espacios comunitarios.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'reservas:crear' %}"
+        class="btn btn-primary"
+    >
+        Nueva reserva
+    </a>
+</div>
+
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <a
+        href="?mes={{ mes_anterior }}&anio={{ anio_anterior }}"
+        class="btn btn-outline-secondary"
+    >
+        ← Mes anterior
+    </a>
+
+    <h2 class="h4 mb-0">
+        {{ mes_nombre }} {{ anio }}
+    </h2>
+
+    <a
+        href="?mes={{ mes_siguiente }}&anio={{ anio_siguiente }}"
+        class="btn btn-outline-secondary"
+    >
+        Mes siguiente →
+    </a>
+
+</div>
+
+
+<div class="table-responsive">
+
+    <table class="table table-bordered align-middle">
+
+        <thead class="table-light">
+            <tr>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for semana in semanas %}
+
+                <tr>
+
+                    {% for dia in semana %}
+
+                        {% if dia %}
+
+                            <td
+                                style="min-width: 150px; height: 150px;"
+                                {% if dia.es_hoy %}
+                                    class="table-primary"
+                                {% endif %}
+                            >
+
+                                <strong>
+                                    {{ dia.numero }}
+                                </strong>
+
+                                {% if dia.reservas %}
+
+                                    <div class="mt-2">
+
+                                        {% for reserva in dia.reservas %}
+
+                                            <div class="border rounded p-2 mb-2 small">
+
+                                                <strong>
+                                                    {{ reserva.espacio.nombre }}
+                                                </strong>
+
+                                                <br>
+
+                                                {{ reserva.hora_inicio }}
+                                                -
+                                                {{ reserva.hora_fin }}
+
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% else %}
+
+                                    <p class="text-secondary small mt-2 mb-0">
+                                        Disponible
+                                    </p>
+
+                                {% endif %}
+
+                            </td>
+
+                        {% else %}
+
+                            <td class="bg-light"></td>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<div class="mt-4">
+
+    <a
+        href="{% url 'reservas:mis_reservas' %}"
+        class="btn btn-outline-secondary"
+    >
+        Volver a mis reservas
+    </a>
+
+</div>
+
+{% endblock %}

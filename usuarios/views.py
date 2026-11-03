@@ -6,6 +6,7 @@ from .permisos import (
     es_vecino,
     permiso_requerido,
     puede_gestionar_certificados,
+    puede_publicar_comunicaciones,
     puede_resolver_proyectos,
 )
 
@@ -24,6 +25,10 @@ def panel(request):
             ),
 
             "puede_gestionar_certificados": puede_gestionar_certificados(
+                request.user
+            ),
+
+            "puede_publicar_comunicaciones": puede_publicar_comunicaciones(
                 request.user
             ),
         },

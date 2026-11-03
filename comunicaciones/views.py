@@ -1,5 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
+from usuarios.permisos import (
+    permiso_requerido,
+    puede_publicar_comunicaciones,
+)
+
+from .forms import AvisoForm, NoticiaForm
 from .models import Aviso, Noticia
 
 
@@ -20,5 +26,58 @@ def comunicaciones_inicio(request):
         {
             "noticias": noticias,
             "avisos": avisos,
+            "puede_publicar": puede_publicar_comunicaciones(
+                request.user
+            ),
+        },
+    )
+
+
+@permiso_requerido(puede_publicar_comunicaciones)
+def publicar_noticia(request):
+    if request.method == "POST":
+        form = NoticiaForm(request.POST)
+
+        if form.is_valid():
+            noticia = form.save(commit=False)
+
+            noticia.usuario = request.user
+            noticia.save()
+
+            return redirect("comunicaciones:inicio")
+
+    else:
+        form = NoticiaForm()
+
+    return render(
+        request,
+        "comunicaciones/publicar_noticia.html",
+        {
+            "form": form,
+        },
+    )
+
+
+@permiso_requerido(puede_publicar_comunicaciones)
+def publicar_aviso(request):
+    if request.method == "POST":
+        form = AvisoForm(request.POST)
+
+        if form.is_valid():
+            aviso = form.save(commit=False)
+
+            aviso.usuario = request.user
+            aviso.save()
+
+            return redirect("comunicaciones:inicio")
+
+    else:
+        form = AvisoForm()
+
+    return render(
+        request,
+        "comunicaciones/publicar_aviso.html",
+        {
+            "form": form,
         },
     )

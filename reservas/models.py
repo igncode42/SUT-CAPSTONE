@@ -1,4 +1,5 @@
 from django.db import models
+
 from vecinos.models import Vecino
 
 
@@ -33,7 +34,7 @@ class Reserva(models.Model):
     estado = models.CharField(
         max_length=20,
         choices=Estado.choices,
-        default=Estado.PENDIENTE,
+        default=Estado.CONFIRMADA,
     )
 
     def __str__(self):

@@ -1,8 +1,8 @@
 ﻿from functools import wraps
 
+from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import resolve_url
-from django.contrib.auth.views import redirect_to_login
 
 
 def es_vecino(usuario):
@@ -73,6 +73,20 @@ def puede_resolver_proyectos(usuario):
 
 
 def puede_gestionar_certificados(usuario):
+    if not usuario.is_authenticated:
+        return False
+
+    if usuario.is_superuser or usuario.is_staff:
+        return True
+
+    return tiene_rol(
+        usuario,
+        "directiva",
+        "personal autorizado",
+    )
+
+
+def puede_publicar_comunicaciones(usuario):
     if not usuario.is_authenticated:
         return False
 

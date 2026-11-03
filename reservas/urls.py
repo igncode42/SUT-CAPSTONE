@@ -16,4 +16,9 @@ urlpatterns = [
         views.crear_reserva,
         name="crear",
     ),
+    path(
+        "calendario/",
+        views.calendario,
+        name="calendario",
+    ),
 ]
