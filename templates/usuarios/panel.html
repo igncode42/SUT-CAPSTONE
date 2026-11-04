@@ -121,6 +121,32 @@
 {% endif %}
 
 
+{% if puede_gestionar_vecinos %}
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h2 class="h5">
+                Gestión de vecinos
+            </h2>
+
+            <p class="text-secondary">
+                Revisa los vecinos registrados y administra su condición de miembro de junta.
+            </p>
+
+            <a
+                href="{% url 'vecinos:gestion' %}"
+                class="btn btn-warning"
+            >
+                Gestionar vecinos
+            </a>
+
+        </div>
+    </div>
+
+{% endif %}
+
+
 {% if es_vecino %}
 
     <div class="card shadow-sm mt-4">

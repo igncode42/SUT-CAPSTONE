@@ -98,3 +98,17 @@ def puede_publicar_comunicaciones(usuario):
         "directiva",
         "personal autorizado",
     )
+
+
+def puede_gestionar_vecinos(usuario):
+    if not usuario.is_authenticated:
+        return False
+
+    if usuario.is_superuser or usuario.is_staff:
+        return True
+
+    return tiene_rol(
+        usuario,
+        "directiva",
+        "personal autorizado",
+    )

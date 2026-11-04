@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de vecinos | SUT{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="fw-bold">
+            Gestión de vecinos
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Revisa los vecinos registrados y administra su condición de miembro de junta.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'panel' %}"
+        class="btn btn-outline-secondary"
+    >
+        Volver al panel
+    </a>
+</div>
+
+
+{% if vecinos %}
+
+    <div class="table-responsive">
+
+        <table class="table table-striped align-middle">
+
+            <thead>
+                <tr>
+                    <th>Vecino</th>
+                    <th>Identificación</th>
+                    <th>Dirección</th>
+                    <th>Usuario</th>
+                    <th>Miembro de junta</th>
+                    <th class="text-end">Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for vecino in vecinos %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ vecino.nombre }} {{ vecino.apellido }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ vecino.identificacion }}
+                        </td>
+
+                        <td>
+                            {{ vecino.direccion }}
+                        </td>
+
+                        <td>
+                            {{ vecino.usuario.username }}
+                        </td>
+
+                        <td>
+                            {% if vecino.miembro_junta %}
+
+                                <span class="badge bg-success">
+                                    Sí
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    No
+                                </span>
+
+                            {% endif %}
+                        </td>
+
+                        <td class="text-end">
+
+                            <form
+                                method="post"
+                                action="{% url 'vecinos:actualizar_miembro' vecino.id %}"
+                                class="d-inline"
+                            >
+                                {% csrf_token %}
+
+                                {% if vecino.miembro_junta %}
+
+                                    <input
+                                        type="hidden"
+                                        name="miembro_junta"
+                                        value="false"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                    >
+                                        Quitar miembro
+                                    </button>
+
+                                {% else %}
+
+                                    <input
+                                        type="hidden"
+                                        name="miembro_junta"
+                                        value="true"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+                                        Convertir en miembro
+                                    </button>
+
+                                {% endif %}
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No hay vecinos registrados.
+    </div>
+
+{% endif %}
+
+{% endblock %}

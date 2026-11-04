@@ -101,7 +101,42 @@ LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
 
-# Email local/desarrollo.
-# Para producción se reemplazará por un backend SMTP.
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = "no-reply@sut.local"
+# Email.
+# Por defecto usa consola para desarrollo.
+# Puede cambiarse a SMTP mediante variables de entorno.
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend",
+)
+
+EMAIL_HOST = os.getenv(
+    "EMAIL_HOST",
+    "smtp.gmail.com",
+)
+
+EMAIL_PORT = int(
+    os.getenv(
+        "EMAIL_PORT",
+        "587",
+    )
+)
+
+EMAIL_HOST_USER = os.getenv(
+    "EMAIL_HOST_USER",
+    "",
+)
+
+EMAIL_HOST_PASSWORD = os.getenv(
+    "EMAIL_HOST_PASSWORD",
+    "",
+)
+
+EMAIL_USE_TLS = os.getenv(
+    "EMAIL_USE_TLS",
+    "True",
+).lower() == "true"
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    "no-reply@sut.local",
+)

@@ -3,7 +3,6 @@ from django.core.mail import send_mail
 
 
 def enviar_resolucion_proyecto(proyecto):
-
     destinatario = proyecto.vecino.usuario.email.strip()
 
     if not destinatario:
@@ -23,7 +22,7 @@ def enviar_resolucion_proyecto(proyecto):
         "Sistema Unidad Territorial (SUT)"
     )
 
-    send_mail(
+    enviados = send_mail(
         subject=asunto,
         message=mensaje,
         from_email=settings.DEFAULT_FROM_EMAIL,
@@ -31,4 +30,4 @@ def enviar_resolucion_proyecto(proyecto):
         fail_silently=False,
     )
 
-    return True
+    return enviados == 1

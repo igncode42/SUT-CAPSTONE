@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from usuarios.models import Rol
+
 from .models import Vecino
 
 
@@ -110,4 +112,162 @@ class RegistroVecinoTests(TestCase):
         self.assertContains(
             response,
             "Ya existe un vecino registrado con esta identificación.",
+        )
+
+
+class GestionVecinoTests(TestCase):
+    def setUp(self):
+        self.rol_directiva = Rol.objects.create(
+            nombre="Directiva"
+        )
+
+        self.rol_autorizado = Rol.objects.create(
+            nombre="Personal autorizado"
+        )
+
+        self.directiva = Usuario.objects.create_user(
+            username="directiva_vecinos",
+            password="SUT-Directiva-2026!",
+            rol=self.rol_directiva,
+        )
+
+        self.autorizado = Usuario.objects.create_user(
+            username="autorizado_vecinos",
+            password="SUT-Autorizado-2026!",
+            rol=self.rol_autorizado,
+        )
+
+        self.usuario_vecino = Usuario.objects.create_user(
+            username="vecino_gestion",
+            password="SUT-Vecino-2026!",
+        )
+
+        self.vecino = Vecino.objects.create(
+            usuario=self.usuario_vecino,
+            nombre="Vecino",
+            apellido="Gestionado",
+            identificacion="SUT-GESTION-001",
+            direccion="Calle Gestión 123",
+        )
+
+        self.usuario_miembro = Usuario.objects.create_user(
+            username="miembro_gestion",
+            password="SUT-Miembro-2026!",
+        )
+
+        self.miembro = Vecino.objects.create(
+            usuario=self.usuario_miembro,
+            nombre="Miembro",
+            apellido="Junta",
+            identificacion="SUT-GESTION-002",
+            direccion="Calle Junta 456",
+            miembro_junta=True,
+        )
+
+        self.url_gestion = reverse("vecinos:gestion")
+
+    def test_directiva_puede_ver_gestion_vecinos(self):
+        self.client.login(
+            username="directiva_vecinos",
+            password="SUT-Directiva-2026!",
+        )
+
+        response = self.client.get(self.url_gestion)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "vecinos/gestion.html",
+        )
+
+        self.assertContains(
+            response,
+            "Vecino Gestionado",
+        )
+
+    def test_personal_autorizado_puede_ver_gestion_vecinos(self):
+        self.client.login(
+            username="autorizado_vecinos",
+            password="SUT-Autorizado-2026!",
+        )
+
+        response = self.client.get(self.url_gestion)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_vecino_normal_no_puede_ver_gestion(self):
+        self.client.login(
+            username="vecino_gestion",
+            password="SUT-Vecino-2026!",
+        )
+
+        response = self.client.get(self.url_gestion)
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_miembro_junta_no_puede_ver_gestion(self):
+        self.client.login(
+            username="miembro_gestion",
+            password="SUT-Miembro-2026!",
+        )
+
+        response = self.client.get(self.url_gestion)
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_anonimo_es_redirigido_al_login(self):
+        response = self.client.get(self.url_gestion)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={self.url_gestion}",
+        )
+
+    def test_directiva_puede_convertir_vecino_en_miembro(self):
+        self.client.login(
+            username="directiva_vecinos",
+            password="SUT-Directiva-2026!",
+        )
+
+        response = self.client.post(
+            reverse(
+                "vecinos:actualizar_miembro",
+                args=[self.vecino.id],
+            ),
+            {
+                "miembro_junta": "true",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        self.vecino.refresh_from_db()
+
+        self.assertTrue(
+            self.vecino.miembro_junta
+        )
+
+    def test_directiva_puede_quitar_condicion_de_miembro(self):
+        self.client.login(
+            username="directiva_vecinos",
+            password="SUT-Directiva-2026!",
+        )
+
+        response = self.client.post(
+            reverse(
+                "vecinos:actualizar_miembro",
+                args=[self.miembro.id],
+            ),
+            {
+                "miembro_junta": "false",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        self.miembro.refresh_from_db()
+
+        self.assertFalse(
+            self.miembro.miembro_junta
         )
