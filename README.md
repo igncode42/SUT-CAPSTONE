@@ -1,138 +1,110 @@
 # Sistema Unidad Territorial — SUT
 
-Proyecto Capstone de Ingeniería en Informática orientado a apoyar la gestión administrativa y comunitaria de una junta de vecinos.
+Sistema web desarrollado como proyecto Capstone de Ingeniería en Informática para apoyar la gestión administrativa y comunitaria de una junta de vecinos.
 
 ## Objetivo
 
-Mejorar la gestión de la unidad territorial de una junta de vecinos.
+Centralizar procesos habituales de una unidad territorial en una plataforma web simple, trazable y utilizable por vecinos y personal autorizado.
 
 ## Estado actual
 
-El proyecto se encuentra en desarrollo incremental mediante Scrum.
+El SUT se encuentra funcionalmente cerrado para la Entrega 2.2.
 
-La Entrega 2.1 consolidó una base funcional verificable con autenticación, autorización, proyectos vecinales, certificados de residencia, PostgreSQL, Docker Compose y pruebas automatizadas.
+Estado técnico verificado:
 
-La Entrega 2.2 continúa el desarrollo sobre esta base, priorizando los flujos funcionales pendientes, la trazabilidad, las pruebas y las evidencias necesarias para demostrar el producto.
-
-## Funcionalidades implementadas
-
-### Infraestructura
-
-- Django 6.1.
+- Django 6.1.3.
 - PostgreSQL 18.
-- Configuración mediante variables de entorno.
-- Migraciones Django.
 - Docker Compose.
-- Contenedor `sut-web` para Django.
-- Contenedor `sut-postgres` para PostgreSQL.
-- Healthchecks para aplicación y base de datos.
-- Migraciones automáticas al iniciar el servicio web.
+- 7 aplicaciones Django.
+- 97 pruebas automatizadas aprobadas.
+- 15 migraciones de aplicación.
+- 22 templates HTML.
+- configuración sensible mediante variables de entorno.
+- backend e integridad funcional congelados salvo corrección de errores.
 
-### Identidad y autorización
+## Funcionalidades
 
-- Login y logout.
-- Panel privado.
-- Modelo de roles.
-- Perfil `Vecino`.
-- Distinción de miembro de junta.
-- Personal autorizado / Directiva.
-- Permisos centralizados.
-- Restricciones de acceso verificadas mediante pruebas automatizadas.
+### Vecinos
+
+- registro de usuarios y perfil de vecino;
+- gestión interna de vecinos;
+- incorporación y retiro como miembro de junta;
+- control de privilegios desde servidor.
 
 ### Proyectos vecinales
 
-Flujo implementado:
+Flujo principal:
 
-`Miembro de junta → Postular → Pendiente → Revisión → Aprobar/Rechazar → Notificación`
+`Miembro de junta → Postulación → Revisión → Aprobación/Rechazo → Notificación`
 
 Incluye:
 
-- postulación exclusiva para miembros de junta;
-- estado inicial `PENDIENTE`;
-- listado de proyectos propios;
-- protección para evitar visualizar proyectos ajenos;
-- revisión por personal autorizado;
-- aprobación y rechazo;
+- postulación exclusiva para miembros;
+- revisión por Directiva o personal autorizado;
 - protección contra doble resolución;
-- protección contra modificación manual del estado;
-- generación de notificación por correo mediante Django.
+- restricciones de estado en PostgreSQL;
+- notificación de resolución por correo;
+- tolerancia a fallos del servicio SMTP sin revertir la decisión registrada.
 
 ### Certificados de residencia
 
-Flujo implementado:
+Flujo principal:
 
-`Vecino → Solicitar → Pendiente → Revisión → Aprobar/Rechazar → Emitir`
+`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
 
 Incluye:
 
-- solicitud por vecinos autenticados;
-- estado inicial `PENDIENTE`;
-- seguimiento de solicitudes propias;
-- protección para evitar visualizar solicitudes ajenas;
+- una solicitud activa por vecino;
 - revisión por personal autorizado;
-- aprobación y rechazo;
-- emisión lógica del certificado;
-- estado `EMITIDA`;
-- protección contra emisión de solicitudes rechazadas;
-- protección contra emisión duplicada.
+- protección contra doble resolución y doble emisión;
+- snapshot de los datos del vecino al emitir el certificado;
+- restricciones de integridad en base de datos.
 
-La emisión actual corresponde al registro del certificado dentro del sistema.
+### Reservas
 
-La generación de un archivo o PDF descargable permanece pendiente.
+- reserva de espacios;
+- calendario mensual;
+- validación de fechas y horarios;
+- detección de solapamientos;
+- espacios activos;
+- protección transaccional contra reservas concurrentes mediante bloqueo del espacio;
+- restricciones de estado y horario en PostgreSQL.
 
-## Pruebas automatizadas
+### Actividades
 
-El baseline de inicio de la Entrega 2.2 posee:
+- publicación de actividades;
+- inscripción de vecinos;
+- control de cupos;
+- prevención de inscripciones duplicadas;
+- bloqueo transaccional durante la inscripción;
+- restricción de cupo mínimo en base de datos.
 
-**41 pruebas automatizadas aprobadas.**
+### Comunicaciones
 
-La suite incluye pruebas de:
+- publicación de noticias;
+- publicación de avisos;
+- consulta pública;
+- publicación restringida a usuarios autorizados;
+- escape de contenido mediante Django Templates.
 
-- autenticación;
-- autorización;
-- acceso anónimo;
-- permisos por rol;
-- miembros de junta;
-- aislamiento de información entre usuarios;
-- creación de proyectos;
-- manipulación de estados;
-- aprobación y rechazo de proyectos;
-- notificaciones por correo;
-- solicitud de certificados;
-- aprobación y rechazo de certificados;
-- emisión de certificados;
-- operaciones duplicadas;
-- reglas de negocio.
+## Roles y autorización
 
-Resultado verificado:
+El sistema diferencia entre:
 
-```text
-41 pruebas ejecutadas
-41 aprobadas
-0 fallidas
-```
+- usuario autenticado;
+- vecino;
+- miembro de junta;
+- Directiva;
+- personal autorizado;
+- superusuario.
 
-La suite fue verificada dentro del contenedor Docker de Django.
+Los permisos funcionales se validan del lado del servidor mediante reglas centralizadas.
 
-## Stack tecnológico
-
-- Python 3.14
-- Django 6.1
-- PostgreSQL 18
-- Django ORM
-- Django Templates
-- Bootstrap
-- Docker
-- Docker Compose
-- Git
-- GitHub
-- Jira
+La autenticación y la autorización se tratan como responsabilidades independientes.
 
 ## Arquitectura
 
-El SUT utiliza una arquitectura web monolítica modular basada en aplicaciones Django.
-
-Flujo general:
+El SUT utiliza una arquitectura web monolítica modular basada en Django.
 
 ```text
 Navegador
@@ -144,161 +116,127 @@ Django ORM
 PostgreSQL
 ```
 
-En el entorno Docker:
+Aplicaciones principales:
+
+```text
+usuarios
+vecinos
+proyectos
+certificados
+reservas
+actividades
+comunicaciones
+```
+
+El entorno de desarrollo y demostración se ejecuta mediante Docker Compose:
 
 ```text
 Navegador
     ↓
-localhost:8000
+127.0.0.1:8000
     ↓
 sut-web
     ↓
-db:5432
-    ↓
-sut-postgres
+PostgreSQL
 ```
 
-El proyecto está organizado en siete aplicaciones Django:
+## Stack
 
-- `usuarios`
-- `vecinos`
-- `proyectos`
-- `certificados`
-- `reservas`
-- `actividades`
-- `comunicaciones`
+- Python 3.14
+- Django 6.1.3
+- PostgreSQL 18
+- Django ORM
+- Django Templates
+- Bootstrap 5
+- Docker
+- Docker Compose
+- Git
+- GitHub
+- Jira
 
-## Docker
+## Ejecución con Docker
 
-El sistema puede ejecutarse mediante Docker Compose.
+Crear un archivo `.env` a partir de `.env.example` y completar la configuración requerida.
 
-Construir y levantar los servicios:
+Luego:
 
 ```bash
 docker compose up -d --build
 ```
 
-Verificar estado:
+Verificar servicios:
 
 ```bash
 docker compose ps
 ```
 
-Servicios esperados:
-
-```text
-sut-web        healthy
-sut-postgres   healthy
-```
-
-La aplicación queda disponible en:
+Aplicación:
 
 ```text
 http://127.0.0.1:8000/
 ```
 
-### Ejecutar pruebas dentro de Docker
+## Pruebas
+
+Ejecutar la suite completa:
 
 ```bash
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Resultado verificado al inicio de la Entrega 2.2:
+Resultado del último checkpoint técnico:
 
 ```text
-Found 41 test(s).
-.........................................
+Found 97 test(s).
+Ran 97 tests
 OK
 ```
 
-## Ejecución local
+Distribución actual:
 
-Con el entorno virtual activo:
+| Aplicación | Pruebas |
+|---|---:|
+| Usuarios | 16 |
+| Vecinos | 13 |
+| Proyectos | 19 |
+| Certificados | 20 |
+| Reservas | 13 |
+| Actividades | 7 |
+| Comunicaciones | 9 |
+| **Total** | **97** |
 
-```bash
-python manage.py runserver
-```
+También se ejecutaron manualmente recorridos End to End de los flujos críticos de Proyectos y Certificados.
 
-Ejecutar pruebas:
+## Calidad y seguridad
 
-```bash
-python manage.py test
-```
+El proyecto incorpora:
 
-## Seguridad
-
-Actualmente se utilizan:
-
-- variables de entorno para configuración sensible;
-- exclusión de `.env` mediante `.gitignore`;
-- exclusión de `.env` mediante `.dockerignore`;
-- validadores de contraseña de Django;
 - protección CSRF;
-- middleware de autenticación;
-- control de acceso del lado del servidor;
-- permisos reutilizables;
-- separación entre autenticación y autorización;
-- filtrado de información según el usuario autenticado.
+- autorización del lado del servidor;
+- aislamiento de información por usuario;
+- restricciones de integridad en PostgreSQL;
+- transacciones y bloqueos `select_for_update()` en operaciones sensibles;
+- escape de contenido en templates;
+- secretos fuera del repositorio;
+- contenedor web ejecutado con usuario no root;
+- configuración de seguridad parametrizable para entornos HTTPS.
 
-La configuración sensible utilizada para desarrollo se mantiene fuera del repositorio mediante variables de entorno.
+Durante el hardening se verificó además:
 
-## Correo
+```text
+Django system check     OK
+97/97 pruebas           OK
+makemigrations --check  sin cambios
+check --deploy          sin observaciones bajo perfil simulado
+Gitleaks                sin filtraciones detectadas
+pip-audit               sin vulnerabilidades conocidas detectadas
+```
 
-El SUT implementa actualmente la lógica de notificación de resolución de proyectos mediante Django.
-
-Las pruebas automatizadas verifican:
-
-- envío al destinatario correcto;
-- correo de aprobación;
-- correo de rechazo;
-- ausencia de error cuando el usuario no posee email;
-- prevención de notificaciones duplicadas.
-
-Actualmente se utiliza un backend de desarrollo.
-
-La integración con un servidor SMTP externo permanece pendiente.
-
-## Estado por módulo
-
-| Módulo | Estado |
-|---|---|
-| Autenticación | Implementado y probado |
-| Autorización / RBAC | Implementado y probado |
-| Vecinos | Base de datos y perfiles implementados; flujo de usuario pendiente |
-| Proyectos vecinales | Flujo principal implementado y probado |
-| Certificados | Flujo principal implementado y probado |
-| PostgreSQL | Implementado |
-| Docker Compose | Implementado y verificado |
-| Pruebas automatizadas | 41 aprobadas |
-| Reservas | Base de datos implementada; flujo funcional pendiente |
-| Actividades | Base de datos implementada; flujo funcional pendiente |
-| Comunicaciones | Base de datos implementada; publicación para usuario final pendiente |
-| SMTP externo | Pendiente |
-| WhatsApp | Pendiente |
-| Certificado PDF descargable | Pendiente |
-| Pruebas End to End mediante navegador | Pendientes |
-
-## Diseñado / pendiente de implementación funcional
-
-Actualmente permanecen pendientes o parcialmente desarrollados:
-
-- registro/autogestión de vecinos desde interfaz;
-- calendario y flujo de reservas;
-- validación de disponibilidad de espacios;
-- actividades e inscripciones;
-- control funcional de cupos;
-- noticias y avisos para usuarios finales;
-- SMTP externo;
-- integración WhatsApp;
-- generación de certificado PDF descargable;
-- pruebas End to End mediante navegador;
-- refinamiento de interfaz.
-
-Estas funcionalidades no deben presentarse como terminadas hasta contar con implementación y evidencia verificable.
+El entorno Docker actual está orientado a desarrollo y demostración; no representa por sí solo un despliegue productivo.
 
 ## Documentación
 
-El repositorio mantiene documentación organizada en:
+La documentación técnica se mantiene en:
 
 ```text
 docs/
@@ -310,70 +248,29 @@ docs/
 └── pruebas/
 ```
 
-### Diagramas
+Incluye:
 
-`docs/diagramas/`
-
-Contiene:
-
-- arquitectura del SUT;
+- arquitectura;
 - modelo de datos;
-- proceso de proyectos vecinales;
-- proceso de reservas;
-- proceso de actividades y cupos.
+- procesos principales;
+- especificaciones técnicas;
+- trazabilidad;
+- estrategia y plan de pruebas;
+- evidencias del desarrollo;
+- checkpoints y documentación de cierre.
 
-Los diagramas correspondientes a funcionalidades aún pendientes representan diseño y no acreditan por sí solos una implementación funcional.
+Los documentos históricos se conservan como evidencia de la evolución del proyecto y no representan necesariamente el estado técnico actual.
 
-### Evidencias
+## Metodología y trazabilidad
 
-`docs/evidencias/`
+El desarrollo se ha gestionado de forma incremental mediante Scrum, utilizando Jira para seguimiento y Git/GitHub para control de versiones.
 
-Contiene evidencias técnicas del proceso de desarrollo, incluyendo pruebas automatizadas, Docker, HTTP y recorridos funcionales de Proyectos y Certificados.
-
-### Pruebas
-
-`docs/pruebas/`
-
-Documenta la estrategia, el plan y la ejecución de pruebas.
-
-### Control y trazabilidad
-
-`docs/control/`
-
-Mantiene la relación entre necesidades, reglas, implementación, pruebas y evidencias.
-
-La matriz de trazabilidad distingue entre funcionalidades diseñadas, implementadas, probadas y evidenciadas.
-
-### Cierre y checkpoints
-
-`docs/cierre/`
-
-Mantiene documentación histórica de los principales checkpoints del proyecto.
-
-Entre ellos:
-
-- cierre de la versión v0.1;
-- avance correspondiente a la Entrega 2.1;
-- futuros documentos de cierre de la Entrega 2.2.
-
-### Especificaciones técnicas
-
-`docs/especificaciones/especificaciones-tecnicas.md`
-
-Consolida arquitectura, tecnologías, alcance y requisitos no funcionales verificables.
-
-## Metodología de desarrollo
-
-El desarrollo se gestiona mediante Scrum apoyado por Jira.
-
-Git y GitHub se utilizan para control de versiones y trazabilidad técnica.
-
-El flujo de trabajo busca mantener la relación:
+El criterio de trabajo mantiene la relación:
 
 ```text
 Requisito
     ↓
-Jira / Sprint
+Planificación
     ↓
 Implementación
     ↓
@@ -382,13 +279,9 @@ Prueba
 Commit
     ↓
 Evidencia
-    ↓
-Documentación
 ```
 
-Los cambios se integran mediante incrementos funcionales verificables.
-
-Como criterio de trazabilidad se mantiene la distinción:
+Durante el proyecto se distingue explícitamente entre:
 
 ```text
 Diseñado
@@ -397,37 +290,20 @@ Implementado
 ≠
 Probado
 ≠
-Evidenciado
+Demostrado
 ```
 
-## Baseline de inicio de la Entrega 2.2
+## Checkpoint técnico
 
-Estado técnico verificado antes de iniciar nuevos incrementos:
+Último cierre funcional:
 
 ```text
-Django system check     OK
-PostgreSQL              healthy
-sut-web                 healthy
-sut-postgres            healthy
-HTTP                    200
-Pruebas automatizadas   41/41
-Rama principal          main
-Commit base             edef585
-Docker Compose          operativo
+Rama                 main
+Commit                ecfde54
+Pruebas               97/97
+Django check          OK
+Migraciones nuevas    no pendientes
+Backend               congelado
 ```
 
-Este baseline constituye el punto de partida técnico de la Entrega 2.2.
-
-## Próximos pasos
-
-Durante la Entrega 2.2 se priorizarán las siguientes actividades:
-
-1. consolidar la coherencia entre documentación, Jira, GitHub, código y evidencias;
-2. definir y priorizar los incrementos funcionales pendientes según el alcance del proyecto;
-3. implementar cada incremento junto con sus reglas de negocio y permisos;
-4. ampliar las pruebas automatizadas y ejecutar pruebas funcionales de los nuevos flujos;
-5. generar evidencia verificable de cada funcionalidad implementada;
-6. actualizar Jira, trazabilidad y documentación conforme avance el desarrollo;
-7. preparar la retrospectiva y la demostración final del producto.
-
-La prioridad de los módulos pendientes se definirá según impacto funcional, riesgo para la entrega y capacidad de ser implementados, probados y defendidos correctamente.
+A partir de este punto, el trabajo se concentra en documentación, evidencias, experiencia de usuario, presentación y preparación de la demostración final.
