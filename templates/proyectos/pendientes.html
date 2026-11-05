@@ -4,16 +4,51 @@
 
 {% block content %}
 
-<h1 class="fw-bold mb-1">
-    Proyectos pendientes
-</h1>
 
-<p class="text-secondary mb-4">
-    Revisión y resolución de postulaciones vecinales.
-</p>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
+    <div>
+
+        <p class="text-primary fw-semibold mb-2">
+            Administración
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Proyectos pendientes
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Revisa las postulaciones vecinales y registra su resolución.
+        </p>
+
+    </div>
+
+
+    <div class="flex-shrink-0">
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
+
+</div>
 
 
 {% if proyectos %}
+
+
+    <div
+        class="alert alert-info"
+        role="status"
+    >
+        Cada proyecto permanecerá pendiente hasta que sea
+        <strong>aprobado</strong> o <strong>rechazado</strong>.
+    </div>
+
 
     <div class="row g-3">
 
@@ -21,56 +56,92 @@
 
             <div class="col-12">
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
+                <article class="card border-0 shadow-sm">
 
-                        <h2 class="h5">
-                            {{ proyecto.titulo }}
-                        </h2>
+                    <div class="card-body p-4">
 
-                        <p class="mb-2">
-                            {{ proyecto.descripcion }}
-                        </p>
 
-                        <p class="text-secondary small">
-                            Postulado por:
-                            {{ proyecto.vecino }}
-                        </p>
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-3">
 
-                        <div class="d-flex gap-2">
+                            <div class="flex-grow-1">
 
-                            <form
-                                method="post"
-                                action="{% url 'proyectos:resolver' proyecto.pk 'aprobar' %}"
-                            >
-                                {% csrf_token %}
+                                <h2 class="h5 fw-bold mb-2">
+                                    {{ proyecto.titulo }}
+                                </h2>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-success"
-                                >
-                                    Aprobar
-                                </button>
-                            </form>
+                                <p class="text-secondary mb-0">
+                                    {{ proyecto.descripcion }}
+                                </p>
 
-                            <form
-                                method="post"
-                                action="{% url 'proyectos:resolver' proyecto.pk 'rechazar' %}"
-                            >
-                                {% csrf_token %}
+                            </div>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-danger"
-                                >
-                                    Rechazar
-                                </button>
-                            </form>
+
+                            <div class="flex-shrink-0">
+
+                                <span class="badge text-bg-secondary">
+                                    Pendiente de revisión
+                                </span>
+
+                            </div>
 
                         </div>
 
+
+                        <div class="border-top pt-3">
+
+                            <p class="small text-secondary mb-3">
+                                Postulado por:
+                                <strong class="text-body">
+                                    {{ proyecto.vecino }}
+                                </strong>
+                            </p>
+
+
+                            <div class="d-grid d-sm-flex gap-2">
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'proyectos:resolver' proyecto.pk 'aprobar' %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success w-100"
+                                    >
+                                        Aprobar proyecto
+                                    </button>
+
+                                </form>
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'proyectos:resolver' proyecto.pk 'rechazar' %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger w-100"
+                                    >
+                                        Rechazar
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+
                     </div>
-                </div>
+
+                </article>
 
             </div>
 
@@ -78,12 +149,28 @@
 
     </div>
 
+
 {% else %}
 
-    <div class="alert alert-info">
-        No existen proyectos pendientes.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                No hay proyectos pendientes
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Las nuevas postulaciones aparecerán aquí cuando requieran revisión.
+            </p>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

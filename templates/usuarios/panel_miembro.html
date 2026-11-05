@@ -4,42 +4,112 @@
 
 {% block content %}
 
-<h1 class="fw-bold">
-    Zona de miembro de junta
-</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
 
-<div class="alert alert-primary">
-    Permiso de miembro de junta validado por el servidor.
-</div>
+    <div>
 
-<p class="text-secondary">
-    Desde esta zona puedes gestionar tus postulaciones
-    de proyectos vecinales.
-</p>
+        <p class="text-primary fw-semibold mb-2">
+            Zona de miembro
+        </p>
 
-<div class="d-flex gap-2 flex-wrap">
+        <h1 class="fw-bold mb-2">
+            Miembro de junta
+        </h1>
 
-    <a
-        href="{% url 'proyectos:crear' %}"
-        class="btn btn-primary"
-    >
-        Postular proyecto
-    </a>
+        <p class="text-secondary mb-0">
+            Desde esta sección puedes postular proyectos vecinales
+            y consultar el estado de tus postulaciones.
+        </p>
 
-    <a
-        href="{% url 'proyectos:mis_proyectos' %}"
-        class="btn btn-outline-primary"
-    >
-        Mis proyectos
-    </a>
+    </div>
 
-    <a
-        href="{% url 'panel' %}"
-        class="btn btn-outline-secondary"
-    >
-        Volver al panel
-    </a>
+    <div class="flex-shrink-0">
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
 
 </div>
+
+
+<section aria-labelledby="titulo-proyectos">
+
+    <h2
+        id="titulo-proyectos"
+        class="h4 fw-bold mb-3"
+    >
+        Proyectos vecinales
+    </h2>
+
+
+    <div class="row g-4">
+
+
+        <div class="col-12 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4 d-flex flex-column">
+
+                    <h3 class="h5 fw-bold">
+                        Postular proyecto
+                    </h3>
+
+                    <p class="text-secondary flex-grow-1">
+                        Presenta una nueva propuesta para que pueda ser
+                        revisada y resuelta por la directiva.
+                    </p>
+
+                    <a
+                        href="{% url 'proyectos:crear' %}"
+                        class="btn btn-primary align-self-start"
+                    >
+                        Nueva postulación
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4 d-flex flex-column">
+
+                    <h3 class="h5 fw-bold">
+                        Mis proyectos
+                    </h3>
+
+                    <p class="text-secondary flex-grow-1">
+                        Consulta tus proyectos enviados y revisa
+                        el estado actual de cada postulación.
+                    </p>
+
+                    <a
+                        href="{% url 'proyectos:mis_proyectos' %}"
+                        class="btn btn-outline-primary align-self-start"
+                    >
+                        Ver mis proyectos
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
 
 {% endblock %}

@@ -4,66 +4,252 @@
 
 {% block content %}
 
+
 <div class="row justify-content-center">
-    <div class="col-lg-7">
 
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
+    <div class="col-12 col-lg-8 col-xl-7">
 
-                <h1 class="h3 mb-3">
-                    Postular proyecto vecinal
-                </h1>
 
-                <p class="text-secondary">
-                    El proyecto quedará pendiente de revisión.
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
+            <div>
+
+                <p class="text-primary fw-semibold mb-2">
+                    Proyectos vecinales
                 </p>
 
-                <form method="post">
+                <h1 class="fw-bold mb-2">
+                    Postular proyecto
+                </h1>
+
+                <p class="text-secondary mb-0">
+                    Presenta una propuesta para que pueda ser revisada
+                    y resuelta por la directiva.
+                </p>
+
+            </div>
+
+
+            <div class="flex-shrink-0">
+
+                <a
+                    href="{% url 'panel_miembro' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Volver
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="alert alert-info"
+            role="status"
+        >
+            Una vez enviada, la postulación quedará
+            <strong>pendiente de revisión</strong>.
+        </div>
+
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4 p-md-5">
+
+
+                {% if form.non_field_errors %}
+
+                    <div
+                        class="alert alert-danger"
+                        role="alert"
+                    >
+
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <form
+                    method="post"
+                    novalidate
+                    class="proyecto-form"
+                >
 
                     {% csrf_token %}
 
-                    <div class="mb-3">
-                        {{ form.titulo.label_tag }}
+
+                    <div class="mb-4">
+
+                        <label
+                            for="{{ form.titulo.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.titulo.label }}
+
+                            {% if form.titulo.field.required %}
+                                <span
+                                    class="text-danger"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+                            {% endif %}
+                        </label>
+
+
                         {{ form.titulo }}
 
+
+                        {% if form.titulo.help_text %}
+
+                            <div class="form-text">
+                                {{ form.titulo.help_text }}
+                            </div>
+
+                        {% endif %}
+
+
                         {% for error in form.titulo.errors %}
-                            <div class="text-danger small">
+
+                            <div
+                                class="text-danger small mt-1"
+                                role="alert"
+                            >
                                 {{ error }}
                             </div>
+
                         {% endfor %}
+
                     </div>
 
-                    <div class="mb-3">
-                        {{ form.descripcion.label_tag }}
+
+                    <div class="mb-4">
+
+                        <label
+                            for="{{ form.descripcion.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.descripcion.label }}
+
+                            {% if form.descripcion.field.required %}
+                                <span
+                                    class="text-danger"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+                            {% endif %}
+                        </label>
+
+
                         {{ form.descripcion }}
 
+
+                        {% if form.descripcion.help_text %}
+
+                            <div class="form-text">
+                                {{ form.descripcion.help_text }}
+                            </div>
+
+                        {% endif %}
+
+
                         {% for error in form.descripcion.errors %}
-                            <div class="text-danger small">
+
+                            <div
+                                class="text-danger small mt-1"
+                                role="alert"
+                            >
                                 {{ error }}
                             </div>
+
                         {% endfor %}
+
                     </div>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        Postular proyecto
-                    </button>
 
-                    <a
-                        href="{% url 'proyectos:mis_proyectos' %}"
-                        class="btn btn-outline-secondary"
-                    >
-                        Mis proyectos
-                    </a>
+                    <p class="text-secondary small mb-4">
+                        Los campos marcados con
+                        <span class="text-danger">*</span>
+                        son obligatorios.
+                    </p>
+
+
+                    <div class="d-grid d-sm-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Enviar postulación
+                        </button>
+
+
+                        <a
+                            href="{% url 'proyectos:mis_proyectos' %}"
+                            class="btn btn-outline-primary"
+                        >
+                            Mis proyectos
+                        </a>
+
+
+                        <a
+                            href="{% url 'panel_miembro' %}"
+                            class="btn btn-outline-secondary"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
 
                 </form>
 
             </div>
+
         </div>
 
     </div>
+
 </div>
+
+
+<style>
+
+    .proyecto-form input,
+    .proyecto-form select,
+    .proyecto-form textarea {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--bs-body-color);
+        background-color: var(--bs-body-bg);
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+
+    .proyecto-form textarea {
+        min-height: 180px;
+        resize: vertical;
+    }
+
+
+    .proyecto-form input:focus,
+    .proyecto-form select:focus,
+    .proyecto-form textarea:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+</style>
+
 
 {% endblock %}

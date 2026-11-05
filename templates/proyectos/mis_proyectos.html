@@ -4,24 +4,44 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
 
     <div>
-        <h1 class="fw-bold mb-1">
+
+        <p class="text-primary fw-semibold mb-2">
+            Proyectos vecinales
+        </p>
+
+        <h1 class="fw-bold mb-2">
             Mis proyectos
         </h1>
 
         <p class="text-secondary mb-0">
-            Proyectos vecinales postulados por tu cuenta.
+            Consulta las postulaciones realizadas desde tu cuenta
+            y revisa su estado actual.
         </p>
+
     </div>
 
-    <a
-        href="{% url 'proyectos:crear' %}"
-        class="btn btn-primary"
-    >
-        Nuevo proyecto
-    </a>
+
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+
+        <a
+            href="{% url 'proyectos:crear' %}"
+            class="btn btn-primary"
+        >
+            Nuevo proyecto
+        </a>
+
+        <a
+            href="{% url 'panel_miembro' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver
+        </a>
+
+    </div>
 
 </div>
 
@@ -34,31 +54,60 @@
 
             <div class="col-12">
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
+                <article class="card border-0 shadow-sm">
 
-                        <div class="d-flex justify-content-between gap-3">
+                    <div class="card-body p-4">
 
-                            <div>
-                                <h2 class="h5">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3">
+
+
+                            <div class="flex-grow-1">
+
+                                <h2 class="h5 fw-bold mb-2">
                                     {{ proyecto.titulo }}
                                 </h2>
 
-                                <p class="text-secondary mb-2">
+                                <p class="text-secondary mb-0">
                                     {{ proyecto.descripcion }}
                                 </p>
+
                             </div>
 
-                            <div>
-                                <span class="badge text-bg-secondary">
-                                    {{ proyecto.get_estado_display }}
-                                </span>
+
+                            <div class="flex-shrink-0">
+
+                                {% with estado=proyecto.get_estado_display %}
+
+                                    {% if estado == "Aprobado" %}
+
+                                        <span class="badge text-bg-success">
+                                            Aprobado
+                                        </span>
+
+                                    {% elif estado == "Rechazado" %}
+
+                                        <span class="badge text-bg-danger">
+                                            Rechazado
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge text-bg-secondary">
+                                            {{ estado }}
+                                        </span>
+
+                                    {% endif %}
+
+                                {% endwith %}
+
                             </div>
+
 
                         </div>
 
                     </div>
-                </div>
+
+                </article>
 
             </div>
 
@@ -66,12 +115,36 @@
 
     </div>
 
+
 {% else %}
 
-    <div class="alert alert-info">
-        Todavía no has postulado proyectos.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                Aún no tienes proyectos
+            </h2>
+
+            <p class="text-secondary mb-4">
+                Cuando envíes una postulación podrás consultar
+                su estado desde esta sección.
+            </p>
+
+            <a
+                href="{% url 'proyectos:crear' %}"
+                class="btn btn-primary"
+            >
+                Postular mi primer proyecto
+            </a>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

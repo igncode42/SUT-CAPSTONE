@@ -4,22 +4,29 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
 
     <div>
-        <h1 class="fw-bold">
-            Comunicaciones
+
+        <p class="text-primary fw-semibold mb-2">
+            Comunidad
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Noticias y avisos
         </h1>
 
         <p class="text-secondary mb-0">
-            Revisa las noticias y avisos publicados por la unidad territorial.
+            Consulta las comunicaciones publicadas por la unidad territorial.
         </p>
+
     </div>
 
 
-    {% if puede_publicar %}
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
 
-        <div class="d-flex gap-2">
+        {% if puede_publicar %}
 
             <a
                 href="{% url 'comunicaciones:publicar_noticia' %}"
@@ -35,100 +42,201 @@
                 Nuevo aviso
             </a>
 
-        </div>
+        {% endif %}
 
-    {% endif %}
+
+        {% if user.is_authenticated %}
+
+            <a
+                href="{% url 'panel' %}"
+                class="btn btn-outline-secondary"
+            >
+                Volver al panel
+            </a>
+
+        {% endif %}
+
+    </div>
 
 </div>
 
 
 <div class="row g-4">
 
-    <div class="col-lg-7">
 
-        <h2 class="h4 mb-3">
-            Noticias
-        </h2>
+    <!-- ===================================================== -->
+    <!-- NOTICIAS                                              -->
+    <!-- ===================================================== -->
+
+    <section
+        class="col-12 col-lg-7"
+        aria-labelledby="titulo-noticias"
+    >
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h2
+                id="titulo-noticias"
+                class="h4 fw-bold mb-0"
+            >
+                Noticias
+            </h2>
+
+            {% if noticias %}
+                <span class="badge text-bg-light border">
+                    {{ noticias|length }}
+                </span>
+            {% endif %}
+
+        </div>
+
 
         {% if noticias %}
 
-            {% for noticia in noticias %}
+            <div class="d-grid gap-3">
 
-                <div class="card shadow-sm mb-3">
+                {% for noticia in noticias %}
 
-                    <div class="card-body">
+                    <article class="card border-0 shadow-sm">
 
-                        <h5 class="card-title">
-                            {{ noticia.titulo }}
-                        </h5>
+                        <div class="card-body p-4">
 
-                        <p class="text-secondary small">
-                            Publicado el {{ noticia.fecha_publicacion }}
-                        </p>
+                            <h3 class="h5 fw-bold mb-2">
+                                {{ noticia.titulo }}
+                            </h3>
 
-                        <p class="card-text">
-                            {{ noticia.contenido }}
-                        </p>
+                            <p class="text-secondary small mb-3">
+                                Publicado el {{ noticia.fecha_publicacion }}
+                            </p>
 
-                    </div>
+                            <p class="mb-0">
+                                {{ noticia.contenido }}
+                            </p>
 
-                </div>
+                        </div>
 
-            {% endfor %}
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
 
         {% else %}
 
-            <div class="alert alert-info">
-                No hay noticias publicadas.
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 text-center">
+
+                    <h3 class="h5 fw-bold mb-2">
+                        No hay noticias publicadas
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+                        Las novedades de la comunidad aparecerán aquí
+                        cuando sean publicadas.
+                    </p>
+
+                </div>
+
             </div>
 
         {% endif %}
 
-    </div>
+    </section>
 
 
-    <div class="col-lg-5">
+    <!-- ===================================================== -->
+    <!-- AVISOS                                                -->
+    <!-- ===================================================== -->
 
-        <h2 class="h4 mb-3">
-            Avisos
-        </h2>
+    <section
+        class="col-12 col-lg-5"
+        aria-labelledby="titulo-avisos"
+    >
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h2
+                id="titulo-avisos"
+                class="h4 fw-bold mb-0"
+            >
+                Avisos
+            </h2>
+
+            {% if avisos %}
+                <span class="badge text-bg-light border">
+                    {{ avisos|length }}
+                </span>
+            {% endif %}
+
+        </div>
+
 
         {% if avisos %}
 
-            {% for aviso in avisos %}
+            <div class="d-grid gap-3">
 
-                <div class="card shadow-sm mb-3">
+                {% for aviso in avisos %}
 
-                    <div class="card-body">
+                    <article class="card border-0 shadow-sm">
 
-                        <h5 class="card-title">
-                            {{ aviso.titulo }}
-                        </h5>
+                        <div class="card-body p-4">
 
-                        <p class="text-secondary small">
-                            Publicado el {{ aviso.fecha_publicacion }}
-                        </p>
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
 
-                        <p class="card-text">
-                            {{ aviso.contenido }}
-                        </p>
+                                <h3 class="h5 fw-bold mb-0">
+                                    {{ aviso.titulo }}
+                                </h3>
 
-                    </div>
+                                <span class="badge text-bg-secondary flex-shrink-0">
+                                    Aviso
+                                </span>
 
-                </div>
+                            </div>
 
-            {% endfor %}
+                            <p class="text-secondary small mb-3">
+                                Publicado el {{ aviso.fecha_publicacion }}
+                            </p>
+
+                            <p class="mb-0">
+                                {{ aviso.contenido }}
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
 
         {% else %}
 
-            <div class="alert alert-info">
-                No hay avisos publicados.
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 text-center">
+
+                    <h3 class="h5 fw-bold mb-2">
+                        No hay avisos publicados
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+                        Los avisos importantes de la comunidad
+                        aparecerán aquí.
+                    </p>
+
+                </div>
+
             </div>
 
         {% endif %}
 
-    </div>
+    </section>
+
 
 </div>
+
 
 {% endblock %}

@@ -4,23 +4,44 @@
 
 {% block content %}
 
-<h1 class="fw-bold mb-1">
-    Gestión de certificados
-</h1>
 
-<p class="text-secondary mb-4">
-    Estado y emisión de solicitudes.
-</p>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
+    <div>
+
+        <p class="text-primary fw-semibold mb-2">
+            Administración
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Gestión de certificados
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Consulta el estado de las solicitudes aprobadas,
+            rechazadas y emitidas.
+        </p>
+
+    </div>
 
 
-<div class="mb-3">
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
 
-    <a
-        href="{% url 'certificados:pendientes' %}"
-        class="btn btn-outline-primary"
-    >
-        Ver pendientes
-    </a>
+        <a
+            href="{% url 'certificados:pendientes' %}"
+            class="btn btn-primary"
+        >
+            Revisar pendientes
+        </a>
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
 
 </div>
 
@@ -33,41 +54,81 @@
 
             <div class="col-12">
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
+                <article class="card border-0 shadow-sm">
 
-                        <div class="d-flex justify-content-between gap-3">
+                    <div class="card-body p-4">
 
-                            <div>
 
-                                <h2 class="h5">
-                                    Solicitud #{{ solicitud.pk }}
-                                </h2>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
 
-                                <p class="text-secondary mb-2">
-                                    Vecino: {{ solicitud.vecino }}
+
+                            <div class="flex-grow-1">
+
+                                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 mb-2">
+
+                                    <h2 class="h5 fw-bold mb-0">
+                                        Solicitud #{{ solicitud.pk }}
+                                    </h2>
+
+
+                                    {% with estado=solicitud.get_estado_display %}
+
+                                        {% if estado == "Emitida" %}
+
+                                            <span class="badge text-bg-success align-self-start">
+                                                Emitida
+                                            </span>
+
+                                        {% elif estado == "Aprobada" %}
+
+                                            <span class="badge text-bg-primary align-self-start">
+                                                Aprobada
+                                            </span>
+
+                                        {% elif estado == "Rechazada" %}
+
+                                            <span class="badge text-bg-danger align-self-start">
+                                                Rechazada
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge text-bg-secondary align-self-start">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% endwith %}
+
+                                </div>
+
+
+                                <p class="text-secondary mb-0">
+                                    Vecino:
+                                    <strong class="text-body">
+                                        {{ solicitud.vecino }}
+                                    </strong>
                                 </p>
-
-                                <span class="badge text-bg-secondary">
-                                    {{ solicitud.get_estado_display }}
-                                </span>
 
                             </div>
 
 
                             {% if solicitud.estado == "APROBADA" %}
 
-                                <div>
+                                <div class="flex-shrink-0">
 
                                     <form
                                         method="post"
                                         action="{% url 'certificados:emitir' solicitud.pk %}"
+                                        class="m-0"
                                     >
+
                                         {% csrf_token %}
 
                                         <button
                                             type="submit"
-                                            class="btn btn-primary"
+                                            class="btn btn-primary w-100"
                                         >
                                             Emitir certificado
                                         </button>
@@ -78,10 +139,36 @@
 
                             {% endif %}
 
+
                         </div>
 
+
+                        {% if solicitud.estado == "APROBADA" %}
+
+                            <div class="border-top mt-3 pt-3">
+
+                                <p class="text-secondary small mb-0">
+                                    La solicitud fue aprobada y está lista para emitir el certificado.
+                                </p>
+
+                            </div>
+
+                        {% elif solicitud.estado == "EMITIDA" %}
+
+                            <div class="border-top mt-3 pt-3">
+
+                                <p class="text-secondary small mb-0">
+                                    Certificado emitido correctamente.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+
                     </div>
-                </div>
+
+                </article>
 
             </div>
 
@@ -89,12 +176,29 @@
 
     </div>
 
+
 {% else %}
 
-    <div class="alert alert-info">
-        No existen solicitudes.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                No existen solicitudes
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Las solicitudes de certificados aparecerán aquí
+                cuando sean registradas por los vecinos.
+            </p>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

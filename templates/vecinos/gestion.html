@@ -4,91 +4,275 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
     <div>
-        <h1 class="fw-bold">
+
+        <p class="text-primary fw-semibold mb-2">
+            Administración
+        </p>
+
+        <h1 class="fw-bold mb-2">
             Gestión de vecinos
         </h1>
 
         <p class="text-secondary mb-0">
             Revisa los vecinos registrados y administra su condición de miembro de junta.
         </p>
+
     </div>
 
-    <a
-        href="{% url 'panel' %}"
-        class="btn btn-outline-secondary"
-    >
-        Volver al panel
-    </a>
+    <div class="flex-shrink-0">
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
+
 </div>
 
 
 {% if vecinos %}
 
-    <div class="table-responsive">
 
-        <table class="table table-striped align-middle">
+    <!-- ===================================================== -->
+    <!-- ESCRITORIO / TABLET                                   -->
+    <!-- ===================================================== -->
 
-            <thead>
-                <tr>
-                    <th>Vecino</th>
-                    <th>Identificación</th>
-                    <th>Dirección</th>
-                    <th>Usuario</th>
-                    <th>Miembro de junta</th>
-                    <th class="text-end">Acción</th>
-                </tr>
-            </thead>
+    <div class="d-none d-md-block">
 
-            <tbody>
+        <div class="card border-0 shadow-sm">
 
-                {% for vecino in vecinos %}
+            <div class="table-responsive">
 
-                    <tr>
+                <table class="table table-hover align-middle mb-0">
 
-                        <td>
-                            <strong>
-                                {{ vecino.nombre }} {{ vecino.apellido }}
-                            </strong>
-                        </td>
+                    <thead class="table-light">
 
-                        <td>
-                            {{ vecino.identificacion }}
-                        </td>
+                        <tr>
+                            <th scope="col">
+                                Vecino
+                            </th>
 
-                        <td>
-                            {{ vecino.direccion }}
-                        </td>
+                            <th scope="col">
+                                Identificación
+                            </th>
 
-                        <td>
-                            {{ vecino.usuario.username }}
-                        </td>
+                            <th scope="col">
+                                Dirección
+                            </th>
 
-                        <td>
-                            {% if vecino.miembro_junta %}
+                            <th scope="col">
+                                Usuario
+                            </th>
 
-                                <span class="badge bg-success">
-                                    Sí
-                                </span>
+                            <th scope="col">
+                                Miembro de junta
+                            </th>
 
-                            {% else %}
+                            <th
+                                scope="col"
+                                class="text-end"
+                            >
+                                Acción
+                            </th>
+                        </tr>
 
-                                <span class="badge bg-secondary">
-                                    No
-                                </span>
+                    </thead>
 
-                            {% endif %}
-                        </td>
 
-                        <td class="text-end">
+                    <tbody>
+
+                        {% for vecino in vecinos %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ vecino.nombre }} {{ vecino.apellido }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ vecino.identificacion }}
+                                </td>
+
+
+                                <td>
+                                    {{ vecino.direccion }}
+                                </td>
+
+
+                                <td>
+                                    {{ vecino.usuario.username }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if vecino.miembro_junta %}
+
+                                        <span class="badge text-bg-success">
+                                            Miembro
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge text-bg-secondary">
+                                            No miembro
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td class="text-end">
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'vecinos:actualizar_miembro' vecino.id %}"
+                                        class="d-inline"
+                                    >
+
+                                        {% csrf_token %}
+
+
+                                        {% if vecino.miembro_junta %}
+
+                                            <input
+                                                type="hidden"
+                                                name="miembro_junta"
+                                                value="false"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                            >
+                                                Quitar miembro
+                                            </button>
+
+                                        {% else %}
+
+                                            <input
+                                                type="hidden"
+                                                name="miembro_junta"
+                                                value="true"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-primary"
+                                            >
+                                                Convertir en miembro
+                                            </button>
+
+                                        {% endif %}
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MÓVIL                                                 -->
+    <!-- ===================================================== -->
+
+    <div class="d-md-none">
+
+        <div class="row g-3">
+
+            {% for vecino in vecinos %}
+
+                <div class="col-12">
+
+                    <article class="card border-0 shadow-sm">
+
+                        <div class="card-body">
+
+
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+
+                                <div>
+
+                                    <h2 class="h5 fw-bold mb-1">
+                                        {{ vecino.nombre }} {{ vecino.apellido }}
+                                    </h2>
+
+                                    <p class="text-secondary small mb-0">
+                                        @{{ vecino.usuario.username }}
+                                    </p>
+
+                                </div>
+
+
+                                {% if vecino.miembro_junta %}
+
+                                    <span class="badge text-bg-success">
+                                        Miembro
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge text-bg-secondary">
+                                        No miembro
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <dl class="row mb-4">
+
+                                <dt class="col-12 small text-secondary">
+                                    Identificación
+                                </dt>
+
+                                <dd class="col-12 mb-3">
+                                    {{ vecino.identificacion }}
+                                </dd>
+
+
+                                <dt class="col-12 small text-secondary">
+                                    Dirección
+                                </dt>
+
+                                <dd class="col-12 mb-0">
+                                    {{ vecino.direccion }}
+                                </dd>
+
+                            </dl>
+
 
                             <form
                                 method="post"
                                 action="{% url 'vecinos:actualizar_miembro' vecino.id %}"
-                                class="d-inline"
                             >
+
                                 {% csrf_token %}
+
 
                                 {% if vecino.miembro_junta %}
 
@@ -100,9 +284,9 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-sm btn-outline-danger"
+                                        class="btn btn-outline-danger w-100"
                                     >
-                                        Quitar miembro
+                                        Quitar condición de miembro
                                     </button>
 
                                 {% else %}
@@ -115,7 +299,7 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-sm btn-outline-primary"
+                                        class="btn btn-outline-primary w-100"
                                     >
                                         Convertir en miembro
                                     </button>
@@ -124,24 +308,32 @@
 
                             </form>
 
-                        </td>
 
-                    </tr>
+                        </div>
 
-                {% endfor %}
+                    </article>
 
-            </tbody>
+                </div>
 
-        </table>
+            {% endfor %}
+
+        </div>
 
     </div>
+
 
 {% else %}
 
-    <div class="alert alert-info">
+
+    <div
+        class="alert alert-info"
+        role="status"
+    >
         No hay vecinos registrados.
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

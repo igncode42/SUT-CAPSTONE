@@ -4,16 +4,35 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
     <div>
-        <h1 class="fw-bold">Mis reservas</h1>
+
+        <p class="text-primary fw-semibold mb-2">
+            Reservas de espacios
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Mis reservas
+        </h1>
 
         <p class="text-secondary mb-0">
-            Revisa los espacios que has reservado.
+            Consulta los espacios que has reservado,
+            sus horarios y el estado de cada solicitud.
         </p>
+
     </div>
 
-    <div class="d-flex gap-2">
+
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+
+        <a
+            href="{% url 'reservas:crear' %}"
+            class="btn btn-primary"
+        >
+            Nueva reserva
+        </a>
 
         <a
             href="{% url 'reservas:calendario' %}"
@@ -23,71 +42,213 @@
         </a>
 
         <a
-            href="{% url 'reservas:crear' %}"
-            class="btn btn-primary"
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
         >
-            Nueva reserva
+            Volver al panel
         </a>
 
     </div>
+
 </div>
 
 
 {% if reservas %}
 
-    <div class="table-responsive">
 
-        <table class="table table-striped align-middle">
+    <!-- ===================================================== -->
+    <!-- ESCRITORIO / TABLET                                   -->
+    <!-- ===================================================== -->
 
-            <thead>
-                <tr>
-                    <th>Espacio</th>
-                    <th>Fecha</th>
-                    <th>Horario</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
+    <div class="d-none d-md-block">
 
-            <tbody>
+        <div class="card border-0 shadow-sm">
 
-                {% for reserva in reservas %}
+            <div class="table-responsive">
 
-                    <tr>
+                <table class="table table-hover align-middle mb-0">
 
-                        <td>
-                            {{ reserva.espacio.nombre }}
-                        </td>
+                    <thead class="table-light">
 
-                        <td>
-                            {{ reserva.fecha }}
-                        </td>
+                        <tr>
 
-                        <td>
-                            {{ reserva.hora_inicio }}
-                            -
-                            {{ reserva.hora_fin }}
-                        </td>
+                            <th scope="col">
+                                Espacio
+                            </th>
 
-                        <td>
-                            {{ reserva.get_estado_display }}
-                        </td>
+                            <th scope="col">
+                                Fecha
+                            </th>
 
-                    </tr>
+                            <th scope="col">
+                                Horario
+                            </th>
 
-                {% endfor %}
+                            <th scope="col">
+                                Estado
+                            </th>
 
-            </tbody>
+                        </tr>
 
-        </table>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for reserva in reservas %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ reserva.espacio.nombre }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ reserva.fecha }}
+                                </td>
+
+
+                                <td>
+                                    {{ reserva.hora_inicio }}
+                                    –
+                                    {{ reserva.hora_fin }}
+                                </td>
+
+
+                                <td>
+
+                                    <span class="badge text-bg-secondary">
+                                        {{ reserva.get_estado_display }}
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MÓVIL                                                 -->
+    <!-- ===================================================== -->
+
+    <div class="d-md-none">
+
+        <div class="row g-3">
+
+            {% for reserva in reservas %}
+
+                <div class="col-12">
+
+                    <article class="card border-0 shadow-sm">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+
+                                <h2 class="h5 fw-bold mb-0">
+                                    {{ reserva.espacio.nombre }}
+                                </h2>
+
+                                <span class="badge text-bg-secondary flex-shrink-0">
+                                    {{ reserva.get_estado_display }}
+                                </span>
+
+                            </div>
+
+
+                            <dl class="row mb-0">
+
+                                <dt class="col-12 small text-secondary">
+                                    Fecha
+                                </dt>
+
+                                <dd class="col-12 mb-3">
+                                    {{ reserva.fecha }}
+                                </dd>
+
+
+                                <dt class="col-12 small text-secondary">
+                                    Horario
+                                </dt>
+
+                                <dd class="col-12 mb-0">
+                                    {{ reserva.hora_inicio }}
+                                    –
+                                    {{ reserva.hora_fin }}
+                                </dd>
+
+                            </dl>
+
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
 
 {% else %}
 
-    <div class="alert alert-info">
-        Aún no tienes reservas registradas.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                Aún no tienes reservas
+            </h2>
+
+            <p class="text-secondary mb-4">
+                Consulta la disponibilidad de los espacios comunitarios
+                y registra tu primera reserva.
+            </p>
+
+
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+
+                <a
+                    href="{% url 'reservas:crear' %}"
+                    class="btn btn-primary"
+                >
+                    Crear reserva
+                </a>
+
+                <a
+                    href="{% url 'reservas:calendario' %}"
+                    class="btn btn-outline-primary"
+                >
+                    Ver calendario
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

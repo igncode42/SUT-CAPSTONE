@@ -13,69 +13,127 @@
     >
 </head>
 
-<body class="bg-light">
+<body class="bg-light min-vh-100 d-flex flex-column">
 
-<nav class="navbar navbar-dark bg-dark">
+
+<a
+    href="#contenido-principal"
+    class="visually-hidden-focusable position-absolute top-0 start-0 p-2 bg-white text-dark"
+>
+    Saltar al contenido principal
+</a>
+
+
+<nav
+    class="navbar navbar-expand-md navbar-dark bg-dark"
+    aria-label="Navegación principal"
+>
     <div class="container">
+
 
         <a
             class="navbar-brand fw-bold"
             href="{% url 'home' %}"
+            aria-label="Sistema Unidad Territorial - Inicio"
         >
-            Sistema Unidad Territorial
+
+            <span class="d-none d-sm-inline">
+                Sistema Unidad Territorial
+            </span>
+
+            <span class="d-inline d-sm-none">
+                SUT
+            </span>
+
         </a>
 
-        <div class="d-flex gap-2 align-items-center">
 
-            {% if user.is_authenticated %}
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSut"
+            aria-controls="navbarSut"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <a
-                    class="btn btn-outline-light btn-sm"
-                    href="{% url 'panel' %}"
-                >
-                    Panel
-                </a>
 
-                <span class="text-light small">
-                    {{ user.username }}
-                </span>
+        <div
+            class="collapse navbar-collapse"
+            id="navbarSut"
+        >
 
-                <form
-                    method="post"
-                    action="{% url 'logout' %}"
-                    class="m-0"
-                >
-                    {% csrf_token %}
+            <div
+                class="ms-auto d-flex flex-column flex-md-row gap-2 align-items-md-center pt-3 pt-md-0"
+            >
 
-                    <button
-                        type="submit"
+
+                {% if user.is_authenticated %}
+
+
+                    <a
                         class="btn btn-outline-light btn-sm"
+                        href="{% url 'panel' %}"
                     >
-                        Cerrar sesión
-                    </button>
-                </form>
+                        Panel
+                    </a>
 
-            {% else %}
 
-                <a
-                    class="btn btn-outline-light btn-sm"
-                    href="{% url 'login' %}"
-                >
-                    Iniciar sesión
-                </a>
+                    <span class="text-light small">
+                        {{ user.username }}
+                    </span>
 
-            {% endif %}
 
-            {% if user.is_staff %}
+                    <form
+                        method="post"
+                        action="{% url 'logout' %}"
+                        class="m-0"
+                    >
 
-                <a
-                    class="btn btn-outline-light btn-sm"
-                    href="/admin/"
-                >
-                    Administración
-                </a>
+                        {% csrf_token %}
 
-            {% endif %}
+                        <button
+                            type="submit"
+                            class="btn btn-outline-light btn-sm"
+                        >
+                            Cerrar sesión
+                        </button>
+
+                    </form>
+
+
+                {% else %}
+
+
+                    <a
+                        class="btn btn-outline-light btn-sm"
+                        href="{% url 'login' %}"
+                    >
+                        Iniciar sesión
+                    </a>
+
+
+                {% endif %}
+
+
+                {% if user.is_staff %}
+
+
+                    <a
+                        class="btn btn-outline-light btn-sm"
+                        href="{% url 'admin:index' %}"
+                    >
+                        Administración
+                    </a>
+
+
+                {% endif %}
+
+
+            </div>
 
         </div>
 
@@ -108,7 +166,7 @@
                     type="button"
                     class="btn-close"
                     data-bs-dismiss="alert"
-                    aria-label="Cerrar"
+                    aria-label="Cerrar mensaje"
                 ></button>
 
             </div>
@@ -120,7 +178,10 @@
 {% endif %}
 
 
-<main class="container py-5">
+<main
+    id="contenido-principal"
+    class="container py-4 py-md-5 flex-grow-1"
+>
 
     {% block content %}
     {% endblock %}
@@ -131,6 +192,7 @@
 <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 ></script>
+
 
 </body>
 

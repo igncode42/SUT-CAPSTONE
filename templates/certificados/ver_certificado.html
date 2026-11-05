@@ -1,66 +1,141 @@
 {% extends "base.html" %}
 
-{% block title %}Certificado | SUT{% endblock %}
+{% block title %}Certificado de residencia | SUT{% endblock %}
 
 {% block content %}
 
-<div class="container py-4">
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-4 p-md-5">
+<div class="row justify-content-center">
 
-            <div class="text-center mb-5">
-                <h1 class="fw-bold mb-2">
-                    Certificado de residencia
-                </h1>
+    <div class="col-12 col-lg-10 col-xl-9">
+
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+
+            <div>
+
+                <p class="text-primary fw-semibold mb-1">
+                    Certificados de residencia
+                </p>
 
                 <p class="text-secondary mb-0">
-                    Sistema de Unidad Territorial
+                    Documento emitido por el Sistema Unidad Territorial.
                 </p>
+
             </div>
 
-            <div class="mb-4">
-                <p class="mb-3">
-                    Se certifica que:
-                </p>
 
-                <h3 class="fw-bold">
-                    {{ solicitud.vecino.nombre }}
-                    {{ solicitud.vecino.apellido }}
-                </h3>
-            </div>
-
-            <div class="mb-4">
-                <p class="mb-2">
-                    <strong>Identificación:</strong>
-                    {{ solicitud.vecino.identificacion }}
-                </p>
-
-                <p class="mb-2">
-                    <strong>Dirección:</strong>
-                    {{ solicitud.vecino.direccion }}
-                </p>
-
-                <p class="mb-2">
-                    <strong>Fecha de emisión:</strong>
-                    {{ certificado.fecha_emision }}
-                </p>
-
-                <p class="mb-2">
-                    <strong>N.º de certificado:</strong>
-                    {{ certificado.pk }}
-                </p>
-            </div>
-
-            <hr class="my-4">
-
-            <p class="text-secondary mb-0">
-                Documento emitido por el Sistema de Unidad Territorial.
-            </p>
+            <a
+                href="{% url 'certificados:mis_solicitudes' %}"
+                class="btn btn-outline-secondary align-self-start align-self-sm-auto"
+            >
+                Volver a mis certificados
+            </a>
 
         </div>
+
+
+        <article class="card border-0 shadow-sm">
+
+            <div class="card-body p-4 p-md-5">
+
+
+                <header class="text-center mb-5">
+
+                    <span class="badge text-bg-success mb-3">
+                        Emitido
+                    </span>
+
+                    <h1 class="fw-bold mb-2">
+                        Certificado de residencia
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        Sistema Unidad Territorial
+                    </p>
+
+                </header>
+
+
+                <section class="mb-5">
+
+                    <p class="text-secondary mb-2">
+                        Se certifica que:
+                    </p>
+
+                    <h2 class="h3 fw-bold mb-0">
+                        {{ solicitud.vecino.nombre }}
+                        {{ solicitud.vecino.apellido }}
+                    </h2>
+
+                </section>
+
+
+                <section aria-label="Datos del certificado">
+
+                    <dl class="row mb-0">
+
+
+                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
+                            Identificación
+                        </dt>
+
+                        <dd class="col-12 col-md-8 mb-3">
+                            {{ solicitud.vecino.identificacion }}
+                        </dd>
+
+
+                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
+                            Dirección
+                        </dt>
+
+                        <dd class="col-12 col-md-8 mb-3">
+                            {{ solicitud.vecino.direccion }}
+                        </dd>
+
+
+                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
+                            Fecha de emisión
+                        </dt>
+
+                        <dd class="col-12 col-md-8 mb-3">
+                            {{ certificado.fecha_emision }}
+                        </dd>
+
+
+                        <dt class="col-12 col-md-4 mb-1">
+                            N.º de certificado
+                        </dt>
+
+                        <dd class="col-12 col-md-8 mb-0">
+                            {{ certificado.pk }}
+                        </dd>
+
+
+                    </dl>
+
+                </section>
+
+
+                <hr class="my-5">
+
+
+                <footer>
+
+                    <p class="text-secondary small mb-0">
+                        Este documento fue emitido por el Sistema Unidad Territorial.
+                    </p>
+
+                </footer>
+
+
+            </div>
+
+        </article>
+
     </div>
 
 </div>
 
-{% endblock %}  
+
+{% endblock %}

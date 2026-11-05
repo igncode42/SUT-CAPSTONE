@@ -4,63 +4,215 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
     <div>
-        <h1 class="fw-bold">Mis actividades</h1>
+
+        <p class="text-primary fw-semibold mb-2">
+            Actividades vecinales
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Mis actividades
+        </h1>
 
         <p class="text-secondary mb-0">
-            Revisa las actividades en las que estás inscrito.
+            Consulta las actividades en las que estás inscrito
+            y la fecha en que realizaste cada inscripción.
         </p>
+
     </div>
 
-    <a
-        href="{% url 'actividades:disponibles' %}"
-        class="btn btn-outline-primary"
-    >
-        Ver actividades
-    </a>
+
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+
+        <a
+            href="{% url 'actividades:disponibles' %}"
+            class="btn btn-primary"
+        >
+            Ver actividades
+        </a>
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
+
 </div>
+
 
 {% if inscripciones %}
 
-    <div class="table-responsive">
-        <table class="table table-striped align-middle">
 
-            <thead>
-                <tr>
-                    <th>Actividad</th>
-                    <th>Fecha</th>
-                    <th>Inscripción</th>
-                </tr>
-            </thead>
+    <!-- ===================================================== -->
+    <!-- ESCRITORIO / TABLET                                   -->
+    <!-- ===================================================== -->
 
-            <tbody>
-                {% for inscripcion in inscripciones %}
-                    <tr>
-                        <td>
-                            {{ inscripcion.actividad.nombre }}
-                        </td>
+    <div class="d-none d-md-block">
 
-                        <td>
-                            {{ inscripcion.actividad.fecha }}
-                        </td>
+        <div class="card border-0 shadow-sm">
 
-                        <td>
-                            {{ inscripcion.fecha_inscripcion }}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+            <div class="table-responsive">
 
-        </table>
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th scope="col">
+                                Actividad
+                            </th>
+
+                            <th scope="col">
+                                Fecha
+                            </th>
+
+                            <th scope="col">
+                                Fecha de inscripción
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for inscripcion in inscripciones %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ inscripcion.actividad.nombre }}
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    {{ inscripcion.actividad.fecha }}
+                                </td>
+
+
+                                <td>
+                                    {{ inscripcion.fecha_inscripcion }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
     </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MÓVIL                                                 -->
+    <!-- ===================================================== -->
+
+    <div class="d-md-none">
+
+        <div class="row g-3">
+
+            {% for inscripcion in inscripciones %}
+
+                <div class="col-12">
+
+                    <article class="card border-0 shadow-sm">
+
+                        <div class="card-body p-4">
+
+
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+
+                                <h2 class="h5 fw-bold mb-0">
+                                    {{ inscripcion.actividad.nombre }}
+                                </h2>
+
+                                <span class="badge text-bg-success flex-shrink-0">
+                                    Inscrito
+                                </span>
+
+                            </div>
+
+
+                            <dl class="row mb-0">
+
+                                <dt class="col-12 small text-secondary">
+                                    Fecha de actividad
+                                </dt>
+
+                                <dd class="col-12 mb-3">
+                                    {{ inscripcion.actividad.fecha }}
+                                </dd>
+
+
+                                <dt class="col-12 small text-secondary">
+                                    Fecha de inscripción
+                                </dt>
+
+                                <dd class="col-12 mb-0">
+                                    {{ inscripcion.fecha_inscripcion }}
+                                </dd>
+
+                            </dl>
+
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
 
 {% else %}
 
-    <div class="alert alert-info">
-        Aún no estás inscrito en ninguna actividad.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                Aún no estás inscrito en actividades
+            </h2>
+
+            <p class="text-secondary mb-4">
+                Revisa las actividades disponibles y participa
+                mientras existan cupos.
+            </p>
+
+            <a
+                href="{% url 'actividades:disponibles' %}"
+                class="btn btn-primary"
+            >
+                Explorar actividades
+            </a>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

@@ -5,25 +5,109 @@
 {% block content %}
 
 <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4">
 
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
+    <div class="col-12 col-md-7 col-lg-5 col-xl-4">
 
-                <h1 class="h4 mb-4">
-                    Iniciar sesión
-                </h1>
+        <div class="text-center mb-4">
 
-                {% if form.errors %}
-                    <div class="alert alert-danger">
+            <h1 class="h2 fw-bold mb-2">
+                Iniciar sesión
+            </h1>
+
+            <p class="text-secondary mb-0">
+                Accede a tu cuenta del Sistema Unidad Territorial.
+            </p>
+
+        </div>
+
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4 p-md-5">
+
+
+                {% if form.non_field_errors or form.errors %}
+
+                    <div
+                        class="alert alert-danger"
+                        role="alert"
+                    >
                         Usuario o contraseña incorrectos.
                     </div>
+
                 {% endif %}
 
-                <form method="post">
+
+                <form
+                    method="post"
+                    novalidate
+                >
+
                     {% csrf_token %}
 
-                    {{ form.as_p }}
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ form.username.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            Usuario
+                        </label>
+
+                        {{ form.username }}
+
+                        {% if form.username.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label
+                            for="{{ form.password.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            Contraseña
+                        </label>
+
+                        {{ form.password }}
+
+                        {% if form.password.errors %}
+
+                            <div class="text-danger small mt-1">
+
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if next %}
+
+                        <input
+                            type="hidden"
+                            name="next"
+                            value="{{ next }}"
+                        >
+
+                    {% endif %}
+
 
                     <button
                         type="submit"
@@ -31,27 +115,71 @@
                     >
                         Ingresar
                     </button>
+
                 </form>
 
 
                 <hr class="my-4">
 
 
-                <p class="text-secondary text-center mb-2">
-                    ¿Aún no tienes una cuenta?
-                </p>
+                <div class="text-center">
 
-                <a
-                    href="{% url 'vecinos:registro' %}"
-                    class="btn btn-outline-primary w-100"
-                >
-                    Registrarse como vecino
-                </a>
+                    <p class="text-secondary mb-3">
+                        ¿Aún no tienes una cuenta?
+                    </p>
+
+                    <a
+                        href="{% url 'vecinos:registro' %}"
+                        class="btn btn-outline-primary w-100"
+                    >
+                        Registrarme como vecino
+                    </a>
+
+                </div>
 
             </div>
+
         </div>
 
+
+        <p class="text-center mt-4 mb-0">
+
+            <a
+                href="{% url 'home' %}"
+                class="text-secondary text-decoration-none"
+            >
+                Volver al inicio
+            </a>
+
+        </p>
+
     </div>
+
 </div>
+
+
+<style>
+
+    #id_username,
+    #id_password {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--bs-body-color);
+        background-color: var(--bs-body-bg);
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    #id_username:focus,
+    #id_password:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+</style>
 
 {% endblock %}

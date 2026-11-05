@@ -4,95 +4,199 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
     <div>
-        <h1 class="fw-bold">Actividades disponibles</h1>
+
+        <p class="text-primary fw-semibold mb-2">
+            Actividades vecinales
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Actividades disponibles
+        </h1>
 
         <p class="text-secondary mb-0">
-            Revisa las actividades próximas e inscríbete mientras existan cupos.
+            Revisa las próximas actividades de la comunidad
+            e inscríbete mientras existan cupos disponibles.
         </p>
+
     </div>
 
-    <a
-        href="{% url 'actividades:mis_actividades' %}"
-        class="btn btn-outline-primary"
-    >
-        Mis actividades
-    </a>
+
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+
+        <a
+            href="{% url 'actividades:mis_actividades' %}"
+            class="btn btn-outline-primary"
+        >
+            Mis actividades
+        </a>
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
+
 </div>
+
 
 {% if actividades %}
 
-    <div class="row g-3">
+    <div class="row g-4">
 
         {% for actividad in actividades %}
 
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
+            <div class="col-12 col-md-6">
 
-                        <h5 class="card-title">
-                            {{ actividad.nombre }}
-                        </h5>
+                <article class="card border-0 shadow-sm h-100">
 
-                        <p class="text-secondary">
+                    <div class="card-body p-4 d-flex flex-column">
+
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-2 mb-3">
+
+                            <h2 class="h5 fw-bold mb-0">
+                                {{ actividad.nombre }}
+                            </h2>
+
+
+                            <div class="flex-shrink-0">
+
+                                {% if actividad.id in inscripciones_usuario %}
+
+                                    <span class="badge text-bg-success">
+                                        Inscrito
+                                    </span>
+
+                                {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                    <span class="badge text-bg-secondary">
+                                        Sin cupos
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge text-bg-primary">
+                                        Disponible
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="text-secondary flex-grow-1">
                             {{ actividad.descripcion }}
                         </p>
 
-                        <p class="mb-1">
-                            <strong>Fecha:</strong>
-                            {{ actividad.fecha }}
-                        </p>
 
-                        <p class="mb-3">
-                            <strong>Cupos:</strong>
-                            {{ actividad.cantidad_inscritos }} / {{ actividad.cupo_maximo }}
-                        </p>
+                        <div class="border-top pt-3 mt-auto">
 
-                        {% if actividad.id in inscripciones_usuario %}
+                            <dl class="row mb-4">
 
-                            <span class="badge bg-success">
-                                Ya inscrito
-                            </span>
+                                <dt class="col-5 col-sm-4 text-secondary fw-normal">
+                                    Fecha
+                                </dt>
 
-                        {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+                                <dd class="col-7 col-sm-8 fw-semibold">
+                                    {{ actividad.fecha }}
+                                </dd>
 
-                            <span class="badge bg-secondary">
-                                Sin cupos
-                            </span>
 
-                        {% else %}
+                                <dt class="col-5 col-sm-4 text-secondary fw-normal">
+                                    Inscritos
+                                </dt>
 
-                            <form
-                                method="post"
-                                action="{% url 'actividades:inscribir' actividad.id %}"
-                            >
-                                {% csrf_token %}
+                                <dd class="col-7 col-sm-8 mb-0">
+                                    <strong>
+                                        {{ actividad.cantidad_inscritos }}
+                                    </strong>
+                                    de
+                                    {{ actividad.cupo_maximo }}
+                                </dd>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
+                            </dl>
+
+
+                            {% if actividad.id in inscripciones_usuario %}
+
+                                <p class="text-success fw-semibold mb-0">
+                                    Ya estás inscrito en esta actividad.
+                                </p>
+
+
+                            {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                <p class="text-secondary fw-semibold mb-0">
+                                    La actividad alcanzó su cupo máximo.
+                                </p>
+
+
+                            {% else %}
+
+                                <form
+                                    method="post"
+                                    action="{% url 'actividades:inscribir' actividad.id %}"
+                                    class="m-0"
                                 >
-                                    Inscribirme
-                                </button>
-                            </form>
 
-                        {% endif %}
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary"
+                                    >
+                                        Inscribirme
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </div>
+
 
                     </div>
-                </div>
+
+                </article>
+
             </div>
 
         {% endfor %}
 
     </div>
 
+
 {% else %}
 
-    <div class="alert alert-info">
-        No hay actividades próximas disponibles.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                No hay actividades disponibles
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Las próximas actividades vecinales aparecerán aquí
+                cuando sean publicadas.
+            </p>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}

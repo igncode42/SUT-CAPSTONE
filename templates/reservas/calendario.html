@@ -4,148 +4,297 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
     <div>
-        <h1 class="fw-bold">
+
+        <p class="text-primary fw-semibold mb-2">
+            Reservas de espacios
+        </p>
+
+        <h1 class="fw-bold mb-2">
             Calendario de reservas
         </h1>
 
         <p class="text-secondary mb-0">
-            Consulta la disponibilidad de los espacios comunitarios.
+            Consulta la disponibilidad de los espacios comunitarios
+            y las reservas registradas.
         </p>
+
     </div>
 
-    <a
-        href="{% url 'reservas:crear' %}"
-        class="btn btn-primary"
-    >
-        Nueva reserva
-    </a>
-</div>
 
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+        <a
+            href="{% url 'reservas:crear' %}"
+            class="btn btn-primary"
+        >
+            Nueva reserva
+        </a>
 
-    <a
-        href="?mes={{ mes_anterior }}&anio={{ anio_anterior }}"
-        class="btn btn-outline-secondary"
-    >
-        ← Mes anterior
-    </a>
+        <a
+            href="{% url 'reservas:mis_reservas' %}"
+            class="btn btn-outline-secondary"
+        >
+            Mis reservas
+        </a>
 
-    <h2 class="h4 mb-0">
-        {{ mes_nombre }} {{ anio }}
-    </h2>
-
-    <a
-        href="?mes={{ mes_siguiente }}&anio={{ anio_siguiente }}"
-        class="btn btn-outline-secondary"
-    >
-        Mes siguiente →
-    </a>
+    </div>
 
 </div>
 
 
-<div class="table-responsive">
+<section aria-labelledby="titulo-mes">
 
-    <table class="table table-bordered align-middle">
 
-        <thead class="table-light">
-            <tr>
-                <th>Lunes</th>
-                <th>Martes</th>
-                <th>Miércoles</th>
-                <th>Jueves</th>
-                <th>Viernes</th>
-                <th>Sábado</th>
-                <th>Domingo</th>
-            </tr>
-        </thead>
+    <div class="d-flex justify-content-between align-items-center gap-2 mb-4">
 
-        <tbody>
+        <a
+            href="?mes={{ mes_anterior }}&anio={{ anio_anterior }}"
+            class="btn btn-outline-secondary"
+            aria-label="Ver mes anterior"
+        >
+            ←
+            <span class="d-none d-sm-inline">
+                Mes anterior
+            </span>
+        </a>
 
-            {% for semana in semanas %}
 
-                <tr>
+        <h2
+            id="titulo-mes"
+            class="h3 fw-bold text-center mb-0"
+        >
+            {{ mes_nombre }} {{ anio }}
+        </h2>
 
-                    {% for dia in semana %}
 
-                        {% if dia %}
+        <a
+            href="?mes={{ mes_siguiente }}&anio={{ anio_siguiente }}"
+            class="btn btn-outline-secondary"
+            aria-label="Ver mes siguiente"
+        >
+            <span class="d-none d-sm-inline">
+                Mes siguiente
+            </span>
+            →
+        </a>
 
-                            <td
-                                style="min-width: 150px; height: 150px;"
-                                {% if dia.es_hoy %}
-                                    class="table-primary"
-                                {% endif %}
-                            >
+    </div>
 
-                                <strong>
-                                    {{ dia.numero }}
-                                </strong>
 
-                                {% if dia.reservas %}
+    <!-- ===================================================== -->
+    <!-- ESCRITORIO / TABLET                                   -->
+    <!-- ===================================================== -->
 
-                                    <div class="mt-2">
+    <div class="d-none d-md-block">
 
-                                        {% for reserva in dia.reservas %}
+        <div class="card border-0 shadow-sm overflow-hidden">
 
-                                            <div class="border rounded p-2 mb-2 small">
+            <div class="table-responsive">
+
+                <table class="table table-bordered align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th scope="col">Lunes</th>
+                            <th scope="col">Martes</th>
+                            <th scope="col">Miércoles</th>
+                            <th scope="col">Jueves</th>
+                            <th scope="col">Viernes</th>
+                            <th scope="col">Sábado</th>
+                            <th scope="col">Domingo</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for semana in semanas %}
+
+                            <tr>
+
+                                {% for dia in semana %}
+
+                                    {% if dia %}
+
+                                        <td
+                                            style="min-width: 150px; height: 150px; vertical-align: top;"
+                                            {% if dia.es_hoy %}
+                                                class="table-primary"
+                                            {% endif %}
+                                        >
+
+                                            <div class="d-flex justify-content-between align-items-start">
 
                                                 <strong>
-                                                    {{ reserva.espacio.nombre }}
+                                                    {{ dia.numero }}
                                                 </strong>
 
-                                                <br>
+                                                {% if dia.es_hoy %}
 
-                                                {{ reserva.hora_inicio }}
-                                                -
-                                                {{ reserva.hora_fin }}
+                                                    <span class="badge text-bg-primary">
+                                                        Hoy
+                                                    </span>
+
+                                                {% endif %}
 
                                             </div>
 
-                                        {% endfor %}
+
+                                            {% if dia.reservas %}
+
+                                                <div class="mt-2">
+
+                                                    {% for reserva in dia.reservas %}
+
+                                                        <div class="border rounded p-2 mb-2 small bg-body">
+
+                                                            <strong class="d-block">
+                                                                {{ reserva.espacio.nombre }}
+                                                            </strong>
+
+                                                            <span class="text-secondary">
+                                                                {{ reserva.hora_inicio }}
+                                                                –
+                                                                {{ reserva.hora_fin }}
+                                                            </span>
+
+                                                        </div>
+
+                                                    {% endfor %}
+
+                                                </div>
+
+                                            {% else %}
+
+                                                <p class="text-secondary small mt-2 mb-0">
+                                                    Disponible
+                                                </p>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    {% else %}
+
+                                        <td class="bg-body-tertiary"></td>
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MÓVIL                                                 -->
+    <!-- ===================================================== -->
+
+    <div class="d-md-none">
+
+        <div class="row g-3">
+
+            {% for semana in semanas %}
+
+                {% for dia in semana %}
+
+                    {% if dia %}
+
+                        <div class="col-12">
+
+                            <article
+                                class="card border-0 shadow-sm {% if dia.es_hoy %}border border-primary{% endif %}"
+                            >
+
+                                <div class="card-body">
+
+
+                                    <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+
+                                        <h3 class="h5 fw-bold mb-0">
+                                            {{ dia.numero }} de {{ mes_nombre }}
+                                        </h3>
+
+
+                                        {% if dia.es_hoy %}
+
+                                            <span class="badge text-bg-primary">
+                                                Hoy
+                                            </span>
+
+                                        {% endif %}
 
                                     </div>
 
-                                {% else %}
 
-                                    <p class="text-secondary small mt-2 mb-0">
-                                        Disponible
-                                    </p>
+                                    {% if dia.reservas %}
 
-                                {% endif %}
+                                        <div class="d-grid gap-2">
 
-                            </td>
+                                            {% for reserva in dia.reservas %}
 
-                        {% else %}
+                                                <div class="border rounded p-3">
 
-                            <td class="bg-light"></td>
+                                                    <strong class="d-block mb-1">
+                                                        {{ reserva.espacio.nombre }}
+                                                    </strong>
 
-                        {% endif %}
+                                                    <span class="text-secondary small">
+                                                        {{ reserva.hora_inicio }}
+                                                        –
+                                                        {{ reserva.hora_fin }}
+                                                    </span>
 
-                    {% endfor %}
+                                                </div>
 
-                </tr>
+                                            {% endfor %}
+
+                                        </div>
+
+                                    {% else %}
+
+                                        <p class="text-secondary mb-0">
+                                            Disponible
+                                        </p>
+
+                                    {% endif %}
+
+
+                                </div>
+
+                            </article>
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
 
             {% endfor %}
 
-        </tbody>
+        </div>
 
-    </table>
-
-</div>
+    </div>
 
 
-<div class="mt-4">
+</section>
 
-    <a
-        href="{% url 'reservas:mis_reservas' %}"
-        class="btn btn-outline-secondary"
-    >
-        Volver a mis reservas
-    </a>
-
-</div>
 
 {% endblock %}

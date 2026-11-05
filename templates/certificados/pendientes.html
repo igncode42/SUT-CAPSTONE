@@ -4,15 +4,59 @@
 
 {% block content %}
 
-<h1 class="fw-bold mb-1">
-    Solicitudes pendientes
-</h1>
 
-<p class="text-secondary mb-4">
-    Revisión de solicitudes de certificado.
-</p>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
+    <div>
+
+        <p class="text-primary fw-semibold mb-2">
+            Administración
+        </p>
+
+        <h1 class="fw-bold mb-2">
+            Solicitudes pendientes
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Revisa las solicitudes de certificados de residencia
+            y registra su resolución.
+        </p>
+
+    </div>
+
+
+    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+
+        <a
+            href="{% url 'certificados:gestion' %}"
+            class="btn btn-outline-primary"
+        >
+            Gestión de certificados
+        </a>
+
+        <a
+            href="{% url 'panel' %}"
+            class="btn btn-outline-secondary"
+        >
+            Volver al panel
+        </a>
+
+    </div>
+
+</div>
+
 
 {% if solicitudes %}
+
+
+    <div
+        class="alert alert-info"
+        role="status"
+    >
+        Cada solicitud permanecerá pendiente hasta que sea
+        <strong>aprobada</strong> o <strong>rechazada</strong>.
+    </div>
+
 
     <div class="row g-3">
 
@@ -20,51 +64,93 @@
 
             <div class="col-12">
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
+                <article class="card border-0 shadow-sm">
 
-                        <h2 class="h5">
-                            Solicitud #{{ solicitud.pk }}
-                        </h2>
+                    <div class="card-body p-4">
 
-                        <p class="text-secondary">
-                            Vecino: {{ solicitud.vecino }}
-                        </p>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-3">
 
-                            <form
-                                method="post"
-                                action="{% url 'certificados:resolver' solicitud.pk 'aprobar' %}"
-                            >
-                                {% csrf_token %}
+                            <div>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-success"
-                                >
-                                    Aprobar
-                                </button>
-                            </form>
+                                <h2 class="h5 fw-bold mb-1">
+                                    Solicitud #{{ solicitud.pk }}
+                                </h2>
 
-                            <form
-                                method="post"
-                                action="{% url 'certificados:resolver' solicitud.pk 'rechazar' %}"
-                            >
-                                {% csrf_token %}
+                                <p class="text-secondary mb-0">
+                                    Vecino:
+                                    <strong class="text-body">
+                                        {{ solicitud.vecino }}
+                                    </strong>
+                                </p>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-danger"
-                                >
-                                    Rechazar
-                                </button>
-                            </form>
+                            </div>
+
+
+                            <div class="flex-shrink-0">
+
+                                <span class="badge text-bg-secondary">
+                                    Pendiente
+                                </span>
+
+                            </div>
 
                         </div>
 
+
+                        <div class="border-top pt-3">
+
+                            <p class="text-secondary small mb-3">
+                                Selecciona una resolución para continuar
+                                con el proceso del certificado.
+                            </p>
+
+
+                            <div class="d-grid d-sm-flex gap-2">
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'certificados:resolver' solicitud.pk 'aprobar' %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success w-100"
+                                    >
+                                        Aprobar solicitud
+                                    </button>
+
+                                </form>
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'certificados:resolver' solicitud.pk 'rechazar' %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger w-100"
+                                    >
+                                        Rechazar
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+
                     </div>
-                </div>
+
+                </article>
 
             </div>
 
@@ -72,12 +158,36 @@
 
     </div>
 
+
 {% else %}
 
-    <div class="alert alert-info">
-        No existen solicitudes pendientes.
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4 p-md-5 text-center">
+
+            <h2 class="h4 fw-bold mb-2">
+                No hay solicitudes pendientes
+            </h2>
+
+            <p class="text-secondary mb-3">
+                Las nuevas solicitudes aparecerán aquí
+                cuando requieran revisión.
+            </p>
+
+            <a
+                href="{% url 'certificados:gestion' %}"
+                class="btn btn-outline-primary"
+            >
+                Ver gestión de certificados
+            </a>
+
+        </div>
+
     </div>
 
+
 {% endif %}
+
 
 {% endblock %}
