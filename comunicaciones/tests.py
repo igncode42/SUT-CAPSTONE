@@ -1,3 +1,5 @@
+import html
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -12,7 +14,9 @@ Usuario = get_user_model()
 
 
 class ComunicacionesTests(TestCase):
+
     def setUp(self):
+
         self.usuario = Usuario.objects.create_user(
             username="autor_comunicaciones",
             password="SUT-Comunicaciones-2026!",
@@ -53,19 +57,26 @@ class ComunicacionesTests(TestCase):
             contenido="Contenido de aviso de prueba.",
         )
 
+
     def test_comunicaciones_responde_200(self):
+
         response = self.client.get(
             reverse("comunicaciones:inicio")
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
 
         self.assertTemplateUsed(
             response,
             "comunicaciones/inicio.html",
         )
 
+
     def test_muestra_noticia_y_aviso_publicados(self):
+
         response = self.client.get(
             reverse("comunicaciones:inicio")
         )
@@ -90,7 +101,9 @@ class ComunicacionesTests(TestCase):
             "Contenido de aviso de prueba.",
         )
 
+
     def test_noticias_se_ordenan_mas_recientes_primero(self):
+
         noticia_antigua = Noticia.objects.get(
             titulo="Noticia de prueba"
         )
@@ -119,7 +132,9 @@ class ComunicacionesTests(TestCase):
             noticia_antigua,
         )
 
+
     def test_directiva_puede_publicar_noticia(self):
+
         self.client.login(
             username="directiva_comunicaciones",
             password="SUT-Directiva-2026!",
@@ -133,7 +148,10 @@ class ComunicacionesTests(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         noticia = Noticia.objects.get(
             titulo="Nueva noticia comunitaria"
@@ -149,7 +167,9 @@ class ComunicacionesTests(TestCase):
             "Información para la comunidad.",
         )
 
+
     def test_directiva_puede_publicar_aviso(self):
+
         self.client.login(
             username="directiva_comunicaciones",
             password="SUT-Directiva-2026!",
@@ -163,7 +183,10 @@ class ComunicacionesTests(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         aviso = Aviso.objects.get(
             titulo="Nuevo aviso comunitario"
@@ -179,7 +202,9 @@ class ComunicacionesTests(TestCase):
             "Aviso importante para los vecinos.",
         )
 
+
     def test_vecino_no_puede_publicar_noticia(self):
+
         self.client.login(
             username="vecino_comunicaciones",
             password="SUT-Vecino-2026!",
@@ -193,7 +218,10 @@ class ComunicacionesTests(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.status_code,
+            403,
+        )
 
         self.assertFalse(
             Noticia.objects.filter(
@@ -201,7 +229,9 @@ class ComunicacionesTests(TestCase):
             ).exists()
         )
 
+
     def test_vecino_no_puede_publicar_aviso(self):
+
         self.client.login(
             username="vecino_comunicaciones",
             password="SUT-Vecino-2026!",
@@ -215,7 +245,10 @@ class ComunicacionesTests(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.status_code,
+            403,
+        )
 
         self.assertFalse(
             Aviso.objects.filter(
@@ -223,14 +256,50 @@ class ComunicacionesTests(TestCase):
             ).exists()
         )
 
+
     def test_usuario_no_autenticado_es_redirigido_al_login(self):
+
         response = self.client.get(
             reverse("comunicaciones:publicar_noticia")
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         self.assertIn(
             reverse("login"),
             response.url,
+        )
+
+
+    def test_contenido_html_se_muestra_escapado(self):
+
+        contenido_peligroso = (
+            "<script>alert('SUT-XSS')</script>"
+        )
+
+        Noticia.objects.create(
+            usuario=self.directiva,
+            titulo="Prueba XSS",
+            contenido=contenido_peligroso,
+        )
+
+        response = self.client.get(
+            reverse("comunicaciones:inicio")
+        )
+
+        contenido_respuesta = (
+            response.content.decode()
+        )
+
+        self.assertNotIn(
+            contenido_peligroso,
+            contenido_respuesta,
+        )
+
+        self.assertIn(
+            html.escape(contenido_peligroso),
+            contenido_respuesta,
         )

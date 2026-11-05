@@ -6,6 +6,7 @@ from django.shortcuts import resolve_url
 
 
 def es_vecino(usuario):
+
     if not usuario.is_authenticated:
         return False
 
@@ -13,6 +14,7 @@ def es_vecino(usuario):
 
 
 def es_miembro_junta(usuario):
+
     if not es_vecino(usuario):
         return False
 
@@ -20,6 +22,7 @@ def es_miembro_junta(usuario):
 
 
 def tiene_rol(usuario, *nombres):
+
     if not usuario.is_authenticated:
         return False
 
@@ -37,21 +40,28 @@ def tiene_rol(usuario, *nombres):
 
 
 def permiso_requerido(verificador):
+
     def decorador(view_func):
 
         @wraps(view_func)
         def wrapper(request, *args, **kwargs):
 
             if not request.user.is_authenticated:
+
                 return redirect_to_login(
                     request.get_full_path(),
                     resolve_url("login"),
                 )
 
             if not verificador(request.user):
+
                 raise PermissionDenied
 
-            return view_func(request, *args, **kwargs)
+            return view_func(
+                request,
+                *args,
+                **kwargs,
+            )
 
         return wrapper
 
@@ -59,10 +69,11 @@ def permiso_requerido(verificador):
 
 
 def puede_resolver_proyectos(usuario):
+
     if not usuario.is_authenticated:
         return False
 
-    if usuario.is_superuser or usuario.is_staff:
+    if usuario.is_superuser:
         return True
 
     return tiene_rol(
@@ -73,10 +84,11 @@ def puede_resolver_proyectos(usuario):
 
 
 def puede_gestionar_certificados(usuario):
+
     if not usuario.is_authenticated:
         return False
 
-    if usuario.is_superuser or usuario.is_staff:
+    if usuario.is_superuser:
         return True
 
     return tiene_rol(
@@ -87,10 +99,11 @@ def puede_gestionar_certificados(usuario):
 
 
 def puede_publicar_comunicaciones(usuario):
+
     if not usuario.is_authenticated:
         return False
 
-    if usuario.is_superuser or usuario.is_staff:
+    if usuario.is_superuser:
         return True
 
     return tiene_rol(
@@ -101,10 +114,11 @@ def puede_publicar_comunicaciones(usuario):
 
 
 def puede_gestionar_vecinos(usuario):
+
     if not usuario.is_authenticated:
         return False
 
-    if usuario.is_superuser or usuario.is_staff:
+    if usuario.is_superuser:
         return True
 
     return tiene_rol(

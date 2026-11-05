@@ -1,4 +1,7 @@
-﻿from django.contrib.auth import get_user_model
+﻿from unittest.mock import patch
+
+from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -158,6 +161,13 @@ class NotificacionProyectoTests(TestCase):
             0,
         )
 
+        proyecto.refresh_from_db()
+
+        self.assertEqual(
+            proyecto.estado,
+            ProyectoVecinal.Estado.APROBADO,
+        )
+
 
     def test_no_envia_segundo_email_si_ya_esta_resuelto(self):
 
@@ -200,4 +210,56 @@ class NotificacionProyectoTests(TestCase):
         self.assertEqual(
             proyecto.estado,
             ProyectoVecinal.Estado.APROBADO,
+        )
+
+
+    @patch(
+        "proyectos.views.enviar_resolucion_proyecto",
+        side_effect=Exception("SMTP no disponible"),
+    )
+    def test_fallo_smtp_no_revierte_resolucion(
+        self,
+        mock_enviar_resolucion,
+    ):
+
+        proyecto = self.crear_proyecto()
+
+        self.login_directiva()
+
+        response = self.client.post(
+            reverse(
+                "proyectos:resolver",
+                args=[
+                    proyecto.pk,
+                    "aprobar",
+                ],
+            ),
+            follow=True,
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        proyecto.refresh_from_db()
+
+        self.assertEqual(
+            proyecto.estado,
+            ProyectoVecinal.Estado.APROBADO,
+        )
+
+        mock_enviar_resolucion.assert_called_once()
+
+        mensajes = [
+            str(mensaje)
+            for mensaje in get_messages(response.wsgi_request)
+        ]
+
+        self.assertTrue(
+            any(
+                "Resolución guardada" in mensaje
+                and "notificación por correo no pudo enviarse" in mensaje
+                for mensaje in mensajes
+            )
         )

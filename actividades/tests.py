@@ -1,6 +1,8 @@
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -14,7 +16,9 @@ Usuario = get_user_model()
 
 
 class ActividadTests(TestCase):
+
     def setUp(self):
+
         self.usuario = Usuario.objects.create_user(
             username="vecino_actividad",
             password="SUT-Actividad-2026!",
@@ -40,19 +44,26 @@ class ActividadTests(TestCase):
             password="SUT-Actividad-2026!",
         )
 
+
     def test_actividades_disponibles_responde_200(self):
+
         response = self.client.get(
             reverse("actividades:disponibles")
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
 
         self.assertTemplateUsed(
             response,
             "actividades/disponibles.html",
         )
 
+
     def test_inscripcion_valida_crea_registro(self):
+
         response = self.client.post(
             reverse(
                 "actividades:inscribir",
@@ -60,7 +71,10 @@ class ActividadTests(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         self.assertTrue(
             self.actividad.inscripciones.filter(
@@ -68,7 +82,9 @@ class ActividadTests(TestCase):
             ).exists()
         )
 
+
     def test_inscripcion_duplicada_no_crea_segundo_registro(self):
+
         InscripcionActividad.objects.create(
             vecino=self.vecino,
             actividad=self.actividad,
@@ -81,7 +97,10 @@ class ActividadTests(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         self.assertEqual(
             InscripcionActividad.objects.filter(
@@ -91,7 +110,26 @@ class ActividadTests(TestCase):
             1,
         )
 
+
+    def test_bd_impide_inscripcion_duplicada(self):
+
+        InscripcionActividad.objects.create(
+            vecino=self.vecino,
+            actividad=self.actividad,
+        )
+
+        with self.assertRaises(IntegrityError):
+
+            with transaction.atomic():
+
+                InscripcionActividad.objects.create(
+                    vecino=self.vecino,
+                    actividad=self.actividad,
+                )
+
+
     def test_actividad_sin_cupos_rechaza_inscripcion(self):
+
         self.actividad.cupo_maximo = 1
         self.actividad.save()
 
@@ -120,7 +158,10 @@ class ActividadTests(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         self.assertFalse(
             InscripcionActividad.objects.filter(
@@ -136,8 +177,26 @@ class ActividadTests(TestCase):
             1,
         )
 
+
+    def test_cupo_maximo_cero_es_invalido(self):
+
+        actividad = Actividad(
+            nombre="Actividad inválida",
+            fecha=timezone.now() + timedelta(days=1),
+            cupo_maximo=0,
+        )
+
+        with self.assertRaises(ValidationError):
+            actividad.full_clean()
+
+
     def test_actividad_pasada_rechaza_inscripcion(self):
-        self.actividad.fecha = timezone.now() - timedelta(days=1)
+
+        self.actividad.fecha = (
+            timezone.now()
+            - timedelta(days=1)
+        )
+
         self.actividad.save()
 
         response = self.client.post(
@@ -147,7 +206,10 @@ class ActividadTests(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+        )
 
         self.assertFalse(
             InscripcionActividad.objects.filter(

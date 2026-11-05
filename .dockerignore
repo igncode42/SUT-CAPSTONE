@@ -10,6 +10,8 @@ __pycache__
 .pytest_cache
 .mypy_cache
 .ruff_cache
+.coverage
+htmlcov
 
 .idea
 .vscode
@@ -18,3 +20,15 @@ db.sqlite3
 staticfiles
 
 *.log
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+$Zip

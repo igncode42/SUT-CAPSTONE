@@ -9,7 +9,14 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+RUN useradd \
+    --create-home \
+    --shell /usr/sbin/nologin \
+    sut
+
+COPY --chown=sut:sut . .
+
+USER sut
 
 EXPOSE 8000
 

@@ -1,4 +1,5 @@
 ﻿from django.contrib.auth import get_user_model
+from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.urls import reverse
 
@@ -163,6 +164,25 @@ class ProyectoVecinalTests(TestCase):
             proyecto.estado,
             ProyectoVecinal.Estado.PENDIENTE,
         )
+
+
+    def test_bd_rechaza_estado_invalido(self):
+
+        _, vecino = self.crear_usuario_vecino(
+            "miembro_estado_invalido",
+            True,
+        )
+
+        with self.assertRaises(IntegrityError):
+
+            with transaction.atomic():
+
+                ProyectoVecinal.objects.create(
+                    vecino=vecino,
+                    titulo="Proyecto inválido",
+                    descripcion="Estado fuera del dominio permitido.",
+                    estado="ESTADO_INVENTADO",
+                )
 
 
     def test_mis_proyectos_solo_muestra_propios(self):
