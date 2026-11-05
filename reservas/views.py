@@ -1,13 +1,14 @@
 from calendar import monthcalendar
 from datetime import date
 
+from django.db import transaction
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from usuarios.permisos import es_vecino, permiso_requerido
 
 from .forms import ReservaForm
-from .models import Reserva
+from .models import Espacio, Reserva
 
 
 MESES = (
@@ -29,11 +30,15 @@ MESES = (
 
 @permiso_requerido(es_vecino)
 def mis_reservas(request):
-    reservas = Reserva.objects.filter(
-        vecino=request.user.vecino
-    ).select_related("espacio").order_by(
-        "-fecha",
-        "-hora_inicio",
+    reservas = (
+        Reserva.objects.filter(
+            vecino=request.user.vecino
+        )
+        .select_related("espacio")
+        .order_by(
+            "-fecha",
+            "-hora_inicio",
+        )
     )
 
     return render(
@@ -51,13 +56,58 @@ def crear_reserva(request):
         form = ReservaForm(request.POST)
 
         if form.is_valid():
-            reserva = form.save(commit=False)
+            espacio_form = form.cleaned_data["espacio"]
+            fecha = form.cleaned_data["fecha"]
+            hora_inicio = form.cleaned_data["hora_inicio"]
+            hora_fin = form.cleaned_data["hora_fin"]
 
-            reserva.vecino = request.user.vecino
-            reserva.estado = Reserva.Estado.CONFIRMADA
-            reserva.save()
+            with transaction.atomic():
+                espacio = (
+                    Espacio.objects.select_for_update()
+                    .filter(
+                        pk=espacio_form.pk,
+                        activo=True,
+                    )
+                    .first()
+                )
 
-            return redirect("reservas:mis_reservas")
+                if espacio is None:
+                    form.add_error(
+                        "espacio",
+                        "El espacio seleccionado ya no está disponible.",
+                    )
+
+                else:
+                    existe_solapamiento = (
+                        Reserva.objects.filter(
+                            espacio=espacio,
+                            fecha=fecha,
+                            hora_inicio__lt=hora_fin,
+                            hora_fin__gt=hora_inicio,
+                        )
+                        .exclude(
+                            estado=Reserva.Estado.CANCELADA,
+                        )
+                        .exists()
+                    )
+
+                    if existe_solapamiento:
+                        form.add_error(
+                            None,
+                            "El espacio ya está reservado durante parte de ese horario.",
+                        )
+
+                    else:
+                        reserva = form.save(commit=False)
+
+                        reserva.vecino = request.user.vecino
+                        reserva.espacio = espacio
+                        reserva.estado = Reserva.Estado.CONFIRMADA
+                        reserva.save()
+
+                        return redirect(
+                            "reservas:mis_reservas"
+                        )
 
     else:
         form = ReservaForm()
@@ -76,13 +126,30 @@ def calendario(request):
     hoy = timezone.localdate()
 
     try:
-        anio = int(request.GET.get("anio", hoy.year))
-        mes = int(request.GET.get("mes", hoy.month))
-    except (TypeError, ValueError):
-        anio = hoy.year
-        mes = hoy.month
+        anio = int(
+            request.GET.get(
+                "anio",
+                hoy.year,
+            )
+        )
 
-    if mes < 1 or mes > 12:
+        mes = int(
+            request.GET.get(
+                "mes",
+                hoy.month,
+            )
+        )
+
+        if mes < 1 or mes > 12:
+            raise ValueError
+
+        date(
+            anio,
+            mes,
+            1,
+        )
+
+    except (TypeError, ValueError, OverflowError):
         anio = hoy.year
         mes = hoy.month
 
@@ -111,7 +178,10 @@ def calendario(request):
 
     semanas = []
 
-    for semana in monthcalendar(anio, mes):
+    for semana in monthcalendar(
+        anio,
+        mes,
+    ):
         dias = []
 
         for numero_dia in semana:
@@ -142,6 +212,7 @@ def calendario(request):
     if mes == 1:
         mes_anterior = 12
         anio_anterior = anio - 1
+
     else:
         mes_anterior = mes - 1
         anio_anterior = anio
@@ -149,6 +220,7 @@ def calendario(request):
     if mes == 12:
         mes_siguiente = 1
         anio_siguiente = anio + 1
+
     else:
         mes_siguiente = mes + 1
         anio_siguiente = anio
