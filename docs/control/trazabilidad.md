@@ -2,120 +2,128 @@
 
 ## 1. Objetivo
 
-Relacionar las necesidades y reglas del Sistema Unidad Territorial (SUT) con su implementación real, estado actual y evidencia técnica.
+Relacionar los requisitos principales del Sistema Unidad Territorial (SUT) con su implementación, pruebas y respaldo técnico para la Entrega 2.2.
 
-Esta matriz distingue entre:
+La trazabilidad distingue entre:
 
-- **Implementado y probado:** existe un flujo funcional y cuenta con pruebas automatizadas.
-- **Implementado parcialmente:** existe parte de la solución, pero el flujo completo todavía no está disponible.
-- **Diseñado / pendiente:** existe definición o diseño, pero aún no existe implementación funcional suficiente.
+`Diseñado ≠ Implementado ≠ Probado ≠ Demostrado`
 
-Un diagrama o modelo representa diseño; por sí solo no demuestra que una funcionalidad esté implementada.
-
----
+Un diseño o diagrama describe una solución, pero no acredita por sí solo su funcionamiento.
 
 ## 2. Trazabilidad funcional
 
-| Necesidad / regla | Requisito | Implementación actual | Estado | Evidencia técnica |
-|---|---|---|---|---|
-| Gestionar vecinos | RF-01 | Modelo `Vecino`, relación con `Usuario`, migración, tabla PostgreSQL y administración Django | **Implementado parcialmente:** base de datos y perfil disponibles; registro/autogestión para usuario final pendiente | `vecinos/models.py`; `vecinos/admin.py`; `docs/diagramas/02-modelo-datos-sut.*` |
-| Solicitar y emitir certificados | RF-03 / RF-04 | `SolicitudCertificado` y `Certificado`; solicitud por vecino autenticado; seguimiento; revisión; aprobación/rechazo; emisión lógica | **Implementado y probado:** flujo principal funcional. Generación de PDF/archivo descargable pendiente | `certificados/models.py`; `certificados/views.py`; `certificados/tests.py`; `certificados/test_gestion.py`; `templates/certificados/` |
-| Sólo miembros postulan proyectos | RN-01 / RF-05 | Permiso de miembro de junta aplicado en servidor; creación asociada automáticamente al vecino autenticado | **Implementado y probado** | `usuarios/permisos.py`; `proyectos/forms.py`; `proyectos/views.py`; `proyectos/tests.py` |
-| Directiva aprueba o rechaza proyectos | RN-02 / RF-06 | Acceso restringido a personal autorizado; listado de pendientes; aprobación/rechazo; protección contra doble resolución | **Implementado y probado** | `usuarios/permisos.py`; `proyectos/views.py`; `proyectos/test_revision.py`; `templates/proyectos/pendientes.html` |
-| Notificar resolución de proyectos | Propuesta APT | Servicio de correo Django ejecutado al aprobar o rechazar proyectos | **Implementado y probado en entorno de desarrollo:** integración SMTP externa pendiente | `proyectos/notificaciones.py`; `proyectos/test_notificaciones.py`; `config/settings.py` |
-| Reservar espacios comunitarios | RN-04 / RF-09 | Modelos `Espacio` y `Reserva`, migraciones, persistencia y administración | **Implementado parcialmente:** calendario, flujo para usuario final y validación funcional de disponibilidad pendientes | `reservas/models.py`; `reservas/admin.py`; `docs/diagramas/04-proceso-reserva-espacio.*` |
-| Inscripción depende de cupos | RN-05 / RF-11 | Modelos `Actividad` e `InscripcionActividad`; estructura de datos y proceso diseñados | **Implementado parcialmente:** flujo de inscripción y control funcional de cupos pendientes | `actividades/models.py`; `docs/diagramas/05-proceso-actividad-cupos.*` |
-| Publicar noticias y avisos | RF-13 | Modelos `Noticia` y `Aviso`, migraciones y administración | **Implementado parcialmente:** gestión de datos disponible; publicación para usuarios finales pendiente | `comunicaciones/models.py`; `comunicaciones/admin.py` |
-| Notificar por WhatsApp | Propuesta APT | Integración considerada dentro del alcance del proyecto | **Pendiente** | No existe integración funcional actual |
-
----
-
-## 3. Trazabilidad de seguridad y acceso
-
-| Necesidad / regla | Requisito | Implementación actual | Estado | Evidencia técnica |
-|---|---|---|---|---|
-| Proteger acceso administrativo | RS-01 | Autenticación Django y protección del panel administrativo | **Implementado y probado** | `usuarios/tests.py`; `config/urls.py` |
-| Proteger áreas privadas | RS-01 | Login obligatorio para paneles y vistas protegidas | **Implementado y probado** | `usuarios/views.py`; `usuarios/tests.py` |
-| Controlar permisos según usuario y rol | RN-01 / RN-02 | Funciones y decoradores centralizados de autorización | **Implementado y probado** | `usuarios/permisos.py`; `usuarios/test_permisos.py` |
-| Evitar acceso a información ajena | Regla de seguridad | Consultas filtradas por el vecino autenticado | **Implementado y probado** en Proyectos y Certificados | `proyectos/views.py`; `certificados/views.py`; pruebas automatizadas |
-| Proteger secretos de configuración | RS-05 | Variables de entorno; `.env` excluido del repositorio y de la imagen Docker | **Implementado** | `.gitignore`; `.dockerignore`; `.env.example`; `config/settings.py` |
-| Proteger operaciones que modifican estado | Regla de seguridad | Operaciones sensibles mediante POST y validación del estado previo | **Implementado y probado** | `proyectos/views.py`; `certificados/views.py`; pruebas automatizadas |
-
----
-
-## 4. Trazabilidad técnica solicitada durante Capstone
-
-| Elemento | Implementación actual | Estado | Evidencia |
+| Requisito | Resultado implementado | Estado | Respaldo |
 |---|---|---|---|
-| Arquitectura del sistema | Monolito modular Django conectado mediante ORM a PostgreSQL | **Implementada y documentada con Docker Compose** | `config/`; aplicaciones Django; `docs/diagramas/01-arquitectura-sut.*` |
-| Modelo de datos | Modelos Django, migraciones y tablas PostgreSQL | **Implementado** | `models.py`; `migrations/`; `docs/diagramas/02-modelo-datos-sut.*` |
-| Diagramas UML/BPM mínimos | Procesos de Proyectos, Reservas y Actividades documentados | **Disponibles** | `docs/diagramas/03-*`; `04-*`; `05-*` |
-| Dockerización | Django y PostgreSQL ejecutados mediante Docker Compose | **Implementado y verificado** | `Dockerfile`; `compose.yml`; `.dockerignore` |
-| Requisitos no funcionales | Seguridad, mantenibilidad, reproducibilidad, integridad, trazabilidad y disponibilidad de demostración | **Documentados según estado verificable** | `docs/especificaciones/especificaciones-tecnicas.md` |
-| Pruebas automatizadas | Suite Django para autenticación, autorización, proyectos y certificados | **Implementado y verificado: 41/41** | `docs/pruebas/pruebas.md`; archivos de tests |
-| Plan formal de pruebas | Plantilla entregada por el docente | **Completado para la Entrega 2.1; sujeto a actualización durante la Entrega 2.2** | `docs/pruebas/Plan_de_Pruebas_SUT_v0.1.xlsx` |
-| Control de versiones | Desarrollo versionado mediante Git/GitHub | **Implementado** | historial Git y repositorio |
-| Gestión del trabajo | Scrum apoyado mediante Jira | **Implementado y sincronizado hasta la Entrega 2.1; el nuevo avance se gestionará durante la Evaluación 3 / Entrega 2.2** | tablero Jira |
+| RF-01 — Gestión de vecinos | Registro, perfil de vecino, gestión interna y control de membresía | **Implementado y probado** | `vecinos/`; `usuarios/permisos.py`; tests de Vecinos y Usuarios |
+| RF-02 — Proyectos vecinales | Miembros pueden postular; Directiva/personal autorizado puede aprobar o rechazar | **Implementado y probado** | `proyectos/`; tests de Proyectos |
+| RF-03 — Resolución por correo | La resolución se notifica al postulante y una falla SMTP no revierte la decisión | **Implementado, probado y demostrado** | `proyectos/notificaciones.py`; tests; recorrido SMTP controlado |
+| RF-04 — Certificados de residencia | Solicitud, revisión, aprobación/rechazo y emisión | **Implementado y probado** | `certificados/`; tests de Certificados |
+| RF-05 — Reservas de espacios | Reserva, calendario, validación temporal y detección de solapamientos | **Implementado y probado** | `reservas/`; tests de Reservas |
+| RF-06 — Actividades y cupos | Consulta, inscripción, prevención de duplicados y control de capacidad | **Implementado y probado** | `actividades/`; tests de Actividades |
+| RF-07 — Noticias y avisos | Publicación autorizada y consulta de comunicaciones | **Implementado y probado** | `comunicaciones/`; tests de Comunicaciones |
+| RF-08 — Autenticación y autorización | Login, roles, permisos y aislamiento de información | **Implementado y probado** | `usuarios/`; `usuarios/permisos.py`; tests de Usuarios |
+| APT — Interfaz web responsiva | Interfaz basada en Django Templates y Bootstrap | **Implementado y revisado** | `templates/`; revisión funcional responsive |
+| APT — Persistencia de datos | Datos almacenados mediante Django ORM y PostgreSQL | **Implementado y probado** | modelos, migraciones y PostgreSQL |
 
----
+## 3. Reglas e integridad
 
-## 5. Cobertura actual
+| Regla | Resultado implementado | Estado | Respaldo |
+|---|---|---|---|
+| Sólo miembros pueden postular proyectos | Permiso validado en servidor | **Probado** | `usuarios/permisos.py`; tests de Proyectos |
+| Sólo perfiles autorizados resuelven proyectos y certificados | Autorización centralizada | **Probado** | `usuarios/permisos.py`; tests negativos |
+| Un proyecto no puede resolverse dos veces | Estado validado y operación protegida mediante transacción | **Probado** | `proyectos/views.py`; tests |
+| Un vecino no puede mantener múltiples solicitudes activas de certificado | Restricción de base de datos y validación de flujo | **Probado** | modelos/migraciones de Certificados |
+| Un certificado no puede emitirse dos veces | Estado y flujo de emisión controlados | **Probado** | `certificados/views.py`; tests |
+| Los certificados conservan los datos utilizados en su emisión | Snapshot de identidad y dirección | **Probado** | `certificados/models.py`; tests |
+| Una reserva debe tener inicio anterior al término | Validación y `CheckConstraint` PostgreSQL | **Probado** | `reservas/models.py`; tests |
+| No deben existir reservas superpuestas durante el flujo normal | Validación de solapamientos y revalidación bajo bloqueo del espacio | **Probado funcionalmente** | `reservas/forms.py`; `reservas/views.py`; tests |
+| Las inscripciones dependen del cupo disponible | Control bajo transacción y bloqueo de actividad | **Probado funcionalmente** | `actividades/views.py`; tests |
+| No se permiten inscripciones duplicadas | Restricción única vecino/actividad | **Probado** | `actividades/models.py`; tests |
 
-Los flujos con mayor nivel de madurez actualmente son:
+## 4. Seguridad y acceso
 
-### Autenticación y autorización
+| Requisito | Resultado | Estado / respaldo |
+|---|---|---|
+| Autenticación | Login y logout mediante Django | **Implementado y probado** |
+| Autorización | Permisos centralizados por rol y perfil | **Implementado y probado** |
+| Aislamiento de datos | Usuarios acceden únicamente a la información que les corresponde | **Implementado y probado** |
+| Protección CSRF | Middleware y formularios Django | **Implementado** |
+| Secretos fuera del repositorio | Configuración mediante variables de entorno | **Verificado** |
+| Integridad de estados | Constraints PostgreSQL en operaciones críticas | **Implementado y probado** |
+| Contenedor sin privilegios root | Proceso web ejecutado por usuario `sut` | **Verificado** |
+| Contenido de comunicaciones | Escape automático de Django Templates | **Probado** |
 
-`Usuario → Login → Panel → Permiso → Recurso`
+Auditorías complementarias realizadas durante el hardening:
 
-Estado:
+```text
+Gitleaks       → sin filtraciones detectadas
+pip-audit      → sin vulnerabilidades conocidas detectadas
+check --deploy → sin observaciones bajo perfil de producción simulado
+```
 
-**Implementado y probado.**
+## 5. Trazabilidad técnica de Capstone
 
-### Proyectos vecinales
+| Elemento solicitado | Estado actual | Respaldo |
+|---|---|---|
+| Arquitectura | **Implementada y documentada** | `docs/diagramas/01-arquitectura-sut.svg`; `config/`; Docker |
+| Modelo de datos | **Implementado** | modelos Django, 15 migraciones y PostgreSQL |
+| Procesos principales | **Documentados** | diagramas de Proyectos, Reservas y Actividades |
+| Dockerización | **Implementada y verificada** | `Dockerfile`; `compose.yml`; `.dockerignore` |
+| Requisitos funcionales y no funcionales | **Documentados** | `docs/especificaciones/especificaciones-tecnicas.md` |
+| Pruebas automatizadas | **97/97 aprobadas** | archivos de tests; `docs/pruebas/` |
+| Plan formal de pruebas | v0.1 histórico; v0.2 pendiente de cierre | `docs/pruebas/` |
+| Control de versiones | **Implementado** | Git / GitHub |
+| Gestión del trabajo | Scrum mediante Jira | tablero Jira; sincronización final 2.2 pendiente |
+| Evidencias | Histórico disponible; evidencia final 2.2 pendiente de consolidación | `docs/evidencias/` |
+| Documentación de cierre | 2.1 histórica; cierre 2.2 pendiente | `docs/cierre/` |
 
-`Miembro de junta → Postular → Pendiente → Directiva → Aprobar/Rechazar → Notificación`
+## 6. Estado de pruebas
 
-Estado:
+Suite automática actual:
 
-**Implementado y probado.**
+```text
+Usuarios          16
+Vecinos           13
+Proyectos         19
+Certificados      20
+Reservas          13
+Actividades        7
+Comunicaciones     9
+────────────────────
+Total             97
+```
 
-### Certificados
+Último resultado verificado:
 
-`Vecino → Solicitar → Pendiente → Directiva → Aprobar/Rechazar → Emitir`
+```text
+97 pruebas ejecutadas
+97 aprobadas
+0 fallidas
+```
 
-Estado:
+También se ejecutaron recorridos End to End manuales de:
 
-**Implementado y probado.**
+- postulación, resolución y notificación de Proyecto;
+- solicitud, aprobación y emisión de Certificado.
 
----
+No se dispone actualmente de pruebas End to End automatizadas mediante navegador.
 
-## 6. Funcionalidades todavía parciales o pendientes
+## 7. Límites actuales
 
-Actualmente permanecen pendientes o parcialmente implementadas:
+No se presentan como implementadas:
 
-- registro/autogestión de vecinos desde interfaz de usuario;
-- calendario y flujo de reservas;
-- validación de disponibilidad de espacios;
-- actividades e inscripciones;
-- control funcional de cupos;
-- publicación de noticias y avisos para usuarios finales;
-- certificado descargable en formato documental/PDF;
-- SMTP externo;
-- integración WhatsApp;
-- pruebas End to End mediante navegador.
+- integración con WhatsApp;
+- certificado descargable en PDF;
+- pruebas End to End automatizadas con navegador;
+- despliegue productivo externo;
+- pruebas formales de carga o rendimiento.
 
-Estas funcionalidades no deben presentarse como terminadas hasta contar con implementación y evidencia verificable.
+Estas capacidades no son necesarias para acreditar las funcionalidades actualmente implementadas y quedan fuera de la demostración técnica actual.
 
----
+## 8. Regla de trazabilidad
 
-## 7. Regla de trazabilidad del proyecto
-
-Para considerar una funcionalidad completamente respaldada se busca mantener la siguiente cadena:
+La cadena utilizada durante el proyecto es:
 
 `Requisito → Jira → Implementación → Prueba → Commit → Evidencia → Documentación`
 
-Por esta razón se distingue siempre entre:
-
-`Diseñado ≠ Implementado ≠ Probado ≠ Evidenciado`
-
-La matriz deberá actualizarse conforme se incorporen nuevos incrementos al sistema.
+Para la Entrega 2.2, Jira, evidencias y documentación se sincronizan con el estado técnico final antes de preparar la presentación y demostración.

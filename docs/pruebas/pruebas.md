@@ -2,256 +2,280 @@
 
 ## 1. Objetivo
 
-Verificar que las funcionalidades actualmente implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, restricciones de acceso y comportamiento esperado.
+Verificar que las funcionalidades implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, restricciones de acceso e integridad esperada.
 
-Las pruebas buscan comprobar no sólo los casos exitosos, sino también situaciones inválidas o no autorizadas.
+La estrategia considera tanto operaciones válidas como intentos inválidos, accesos no autorizados y situaciones de borde.
 
----
+## 2. Estrategia
 
-## 2. Estrategia de pruebas
+El proyecto utiliza principalmente las herramientas de testing incluidas en Django:
 
-El proyecto utiliza principalmente el framework de testing integrado de Django.
-
-La estrategia actual prioriza pruebas funcionales y de integración sobre los módulos que ya poseen flujos de usuario implementados.
-
-Se consideran principalmente:
-
-- autenticación;
-- autorización;
-- permisos por rol;
-- reglas de negocio;
-- aislamiento de información entre usuarios;
-- transiciones de estado;
-- operaciones inválidas;
-- duplicación de acciones;
-- integración entre vistas, modelos y PostgreSQL;
-- generación de notificaciones por correo.
-
-Las pruebas End to End (E2E) mediante navegador completo no forman parte todavía de la suite automatizada actual.
-
-Estas se incorporarán posteriormente sobre los flujos principales cuando corresponda.
-
----
-
-## 3. Herramientas utilizadas
-
-Actualmente se utilizan:
-
-- Django TestCase;
+- `TestCase`;
 - Django Test Client;
-- PostgreSQL como motor de base de datos del proyecto;
-- backend de correo en memoria para pruebas de notificaciones;
-- Docker Compose para comprobar el funcionamiento del sistema en un entorno reproducible;
-- Git y GitHub para mantener trazabilidad de los cambios.
+- PostgreSQL como base de datos del sistema;
+- backend de correo en memoria para pruebas automatizadas;
+- Docker Compose para ejecutar la suite en un entorno reproducible.
 
----
+Las pruebas cubren principalmente:
 
-## 3.1 Niveles de prueba y estado
+- autenticación y autorización;
+- permisos por rol;
+- aislamiento de datos;
+- validaciones;
+- reglas de negocio;
+- transiciones de estado;
+- operaciones duplicadas;
+- restricciones de base de datos;
+- integración entre vistas, modelos y PostgreSQL;
+- comportamiento ante fallos controlados.
 
-| Nivel | Estado actual |
+## 3. Niveles de prueba
+
+| Nivel | Estado |
 |---|---|
-| Unitarias aisladas | No se mantienen como suite separada; las reglas se verifican principalmente mediante `TestCase` |
-| Integración | Implementadas sobre vistas, modelos, base de datos y correo de testing |
-| Funcionales | Implementadas y registradas en el Plan de Pruebas |
-| Aceptación / UAT | Pendiente de ejecución formal |
-| End to End | Casos definidos; ejecución automatizada mediante navegador pendiente |
+| Unitarias aisladas | No existe una suite separada; las reglas se validan principalmente mediante `TestCase` |
+| Integración | Implementada sobre vistas, modelos, base de datos y correo |
+| Funcionales | Implementadas |
+| End to End manual | Ejecutados los flujos críticos de Proyectos y Certificados |
+| End to End automatizado con navegador | No implementado |
+| Carga / rendimiento | No ejecutado formalmente |
 
-Esta clasificación documenta el estado real del proyecto y no presenta como ejecutados niveles que todavía están pendientes.
+No se presentan como ejecutados niveles de prueba que no cuentan con evidencia verificable.
 
----
+## 4. Suite automatizada
 
-## 4. Cobertura automatizada actual
+La suite actual contiene:
 
-La suite automatizada contiene actualmente:
+| Aplicación | Pruebas |
+|---|---:|
+| Usuarios | 16 |
+| Vecinos | 13 |
+| Proyectos | 19 |
+| Certificados | 20 |
+| Reservas | 13 |
+| Actividades | 7 |
+| Comunicaciones | 9 |
+| **Total** | **97** |
 
-**41 pruebas.**
+Último resultado verificado:
 
-Estas se distribuyen en los siguientes dominios.
-
-### 4.1 Autenticación y autorización — 11 pruebas
-
-Las pruebas de autenticación y permisos verifican principalmente:
-
-- acceso público a la página principal;
-- protección del panel administrativo;
-- visualización de la página de login;
-- protección del panel privado para usuarios no autenticados;
-- acceso correcto de usuarios autenticados;
-- redirección después de iniciar sesión;
-- cierre de sesión;
-- protección de zonas restringidas;
-- acceso permitido para miembros de junta;
-- rechazo de usuarios sin autorización;
-- verificación de roles mediante permisos centralizados.
-
-El objetivo es comprobar que autenticación y autorización se encuentren separadas correctamente.
-
-Un usuario puede estar autenticado y, aun así, no tener permiso para ejecutar determinadas acciones.
-
----
-
-### 4.2 Proyectos vecinales — 17 pruebas
-
-Las pruebas del módulo de proyectos verifican el flujo:
-
-`Miembro de junta → Postular → Pendiente → Revisar → Aprobar/Rechazar → Notificar`
-
-Se comprueba:
-
-- bloqueo de usuarios anónimos;
-- bloqueo de usuarios sin permisos;
-- postulación por miembros de junta;
-- asociación automática del proyecto con el vecino autenticado;
-- estado inicial `PENDIENTE`;
-- protección frente a modificación manual del propietario o estado;
-- visualización exclusiva de proyectos propios;
-- acceso de Directiva a proyectos pendientes;
-- aprobación de proyectos;
-- rechazo de proyectos;
-- prohibición de resolver proyectos por parte de vecinos sin autorización;
-- protección contra doble resolución;
-- generación de correo al aprobar;
-- generación de correo al rechazar;
-- destinatario correcto de la notificación;
-- funcionamiento cuando el usuario no posee correo registrado;
-- prevención de una segunda notificación cuando el proyecto ya fue resuelto.
-
----
-
-### 4.3 Certificados — 13 pruebas
-
-Las pruebas del módulo de certificados verifican el flujo:
-
-`Vecino → Solicitar → Pendiente → Revisar → Aprobar/Rechazar → Emitir`
-
-Se comprueba:
-
-- bloqueo de usuarios anónimos;
-- bloqueo de usuarios sin perfil de vecino;
-- creación válida de una solicitud;
-- estado inicial `PENDIENTE`;
-- creación de solicitudes únicamente mediante petición POST;
-- visualización exclusiva de solicitudes propias;
-- acceso de Directiva a solicitudes pendientes;
-- aprobación de solicitudes;
-- rechazo de solicitudes;
-- prohibición de emitir solicitudes rechazadas;
-- emisión de solicitudes aprobadas;
-- cambio de estado a `EMITIDA`;
-- protección contra emisión duplicada.
-
----
-
-## 5. Casos positivos y negativos
-
-La estrategia de pruebas considera tanto comportamiento esperado como comportamiento prohibido.
-
-Ejemplos de casos positivos:
-
-- un miembro de junta puede postular un proyecto;
-- una Directiva puede aprobar una postulación;
-- un vecino puede solicitar un certificado;
-- una solicitud aprobada puede ser emitida.
-
-Ejemplos de casos negativos:
-
-- un usuario anónimo no puede ingresar a zonas privadas;
-- un vecino sin autorización no puede resolver proyectos;
-- un usuario no puede visualizar información perteneciente a otro vecino;
-- un proyecto resuelto no puede resolverse nuevamente;
-- una solicitud rechazada no puede emitir un certificado;
-- un certificado no puede ser emitido dos veces.
-
-Los casos negativos permiten verificar que las reglas de negocio también se cumplen cuando un usuario intenta realizar una acción inválida.
-
----
-
-## 6. Ejecución local disponible
-
-Con el entorno virtual del proyecto activo:
-
-```bash
-python manage.py test --verbosity 1
+```text
+Found 97 test(s).
+Ran 97 tests
+OK
 ```
 
-Este comando permite ejecutar la misma suite desde el entorno virtual local. El checkpoint de esta entrega se verificó en Docker.
+La ejecución completa se realizó dentro del contenedor Django.
 
----
+## 5. Cobertura principal
 
-## 7. Ejecución mediante Docker
+### Usuarios y permisos
 
-La suite también fue ejecutada dentro del contenedor Django del proyecto.
+Se verifican:
 
-Comando:
+- acceso público y privado;
+- login y logout;
+- protección de vistas;
+- permisos por rol;
+- diferencia entre autenticación y autorización;
+- rechazo de usuarios `staff` sin rol funcional;
+- acceso de Directiva, personal autorizado y superusuario.
+
+### Vecinos
+
+Se verifican:
+
+- registro;
+- creación de usuario y perfil;
+- validaciones;
+- gestión de vecinos;
+- control de membresía;
+- prevención de autoasignación de privilegios;
+- restricciones de acceso.
+
+### Proyectos
+
+Flujo:
+
+`Miembro → Postulación → Pendiente → Revisión → Aprobación/Rechazo → Notificación`
+
+Se verifican:
+
+- permisos de postulación;
+- asociación automática con el vecino;
+- estado inicial;
+- aislamiento de proyectos;
+- aprobación y rechazo;
+- protección contra doble resolución;
+- estados válidos en PostgreSQL;
+- envío de correo;
+- ausencia de duplicación;
+- comportamiento ante fallo SMTP.
+
+El fallo SMTP se simula expresamente para comprobar que una caída del servicio externo no revierta una resolución ya guardada.
+
+### Certificados
+
+Flujo:
+
+`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
+
+Se verifican:
+
+- creación válida;
+- aislamiento de solicitudes;
+- autorización;
+- una única solicitud activa;
+- aprobación y rechazo;
+- prevención de doble resolución;
+- emisión;
+- prevención de doble emisión;
+- estados válidos en PostgreSQL;
+- conservación histórica de los datos utilizados al emitir el certificado.
+
+### Reservas
+
+Se verifican:
+
+- creación válida;
+- rechazo de fechas pasadas;
+- hora de inicio anterior a la hora de término;
+- restricción equivalente en PostgreSQL;
+- estados válidos;
+- detección de solapamientos;
+- aceptación de horarios contiguos;
+- bloqueo de espacios inactivos;
+- aislamiento de reservas;
+- calendario mensual;
+- exclusión de reservas canceladas;
+- manejo de parámetros de calendario inválidos.
+
+La creación utiliza transacción, bloqueo del espacio y revalidación de su estado y de posibles solapamientos antes de guardar.
+
+No se ha ejecutado una prueba multihilo específica de concurrencia.
+
+### Actividades
+
+Se verifican:
+
+- inscripción válida;
+- rechazo de duplicados;
+- restricción única en base de datos;
+- control de cupos;
+- rechazo de actividades pasadas;
+- validación de cupo mínimo.
+
+La inscripción utiliza transacción y bloqueo de la actividad durante las comprobaciones de vigencia, duplicación y capacidad.
+
+### Comunicaciones
+
+Se verifican:
+
+- publicación de noticias;
+- publicación de avisos;
+- permisos de publicación;
+- acceso público;
+- asociación del autor desde servidor;
+- escape de contenido potencialmente peligroso.
+
+## 6. Casos positivos y negativos
+
+La suite combina escenarios permitidos y prohibidos.
+
+Ejemplos positivos:
+
+- un miembro puede postular un proyecto;
+- una Directiva puede resolverlo;
+- un vecino puede solicitar un certificado;
+- una reserva válida puede registrarse;
+- un vecino puede inscribirse mientras exista cupo.
+
+Ejemplos negativos:
+
+- un usuario anónimo no accede a zonas privadas;
+- un usuario sin rol no ejecuta acciones administrativas;
+- un proyecto resuelto no vuelve a resolverse;
+- una solicitud rechazada no puede emitirse;
+- una reserva solapada se rechaza;
+- una inscripción duplicada se rechaza;
+- un usuario no puede asignarse privilegios mediante formularios públicos.
+
+Los casos negativos validan las reglas del sistema también frente a usos incorrectos o manipulaciones.
+
+## 7. End to End manual
+
+Se ejecutaron recorridos completos de los dos flujos críticos definidos en el Plan de Pruebas v0.1.
+
+### Proyecto
+
+Recorrido realizado:
+
+`Registro → membresía → postulación → revisión → aprobación → notificación`
+
+Se verificó el envío real de la resolución mediante un servidor SMTP externo.
+
+### Certificado
+
+Recorrido realizado:
+
+`Solicitud → aprobación → emisión → visualización`
+
+Se comprobó además que una solicitud emitida no pudiera volver a emitirse desde el flujo normal.
+
+Estos recorridos fueron ejecutados manualmente y no mediante automatización de navegador.
+
+## 8. Ejecución
+
+Suite completa en Docker:
 
 ```bash
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Resultado verificado:
+Comprobación de configuración:
 
-```text
-Found 41 test(s).
-.........................................
-OK
+```bash
+docker compose exec -T web python manage.py check
 ```
 
-Este es el entorno utilizado para verificar el checkpoint actual de la entrega.
+Verificación de cambios pendientes en modelos:
 
----
+```bash
+docker compose exec -T web python manage.py makemigrations --check --dry-run
+```
 
-## 8. Estado actual
+Último checkpoint:
 
-| Área | Estado |
-|---|---|
-| Autenticación | Probada |
-| Autorización / RBAC | Probada |
-| Proyectos vecinales | Probados |
-| Notificación de proyectos | Probada con backend de testing |
-| Certificados | Probados |
-| PostgreSQL | Integrado |
-| Docker Compose | Verificado |
-| Reservas | Flujo funcional pendiente |
-| Actividades | Flujo funcional pendiente |
-| Comunicaciones | Flujo funcional pendiente |
-| E2E con navegador | Pendiente |
+```text
+Django check          OK
+Pruebas               97/97
+Migraciones nuevas    No changes detected
+```
 
-Total actual:
+## 9. Plan de Pruebas
 
-**41 pruebas aprobadas / 0 fallidas.**
+El código automatizado y el Plan de Pruebas cumplen funciones diferentes:
 
----
+```text
+Suite automatizada
+→ evidencia técnica repetible
 
-## 9. Diferencia entre pruebas automatizadas y Plan de Pruebas
+Plan de Pruebas
+→ planificación y registro formal
+```
 
-Este documento resume la estrategia de testing implementada en el código del proyecto.
+`Plan_de_Pruebas_SUT_v0.1.xlsx` se conserva como evidencia histórica.
 
-El Plan de Pruebas entregado por el docente corresponde a un documento formal diferente.
+Para la Entrega 2.2 se preparará `Plan_de_Pruebas_SUT_v0.2.xlsx`, reflejando el estado final del sistema y los recorridos ejecutados.
 
-Las pruebas automatizadas pueden respaldar varios casos definidos en dicho plan.
+## 10. Límites
 
-Por esta razón:
+Actualmente no se dispone de:
 
-`Pruebas automatizadas → evidencia técnica`
+- pruebas End to End automatizadas mediante navegador;
+- prueba multihilo específica para concurrencia;
+- pruebas formales de carga;
+- pruebas formales de rendimiento;
+- pruebas de disponibilidad productiva.
 
-`Plan de Pruebas → planificación y registro formal`
-
-Ambos elementos deben mantenerse relacionados.
-
----
-
-## 10. Próximos pasos de testing
-
-A medida que se implementen nuevos flujos se deberán incorporar pruebas para:
-
-- disponibilidad de espacios;
-- colisiones de reservas;
-- actividades;
-- control de cupos;
-- inscripciones;
-- noticias y avisos para usuarios finales;
-- generación o descarga documental del certificado;
-- integración SMTP externa;
-- pruebas End to End sobre los principales recorridos del usuario.
-
-La cantidad de pruebas deberá crecer en función de nuevas reglas y riesgos reales del sistema, no únicamente para aumentar el número total.
+Estas capacidades no se presentan como ejecutadas ni demostradas.

@@ -2,128 +2,269 @@
 
 ## 1. Objetivo
 
-Documentar el estado técnico actual del SUT, diferenciando lo implementado, lo verificado y lo pendiente durante la Fase 2 de Capstone.
+Documentar la arquitectura, tecnologías, requisitos y controles técnicos implementados en el Sistema Unidad Territorial (SUT) para la Entrega 2.2 de Capstone.
 
----
+## 2. Alcance
 
-## 2. Alcance actual
+El SUT es una aplicación web para apoyar la gestión administrativa y comunitaria de una junta de vecinos.
 
-El SUT es una aplicación web orientada a apoyar procesos administrativos y comunitarios de una junta de vecinos.
+Actualmente permite gestionar:
 
-### Implementado y verificado
+- vecinos y membresía;
+- proyectos vecinales;
+- certificados de residencia;
+- reservas de espacios;
+- actividades y cupos;
+- noticias y avisos;
+- autenticación, roles y permisos.
 
-- autenticación y cierre de sesión;
-- autorización según perfil, rol y permisos del servidor;
-- postulación, revisión y resolución de proyectos vecinales;
-- solicitud, revisión y emisión lógica de certificados de residencia;
-- persistencia en PostgreSQL;
-- ejecución mediante Docker Compose;
-- pruebas automatizadas para autenticación, autorización, proyectos y certificados.
+El sistema utiliza PostgreSQL como base de datos y puede ejecutarse mediante Docker Compose.
 
-### Implementado parcialmente
+## 3. Tecnologías
 
-- vecinos: modelo, perfil y administración;
-- reservas: modelos y administración;
-- actividades: modelos y administración;
-- comunicaciones: modelos y administración.
-
-### Pendiente
-
-- calendario y validación funcional de reservas;
-- inscripción y control funcional de cupos;
-- publicación de noticias y avisos para usuarios finales;
-- certificado descargable;
-- SMTP externo;
-- integración WhatsApp;
-- pruebas End to End automatizadas mediante navegador.
-
----
-
-## 3. Tecnologías utilizadas
-
-| Componente | Tecnología | Uso actual |
+| Componente | Tecnología | Uso |
 |---|---|---|
 | Lenguaje | Python 3.14 | Lógica de aplicación |
-| Framework | Django 6.1 | Aplicación web, autenticación, ORM y pruebas |
-| Base de datos | PostgreSQL 18 | Persistencia principal |
-| Interfaz | Django Templates + Bootstrap | Interfaz web responsiva |
-| Contenedores | Docker + Docker Compose | Entorno reproducible de demostración |
-| Control de versiones | Git + GitHub | Historial y respaldo técnico |
-| Gestión | Jira + Scrum | Seguimiento del trabajo |
-
----
+| Framework | Django 6.1.3 | Aplicación web, ORM, autenticación y pruebas |
+| Base de datos | PostgreSQL 18 | Persistencia |
+| Interfaz | Django Templates + Bootstrap 5.3.3 | Interfaz web responsiva |
+| Contenedores | Docker + Docker Compose | Entorno reproducible |
+| Control de versiones | Git + GitHub | Historial y trazabilidad |
+| Gestión | Jira + Scrum | Planificación y seguimiento |
 
 ## 4. Arquitectura
 
-El proyecto utiliza un monolito modular Django organizado por dominios. En el entorno dockerizado, el navegador accede a `sut-web` por el puerto 8000 y Django se comunica con `sut-postgres` mediante el servicio `db` de Docker Compose.
+El proyecto utiliza una arquitectura web monolítica modular basada en aplicaciones Django.
 
 ```text
-Usuario
-  ↓
-Navegador
-  ↓ http://127.0.0.1:8000
-Docker Compose
-  ├─ sut-web
-  │   └─ Django → aplicaciones → Django ORM
-  └─ sut-postgres
-      └─ PostgreSQL 18
+Interfaz web
+    ↓
+Django
+    ↓
+Aplicaciones
+    ↓
+Django ORM
+    ↓
+PostgreSQL
 ```
 
-El backend de correo actual es de desarrollo. La conexión SMTP externa permanece pendiente.
+Aplicaciones principales:
 
-Respaldo gráfico: `docs/diagramas/01-arquitectura-sut.*`.
+```text
+usuarios
+vecinos
+proyectos
+certificados
+reservas
+actividades
+comunicaciones
+```
 
----
+En Docker Compose:
 
-## 5. Requisitos funcionales implementados
+```text
+Navegador
+    ↓
+127.0.0.1:8000
+    ↓
+sut-web
+    ↓
+Django ORM
+    ↓
+sut-postgres
+```
 
-### Proyectos vecinales
+El contenedor web se ejecuta con un usuario sin privilegios de root.
 
-`Miembro de junta → Postular → Pendiente → Directiva → Aprobar/Rechazar → Notificación`
+Respaldo gráfico: `docs/diagramas/01-arquitectura-sut.svg`.
 
-Controles principales:
+## 5. Requisitos funcionales
 
-- sólo un miembro de junta puede postular;
-- el propietario se determina en el servidor;
-- el estado inicial se asigna en el servidor;
-- cada usuario consulta únicamente sus propios proyectos;
+### RF-01 — Gestión de vecinos
+
+El sistema permite:
+
+- registrar nuevos vecinos;
+- asociar un usuario con su perfil de vecino;
+- gestionar vecinos desde perfiles autorizados;
+- incorporar o retirar la condición de miembro de junta.
+
+Los privilegios no pueden asignarse mediante el formulario público de registro.
+
+### RF-02 — Proyectos vecinales
+
+Flujo:
+
+`Miembro → Postulación → Pendiente → Revisión → Aprobación/Rechazo`
+
+Controles:
+
+- sólo miembros de junta pueden postular;
+- propietario y estado se asignan en servidor;
 - sólo personal autorizado resuelve;
-- una postulación ya resuelta no puede resolverse nuevamente.
+- una resolución no puede repetirse;
+- los estados válidos están restringidos en PostgreSQL.
 
-### Certificados
+### RF-03 — Resolución por correo
 
-`Vecino → Solicitar → Pendiente → Directiva → Aprobar/Rechazar → Emitir`
+La resolución de un proyecto puede notificarse al postulante mediante correo electrónico.
 
-Controles principales:
+Se encuentra implementado:
 
-- la solicitud se asocia al vecino autenticado;
-- cada vecino consulta únicamente sus solicitudes;
-- sólo personal autorizado gestiona solicitudes;
-- sólo una solicitud aprobada puede emitirse;
-- se evita la emisión duplicada.
+- correo de aprobación;
+- correo de rechazo;
+- destinatario asociado al postulante;
+- comportamiento ante usuario sin email;
+- tolerancia ante fallo SMTP.
 
----
+Una falla del servicio SMTP no revierte la resolución ya registrada.
+
+La integración con un servidor SMTP externo fue validada mediante un recorrido funcional controlado.
+
+### RF-04 — Certificados
+
+Flujo:
+
+`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
+
+Controles:
+
+- la solicitud pertenece al vecino autenticado;
+- sólo existe una solicitud activa por vecino;
+- sólo personal autorizado puede resolver;
+- se evita la doble resolución y doble emisión;
+- los estados válidos están restringidos en PostgreSQL;
+- el certificado emitido conserva un snapshot de los datos del vecino.
+
+### RF-05 — Reservas
+
+El sistema permite:
+
+- reservar espacios activos;
+- consultar reservas propias;
+- visualizar un calendario mensual;
+- rechazar fechas pasadas;
+- exigir hora de inicio menor a hora de término;
+- detectar horarios solapados;
+- excluir reservas canceladas de la disponibilidad.
+
+La operación utiliza transacción y bloqueo del espacio para volver a comprobar su estado y los solapamientos antes de guardar.
+
+### RF-06 — Actividades
+
+El sistema permite:
+
+- consultar actividades disponibles;
+- inscribirse en actividades vigentes;
+- impedir inscripciones duplicadas;
+- controlar el cupo máximo.
+
+La inscripción utiliza transacción y bloqueo de la actividad para proteger el control de cupos.
+
+### RF-07 — Comunicaciones
+
+El sistema permite:
+
+- publicar noticias;
+- publicar avisos;
+- consultar comunicaciones;
+- restringir la publicación a perfiles autorizados.
+
+El contenido se presenta utilizando el escape automático de Django Templates.
+
+### RF-08 — Autenticación y autorización
+
+El sistema diferencia:
+
+- usuario autenticado;
+- vecino;
+- miembro de junta;
+- Directiva;
+- personal autorizado;
+- superusuario.
+
+Los permisos funcionales se validan del lado del servidor mediante reglas centralizadas.
 
 ## 6. Requisitos no funcionales
 
-| ID | Requisito | Estado | Respaldo |
-|---|---|---|---|
-| RNF-01 | Proteger configuración sensible fuera del repositorio | **Implementado** | variables de entorno, `.gitignore`, `.dockerignore`, `.env.example` |
-| RNF-02 | Controlar acceso a operaciones según autenticación y autorización | **Implementado y probado** | middleware Django, permisos centralizados y pruebas negativas |
-| RNF-03 | Mantener separación modular por dominio | **Implementado** | aplicaciones Django independientes por módulo |
-| RNF-04 | Permitir reproducción del entorno de demostración | **Implementado y verificado** | `Dockerfile`, `compose.yml`, healthchecks |
-| RNF-05 | Mantener integridad de estados y evitar operaciones duplicadas | **Implementado y probado** en Proyectos y Certificados | validaciones de servidor y pruebas automatizadas |
-| RNF-06 | Mantener trazabilidad técnica del desarrollo | **Implementado** | Git/GitHub, documentación, evidencias y Jira |
-| RNF-07 | Proveer una interfaz web adaptable mediante Bootstrap | **Implementado como base** | templates y Bootstrap; validación formal multidispositivo pendiente |
-| RNF-08 | Mantener disponibilidad verificable del entorno de demostración | **Verificado en checkpoint** | healthchecks de `sut-web` y `sut-postgres`, HTTP 200 |
+| ID | Requisito | Estado / respaldo |
+|---|---|---|
+| RNF-01 | Mantener configuración sensible fuera del repositorio | Variables de entorno, `.gitignore`, `.dockerignore` y `.env.example` |
+| RNF-02 | Controlar acceso según autenticación y autorización | Permisos centralizados y pruebas automáticas |
+| RNF-03 | Mantener separación modular por dominio | 7 aplicaciones Django |
+| RNF-04 | Proporcionar persistencia relacional | PostgreSQL 18 + Django ORM |
+| RNF-05 | Mantener integridad de datos | Validaciones, transacciones y constraints PostgreSQL |
+| RNF-06 | Reducir condiciones de carrera en operaciones críticas | `transaction.atomic()` y `select_for_update()` |
+| RNF-07 | Permitir reproducción del entorno | Dockerfile + Docker Compose |
+| RNF-08 | Proporcionar interfaz adaptable | Django Templates + Bootstrap |
+| RNF-09 | Mantener trazabilidad del desarrollo | Git, GitHub, Jira, pruebas y documentación |
+| RNF-10 | Ejecutar el proceso web sin privilegios root | Usuario `sut` en el contenedor web |
 
-No se declaran métricas de rendimiento, carga o disponibilidad productiva porque no han sido medidas formalmente.
+No se declaran métricas productivas de carga, rendimiento o disponibilidad porque no fueron medidas formalmente.
 
----
+## 7. Integridad y seguridad
 
-## 7. Configuración y ejecución
+El sistema incorpora controles en distintas capas:
 
-Crear un archivo `.env` local tomando `.env.example` como referencia. Los secretos reales no deben versionarse.
+```text
+Formulario
+    ↓
+Vista / autorización
+    ↓
+Reglas de negocio
+    ↓
+Transacción
+    ↓
+Restricciones PostgreSQL
+```
+
+Entre los controles implementados se encuentran:
+
+- protección CSRF;
+- validación de permisos en servidor;
+- aislamiento de información por usuario;
+- estados válidos mediante constraints;
+- prevención de operaciones duplicadas;
+- bloqueo de filas en operaciones sensibles;
+- secretos fuera del código fuente;
+- escape de contenido en templates;
+- contenedor web ejecutado sin privilegios root.
+
+La configuración permite habilitar medidas para un entorno HTTPS, como cookies seguras, redirección SSL y HSTS.
+
+Esto representa preparación configurable para despliegue seguro y no un despliegue productivo actualmente demostrado.
+
+## 8. Pruebas
+
+La suite automática actual contiene:
+
+```text
+Usuarios          16
+Vecinos           13
+Proyectos         19
+Certificados      20
+Reservas          13
+Actividades        7
+Comunicaciones     9
+────────────────────
+Total             97
+```
+
+Último resultado verificado:
+
+```text
+Found 97 test(s).
+Ran 97 tests
+OK
+```
+
+También se realizaron recorridos End to End manuales para los flujos críticos de Proyectos y Certificados.
+
+El detalle se mantiene en `docs/pruebas/`.
+
+## 9. Ejecución
+
+Crear `.env` tomando `.env.example` como referencia.
 
 Levantar el entorno:
 
@@ -131,31 +272,41 @@ Levantar el entorno:
 docker compose up -d --build
 ```
 
-Verificar servicios:
+Verificar Django:
 
 ```bash
-docker compose ps
+docker compose exec -T web python manage.py check
 ```
 
-Ejecutar pruebas en Docker:
+Ejecutar pruebas:
 
 ```bash
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Checkpoint verificado del avance:
+Verificar cambios pendientes de modelos:
 
-```text
-sut-web        healthy
-sut-postgres   healthy
-HTTP           200
-Pruebas        41/41 OK
+```bash
+docker compose exec -T web python manage.py makemigrations --check --dry-run
 ```
 
----
+Último checkpoint:
 
-## 8. Evidencia y límites del avance
+```text
+Django check          OK
+Pruebas               97/97
+Migraciones nuevas    No changes detected
+Backend               Congelado
+```
 
-La evidencia técnica se mantiene en `docs/evidencias/` y el detalle de pruebas en `docs/pruebas/`.
+## 10. Límites actuales
 
-Este documento describe el avance actual de Fase 2. No presenta Reservas, Actividades, Comunicaciones, SMTP externo ni certificado PDF como funcionalidades terminadas.
+No forman parte de la implementación demostrada:
+
+- integración con WhatsApp;
+- generación de certificado como archivo PDF;
+- pruebas End to End automatizadas mediante navegador;
+- despliegue productivo en infraestructura externa;
+- pruebas formales de carga o rendimiento.
+
+Estas capacidades no se presentan como implementadas en la Entrega 2.2.
