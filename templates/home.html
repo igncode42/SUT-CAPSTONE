@@ -6,64 +6,306 @@
 
 
 <section
-    class="mb-5"
+    class="mb-4"
     aria-labelledby="titulo-inicio"
 >
 
-    <div class="row align-items-center g-4">
+    <div class="row g-4 align-items-stretch">
 
         <div class="col-12 col-lg-7">
 
-            <p class="text-primary fw-semibold mb-2">
-                Gestión comunitaria en un solo lugar
-            </p>
+            <div class="h-100 d-flex flex-column justify-content-center">
 
-            <h1
-                id="titulo-inicio"
-                class="display-5 fw-bold mb-3"
+                <h1
+                    id="titulo-inicio"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Servicios de tu junta de vecinos,
+                    simples y en un solo lugar.
+                </h1>
+
+                <p class="lead mb-4">
+                    Accede a trámites, actividades y noticias
+                    de tu comunidad de forma clara y sencilla.
+                </p>
+
+
+                {% if user.is_authenticated %}
+
+                    <div>
+                        <a
+                            href="{% url 'panel' %}"
+                            class="btn btn-primary btn-lg px-4"
+                        >
+                            Ir a mi panel
+                        </a>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        {% if not user.is_authenticated %}
+
+        <div class="col-12 col-lg-5">
+
+            <div class="sut-surface p-4 h-100">
+
+                <p class="fw-semibold mb-2">
+                    ¿Es tu primera vez?
+                </p>
+
+                <h2 class="h4 fw-bold mb-3">
+                    Comenzar es fácil
+                </h2>
+
+
+                <div class="d-grid gap-3">
+
+                    <div class="d-flex gap-3">
+
+                        <strong>
+                            1
+                        </strong>
+
+                        <div>
+                            <p class="fw-semibold mb-0">
+                                Crea tu cuenta
+                            </p>
+
+                            <p class="small mb-0">
+                                Regístrate como vecino.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-3">
+
+                        <strong>
+                            2
+                        </strong>
+
+                        <div>
+                            <p class="fw-semibold mb-0">
+                                Inicia sesión
+                            </p>
+
+                            <p class="small mb-0">
+                                Accede de forma segura.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-3">
+
+                        <strong>
+                            3
+                        </strong>
+
+                        <div>
+                            <p class="fw-semibold mb-0">
+                                Usa los servicios
+                            </p>
+
+                            <p class="small mb-0">
+                                Gestiona tus trámites y actividades.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-4">
+
+                    <a
+                        href="{% url 'vecinos:registro' %}"
+                        class="btn btn-primary"
+                    >
+                        Crear cuenta
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<section
+    aria-labelledby="titulo-servicios"
+>
+
+    <div class="mb-3">
+
+        <h2
+            id="titulo-servicios"
+            class="h2 fw-bold mb-1"
+        >
+            ¿Qué necesitas hacer?
+        </h2>
+
+        <p class="mb-0">
+            Elige el servicio que necesitas.
+        </p>
+
+    </div>
+
+
+    <div class="row g-3">
+
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div
+                class="sut-surface sut-service-private p-4 h-100 position-relative"
             >
-                Sistema Unidad Territorial
-            </h1>
 
-            <p class="lead text-secondary mb-4">
-                Plataforma para facilitar la gestión de una junta de vecinos,
-                conectando a la comunidad con sus servicios, actividades,
-                proyectos y comunicaciones.
-            </p>
+                <h3 class="h5 fw-bold mb-2">
+                    Solicitar certificado
+                </h3>
 
+                <p class="small mb-3">
+                    Certificado de residencia.
+                </p>
 
-            <div class="d-flex flex-wrap gap-2">
 
                 {% if user.is_authenticated %}
 
                     <a
-                        href="{% url 'panel' %}"
-                        class="btn btn-primary btn-lg"
+                        href="{% url 'certificados:mis_solicitudes' %}"
+                        class="btn btn-primary btn-sm stretched-link"
                     >
-                        Ir a mi panel
+                        Solicitar certificado
                     </a>
 
                 {% else %}
 
                     <a
-                        href="{% url 'vecinos:registro' %}"
-                        class="btn btn-primary btn-lg"
-                    >
-                        Registrarme como vecino
-                    </a>
-
-                    <a
                         href="{% url 'login' %}"
-                        class="btn btn-outline-primary btn-lg"
+                        class="btn btn-outline-primary btn-sm stretched-link"
                     >
-                        Iniciar sesión
+                        Solicitar certificado
                     </a>
 
                 {% endif %}
 
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div
+                class="sut-surface sut-service-private p-4 h-100 position-relative"
+            >
+
+                <h3 class="h5 fw-bold mb-2">
+                    Reservar un espacio
+                </h3>
+
+                <p class="small mb-3">
+                    Consulta espacios comunitarios.
+                </p>
+
+
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'reservas:mis_reservas' %}"
+                        class="btn btn-primary btn-sm stretched-link"
+                    >
+                        Reservar espacio
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-outline-primary btn-sm stretched-link"
+                    >
+                        Reservar espacio
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div
+                class="sut-surface sut-service-private p-4 h-100 position-relative"
+            >
+
+                <h3 class="h5 fw-bold mb-2">
+                    Ver actividades
+                </h3>
+
+                <p class="small mb-3">
+                    Revisa actividades y cupos.
+                </p>
+
+
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'actividades:disponibles' %}"
+                        class="btn btn-primary btn-sm stretched-link"
+                    >
+                        Ver actividades
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-outline-primary btn-sm stretched-link"
+                    >
+                        Ver actividades
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div
+                class="sut-surface sut-service-public p-4 h-100 position-relative"
+            >
+
+                <h3 class="h5 fw-bold mb-2">
+                    Noticias y avisos
+                </h3>
+
+                <p class="small mb-3">
+                    Mantente informado.
+                </p>
+
                 <a
                     href="{% url 'comunicaciones:inicio' %}"
-                    class="btn btn-outline-secondary btn-lg"
+                    class="btn btn-primary btn-sm stretched-link"
                 >
                     Ver noticias y avisos
                 </a>
@@ -73,311 +315,9 @@
         </div>
 
 
-        <div class="col-12 col-lg-5">
-
-            <div class="card border-0 shadow-sm">
-
-                <div class="card-body p-4">
-
-                    <h2 class="h4 fw-bold mb-3">
-                        Todo tu barrio, más conectado
-                    </h2>
-
-                    <p class="text-secondary mb-3">
-                        Desde SUT puedes acceder a los principales servicios
-                        administrativos y comunitarios de tu junta de vecinos.
-                    </p>
-
-                    <ul class="mb-0 ps-3">
-
-                        <li class="mb-2">
-                            Solicitar certificados.
-                        </li>
-
-                        <li class="mb-2">
-                            Reservar espacios comunitarios.
-                        </li>
-
-                        <li class="mb-2">
-                            Participar en actividades.
-                        </li>
-
-                        <li>
-                            Consultar noticias y avisos.
-                        </li>
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
 </section>
-
-
-<section
-    class="mb-5"
-    aria-labelledby="titulo-servicios"
->
-
-    <div class="mb-4">
-
-        <h2
-            id="titulo-servicios"
-            class="h3 fw-bold mb-2"
-        >
-            Servicios del SUT
-        </h2>
-
-        <p class="text-secondary mb-0">
-            Herramientas para apoyar la administración y participación de la comunidad.
-        </p>
-
-    </div>
-
-
-    <div class="row g-4">
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-
-                    <h3 class="h5 fw-bold">
-                        Vecinos
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Registro seguro de vecinos y administración de su
-                        participación dentro de la comunidad.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-
-                    <h3 class="h5 fw-bold">
-                        Certificados de residencia
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Solicita certificados y consulta el estado de cada
-                        solicitud desde tu cuenta.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-
-                    <h3 class="h5 fw-bold">
-                        Proyectos vecinales
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Los miembros de junta pueden presentar proyectos y
-                        realizar seguimiento de su resolución.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-
-                    <h3 class="h5 fw-bold">
-                        Reservas de espacios
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Consulta disponibilidad y solicita el uso de espacios
-                        comunitarios mediante el calendario.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-
-                    <h3 class="h5 fw-bold">
-                        Actividades vecinales
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Revisa las actividades disponibles e inscríbete según
-                        los cupos existentes.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-
-                    <h3 class="h5 fw-bold">
-                        Noticias y avisos
-                    </h3>
-
-                    <p class="text-secondary flex-grow-1">
-                        Mantente informado sobre novedades y comunicaciones
-                        relevantes para la comunidad.
-                    </p>
-
-                    <a
-                        href="{% url 'comunicaciones:inicio' %}"
-                        class="btn btn-sm btn-outline-primary align-self-start"
-                    >
-                        Ver comunicaciones
-                    </a>
-
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-{% if not user.is_authenticated %}
-
-<section
-    class="mb-2"
-    aria-labelledby="titulo-comenzar"
->
-
-    <div class="card border-0 bg-body-secondary">
-
-        <div class="card-body p-4 p-md-5">
-
-            <div class="mb-4">
-
-                <h2
-                    id="titulo-comenzar"
-                    class="h3 fw-bold"
-                >
-                    ¿Cómo comenzar?
-                </h2>
-
-                <p class="text-secondary mb-0">
-                    Acceder al Sistema Unidad Territorial es simple.
-                </p>
-
-            </div>
-
-
-            <div class="row g-4">
-
-
-                <div class="col-12 col-md-4">
-
-                    <p class="text-primary fw-bold mb-1">
-                        01
-                    </p>
-
-                    <h3 class="h5">
-                        Regístrate
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Crea tu cuenta registrándote como vecino.
-                    </p>
-
-                </div>
-
-
-                <div class="col-12 col-md-4">
-
-                    <p class="text-primary fw-bold mb-1">
-                        02
-                    </p>
-
-                    <h3 class="h5">
-                        Inicia sesión
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Accede de forma segura a tu panel personal.
-                    </p>
-
-                </div>
-
-
-                <div class="col-12 col-md-4">
-
-                    <p class="text-primary fw-bold mb-1">
-                        03
-                    </p>
-
-                    <h3 class="h5">
-                        Utiliza los servicios
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-                        Gestiona certificados, reservas, actividades y
-                        otros servicios disponibles.
-                    </p>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="mt-4">
-
-                <a
-                    href="{% url 'vecinos:registro' %}"
-                    class="btn btn-primary"
-                >
-                    Crear cuenta
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-{% endif %}
 
 
 {% endblock %}

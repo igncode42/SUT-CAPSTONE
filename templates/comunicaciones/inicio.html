@@ -5,238 +5,600 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+<!-- ===================================================== -->
+<!-- 1. IDENTIDAD Y ORIENTACION                            -->
+<!-- ===================================================== -->
 
-    <div>
+<section
+    class="mb-5"
+    aria-labelledby="titulo-comunicaciones"
+>
 
-        <p class="text-primary fw-semibold mb-2">
-            Comunidad
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Noticias y avisos
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta las comunicaciones publicadas por la unidad territorial.
-        </p>
-
-    </div>
+    <div class="row g-4 align-items-stretch">
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+        <!-- IDENTIDAD DE LA PAGINA -->
 
-        {% if puede_publicar %}
+        <div class="col-12 col-lg-7">
 
-            <a
-                href="{% url 'comunicaciones:publicar_noticia' %}"
-                class="btn btn-primary"
+            <div
+                class="sut-surface sut-comunicaciones-hero p-4 p-lg-5 h-100 d-flex flex-column justify-content-center"
             >
-                Nueva noticia
-            </a>
 
-            <a
-                href="{% url 'comunicaciones:publicar_aviso' %}"
-                class="btn btn-outline-primary"
-            >
-                Nuevo aviso
-            </a>
+                <p class="text-primary fw-semibold mb-2">
+                    Comunidad
+                </p>
 
-        {% endif %}
+                <h1
+                    id="titulo-comunicaciones"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Noticias y avisos
+                </h1>
 
-
-        {% if user.is_authenticated %}
-
-            <a
-                href="{% url 'panel' %}"
-                class="btn btn-outline-secondary"
-            >
-                Volver al panel
-            </a>
-
-        {% endif %}
-
-    </div>
-
-</div>
+                <p class="lead mb-0">
+                    Mantente al día con las novedades
+                    e información importante de tu comunidad.
+                </p>
 
 
-<div class="row g-4">
+                {% if puede_publicar %}
 
+                    <div class="d-flex flex-wrap gap-2 mt-4">
 
-    <!-- ===================================================== -->
-    <!-- NOTICIAS                                              -->
-    <!-- ===================================================== -->
+                        <a
+                            href="{% url 'comunicaciones:publicar_noticia' %}"
+                            class="btn btn-primary"
+                        >
+                            Nueva noticia
+                        </a>
 
-    <section
-        class="col-12 col-lg-7"
-        aria-labelledby="titulo-noticias"
-    >
+                        <a
+                            href="{% url 'comunicaciones:publicar_aviso' %}"
+                            class="btn btn-outline-primary"
+                        >
+                            Nuevo aviso
+                        </a>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+                    </div>
 
-            <h2
-                id="titulo-noticias"
-                class="h4 fw-bold mb-0"
-            >
-                Noticias
-            </h2>
+                {% endif %}
 
-            {% if noticias %}
-                <span class="badge text-bg-light border">
-                    {{ noticias|length }}
-                </span>
-            {% endif %}
+            </div>
 
         </div>
 
 
-        {% if noticias %}
+        <!-- GUIA RAPIDA -->
 
-            <div class="d-grid gap-3">
+        <div class="col-12 col-lg-5">
 
-                {% for noticia in noticias %}
+            <div
+                class="sut-surface sut-help-card p-4 h-100 d-flex flex-column"
+            >
 
-                    <article class="card border-0 shadow-sm">
+                <p class="fw-semibold mb-2">
+                    ¿Es tu primera vez aquí?
+                </p>
 
-                        <div class="card-body p-4">
+                <h2 class="h4 fw-bold mb-4">
+                    Consultar es fácil
+                </h2>
 
-                            <h3 class="h5 fw-bold mb-2">
-                                {{ noticia.titulo }}
-                            </h3>
 
-                            <p class="text-secondary small mb-3">
-                                Publicado el {{ noticia.fecha_publicacion }}
+                <div class="d-grid gap-3 mb-4">
+
+
+                    <div class="d-flex gap-3">
+
+                        <strong class="sut-help-step">
+                            1
+                        </strong>
+
+                        <div>
+
+                            <p class="fw-semibold mb-0">
+                                Revisa las noticias
                             </p>
 
-                            <p class="mb-0">
-                                {{ noticia.contenido }}
+                            <p class="small mb-0">
+                                Consulta las novedades de tu comunidad.
                             </p>
 
                         </div>
 
-                    </article>
-
-                {% endfor %}
-
-            </div>
+                    </div>
 
 
-        {% else %}
+                    <div class="d-flex gap-3">
 
-            <div class="card border-0 shadow-sm">
+                        <strong class="sut-help-step">
+                            2
+                        </strong>
 
-                <div class="card-body p-4 text-center">
+                        <div>
 
-                    <h3 class="h5 fw-bold mb-2">
-                        No hay noticias publicadas
-                    </h3>
+                            <p class="fw-semibold mb-0">
+                                Revisa los avisos
+                            </p>
 
-                    <p class="text-secondary mb-0">
-                        Las novedades de la comunidad aparecerán aquí
-                        cuando sean publicadas.
-                    </p>
+                            <p class="small mb-0">
+                                Encuentra información importante.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-3">
+
+                        <strong class="sut-help-step">
+                            3
+                        </strong>
+
+                        <div>
+
+                            <p class="fw-semibold mb-0">
+                                Información pública
+                            </p>
+
+                            <p class="small mb-0">
+                                No necesitas una cuenta para consultar.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="mt-auto">
+
+                    {% if user.is_authenticated %}
+
+                        <a
+                            href="{% url 'panel' %}"
+                            class="btn btn-primary"
+                        >
+                            ← Volver a mi panel
+                        </a>
+
+                    {% else %}
+
+                        <a
+                            href="{% url 'home' %}"
+                            class="btn btn-primary"
+                        >
+                            ← Volver al inicio
+                        </a>
+
+                    {% endif %}
 
                 </div>
 
             </div>
 
-        {% endif %}
-
-    </section>
+        </div>
 
 
-    <!-- ===================================================== -->
-    <!-- AVISOS                                                -->
-    <!-- ===================================================== -->
+    </div>
 
-    <section
-        class="col-12 col-lg-5"
-        aria-labelledby="titulo-avisos"
-    >
+</section>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+
+<!-- ===================================================== -->
+<!-- 2. PUBLICACIONES                                      -->
+<!-- ===================================================== -->
+
+<section
+    aria-labelledby="titulo-publicaciones"
+>
+
+    <div class="sut-surface p-4 p-lg-5">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="mb-4">
+
+            <p class="text-primary fw-semibold mb-2">
+                Comunidad
+            </p>
 
             <h2
-                id="titulo-avisos"
-                class="h4 fw-bold mb-0"
+                id="titulo-publicaciones"
+                class="h2 fw-bold mb-2"
             >
-                Avisos
+                Publicaciones
             </h2>
 
-            {% if avisos %}
-                <span class="badge text-bg-light border">
-                    {{ avisos|length }}
-                </span>
-            {% endif %}
+            <p class="mb-0">
+                Consulta las noticias y avisos más recientes
+                de tu comunidad.
+            </p>
 
         </div>
 
 
-        {% if avisos %}
+        <div class="row g-4">
 
-            <div class="d-grid gap-3">
 
-                {% for aviso in avisos %}
+            <!-- ============================================= -->
+            <!-- NOTICIAS                                      -->
+            <!-- ============================================= -->
 
-                    <article class="card border-0 shadow-sm">
+            <section
+                class="col-12 col-lg-7"
+                aria-labelledby="titulo-noticias"
+            >
 
-                        <div class="card-body p-4">
+                <div class="h-100">
 
-                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
 
-                                <h3 class="h5 fw-bold mb-0">
-                                    {{ aviso.titulo }}
+                    <!-- CABECERA -->
+
+                    <div class="mb-3">
+
+                        <div
+                            class="d-flex justify-content-between align-items-end gap-3"
+                        >
+
+                            <div>
+
+                                <p class="text-primary fw-semibold mb-1">
+                                    Novedades
+                                </p>
+
+                                <h3
+                                    id="titulo-noticias"
+                                    class="h2 fw-bold mb-0"
+                                >
+                                    Noticias
                                 </h3>
-
-                                <span class="badge text-bg-secondary flex-shrink-0">
-                                    Aviso
-                                </span>
 
                             </div>
 
-                            <p class="text-secondary small mb-3">
-                                Publicado el {{ aviso.fecha_publicacion }}
-                            </p>
 
-                            <p class="mb-0">
-                                {{ aviso.contenido }}
-                            </p>
+                            {% if noticias %}
+
+                                <span class="badge text-bg-light border">
+
+                                    {{ noticias|length }}
+
+                                    {% if noticias|length == 1 %}
+                                        noticia
+                                    {% else %}
+                                        noticias
+                                    {% endif %}
+
+                                </span>
+
+                            {% endif %}
 
                         </div>
 
-                    </article>
-
-                {% endfor %}
-
-            </div>
+                    </div>
 
 
-        {% else %}
+                    <!-- LISTADO -->
 
-            <div class="card border-0 shadow-sm">
+                    {% if noticias %}
 
-                <div class="card-body p-4 text-center">
+                        <div class="d-grid gap-3">
 
-                    <h3 class="h5 fw-bold mb-2">
-                        No hay avisos publicados
-                    </h3>
+                            {% for noticia in noticias %}
 
-                    <p class="text-secondary mb-0">
-                        Los avisos importantes de la comunidad
-                        aparecerán aquí.
-                    </p>
+                                <article
+                                    class="card border-0 shadow-sm sut-publication-card sut-news-card"
+                                >
+
+                                    <div class="card-body p-4">
+
+                                        <span class="sut-publication-label mb-3">
+                                            Noticia
+                                        </span>
+
+                                        <h4 class="h5 fw-bold mb-3">
+                                            {{ noticia.titulo }}
+                                        </h4>
+
+                                        <p class="sut-publication-content mb-4">
+                                            {{ noticia.contenido }}
+                                        </p>
+
+                                        <div class="sut-publication-meta">
+
+                                            <span>
+                                                Publicado el
+                                                {{ noticia.fecha_publicacion }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    {% else %}
+
+                        <div class="card border-0 shadow-sm sut-empty-state">
+
+                            <div class="card-body p-4 text-center">
+
+                                <h4 class="h5 fw-bold mb-2">
+                                    No hay noticias por ahora
+                                </h4>
+
+                                <p class="text-secondary mb-0">
+                                    Las nuevas noticias aparecerán aquí
+                                    cuando sean publicadas.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
 
                 </div>
 
-            </div>
-
-        {% endif %}
-
-    </section>
+            </section>
 
 
-</div>
+            <!-- ============================================= -->
+            <!-- AVISOS                                        -->
+            <!-- ============================================= -->
+
+            <section
+                class="col-12 col-lg-5"
+                aria-labelledby="titulo-avisos"
+            >
+
+                <div
+                    class="sut-comunicaciones-avisos h-100 p-4"
+                >
+
+
+                    <!-- CABECERA -->
+
+                    <div class="mb-3">
+
+                        <div
+                            class="d-flex justify-content-between align-items-end gap-3"
+                        >
+
+                            <div>
+
+                                <p class="text-primary fw-semibold mb-1">
+                                    Información importante
+                                </p>
+
+                                <h3
+                                    id="titulo-avisos"
+                                    class="h2 fw-bold mb-0"
+                                >
+                                    Avisos
+                                </h3>
+
+                            </div>
+
+
+                            {% if avisos %}
+
+                                <span class="badge text-bg-light border">
+
+                                    {{ avisos|length }}
+
+                                    {% if avisos|length == 1 %}
+                                        aviso
+                                    {% else %}
+                                        avisos
+                                    {% endif %}
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LISTADO -->
+
+                    {% if avisos %}
+
+                        <div class="d-grid gap-3">
+
+                            {% for aviso in avisos %}
+
+                                <article
+                                    class="card border-0 shadow-sm sut-publication-card sut-alert-card position-relative"
+                                >
+
+                                    <div class="card-body p-4">
+
+                                        <div
+                                            class="d-flex justify-content-between align-items-start gap-3 mb-3"
+                                        >
+
+                                            <span class="sut-publication-label">
+                                                Importante
+                                            </span>
+
+                                            <span
+                                                class="sut-alert-badge flex-shrink-0"
+                                            >
+                                                Aviso
+                                            </span>
+
+                                        </div>
+
+
+                                        <h4 class="h5 fw-bold mb-3">
+                                            {{ aviso.titulo }}
+                                        </h4>
+
+
+                                        <p class="sut-publication-content mb-4">
+                                            {{ aviso.contenido|truncatechars:90 }}
+                                        </p>
+
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm mb-4 stretched-link"
+                                            data-bs-toggle="offcanvas"
+                                            data-bs-target="#aviso-{{ aviso.id }}"
+                                            aria-controls="aviso-{{ aviso.id }}"
+                                            aria-label="Ver aviso: {{ aviso.titulo }}"
+                                        >
+                                            Ver aviso
+                                        </button>
+
+
+                                        <div class="sut-publication-meta">
+
+                                            <span>
+                                                Publicado el
+                                                {{ aviso.fecha_publicacion }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+
+                                <!-- ===================================== -->
+                                <!-- PANEL LATERAL DEL AVISO               -->
+                                <!-- ===================================== -->
+
+                                <div
+                                    class="offcanvas offcanvas-end sut-aviso-panel"
+                                    tabindex="-1"
+                                    id="aviso-{{ aviso.id }}"
+                                    aria-labelledby="titulo-aviso-{{ aviso.id }}"
+                                >
+
+                                    <div class="offcanvas-header">
+
+                                        <div>
+
+                                            <p class="text-primary fw-semibold mb-1">
+                                                Información importante
+                                            </p>
+
+                                            <h2
+                                                class="offcanvas-title h4 fw-bold mb-0"
+                                                id="titulo-aviso-{{ aviso.id }}"
+                                            >
+                                                {{ aviso.titulo }}
+                                            </h2>
+
+                                        </div>
+
+
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="offcanvas"
+                                            aria-label="Cerrar aviso"
+                                        ></button>
+
+                                    </div>
+
+
+                                    <div class="offcanvas-body">
+
+                                        <span
+                                            class="sut-alert-badge d-inline-flex mb-4"
+                                        >
+                                            Aviso
+                                        </span>
+
+
+                                        <p class="sut-aviso-contenido">
+                                            {{ aviso.contenido }}
+                                        </p>
+
+
+                                        <div class="sut-aviso-meta mt-4">
+
+                                            <p class="small mb-1">
+                                                Publicado
+                                            </p>
+
+                                            <p class="fw-semibold mb-0">
+                                                {{ aviso.fecha_publicacion }}
+                                            </p>
+
+                                        </div>
+
+
+                                        <div class="mt-4">
+
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-dismiss="offcanvas"
+                                            >
+                                                Entendido
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    {% else %}
+
+                        <div class="card border-0 shadow-sm sut-empty-state">
+
+                            <div class="card-body p-4 text-center">
+
+                                <h4 class="h5 fw-bold mb-2">
+                                    No hay avisos por ahora
+                                </h4>
+
+                                <p class="text-secondary mb-0">
+                                    Los avisos importantes aparecerán aquí
+                                    cuando sean publicados.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+</section>
 
 
 {% endblock %}

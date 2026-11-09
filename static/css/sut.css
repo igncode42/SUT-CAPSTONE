@@ -1,0 +1,1736 @@
+/* =========================================================
+   SUT - Sistema Unidad Territorial
+   Design System v1.0
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. Variables globales
+   --------------------------------------------------------- */
+
+:root {
+    --sut-primary: #2f624a;
+    --sut-primary-hover: #244b39;
+    --sut-primary-soft: #e7f0e9;
+
+    --sut-secondary: #6b7d70;
+    --sut-secondary-hover: #536258;
+
+    --sut-background: #f6f4ef;
+    --sut-surface: #ffffff;
+    --sut-surface-soft: #edf4ee;
+
+    --sut-text: #202923;
+    --sut-text-muted: #627067;
+
+    --sut-border: #d9e1da;
+    --sut-border-strong: #bfd0c3;
+
+    --sut-success: #216e4e;
+    --sut-danger: #b42318;
+    --sut-warning: #8a5a00;
+
+    --sut-focus: #f2b84b;
+
+    --sut-radius-sm: 0.6rem;
+    --sut-radius-md: 0.9rem;
+    --sut-radius-lg: 1.15rem;
+
+    --sut-shadow-sm:
+        0 1px 2px rgba(27, 55, 39, 0.04),
+        0 4px 12px rgba(27, 55, 39, 0.05);
+
+    --sut-shadow-md:
+        0 8px 24px rgba(27, 55, 39, 0.08);
+
+    --sut-transition: 160ms ease;
+}
+
+
+/* ---------------------------------------------------------
+   2. Base
+   --------------------------------------------------------- */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--sut-background);
+    color: var(--sut-text);
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+
+#contenido-principal {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--sut-text);
+
+    font-weight: 700;
+    line-height: 1.18;
+
+    letter-spacing: -0.018em;
+}
+
+
+p {
+    color: var(--sut-text-muted);
+}
+
+
+.lead {
+    color: var(--sut-text-muted);
+    line-height: 1.5;
+}
+
+
+.display-5 {
+    max-width: 14ch;
+
+    font-size: clamp(
+        2.35rem,
+        4vw,
+        3.25rem
+    );
+
+    line-height: 1.08;
+}
+
+
+/* ---------------------------------------------------------
+   3. Bootstrap adaptado al SUT
+   --------------------------------------------------------- */
+
+.text-primary {
+    color: var(--sut-primary) !important;
+}
+
+.text-secondary {
+    color: var(--sut-text-muted) !important;
+}
+
+.border-primary {
+    border-color: var(--sut-primary) !important;
+}
+
+
+/* ---------------------------------------------------------
+   4. Enlaces
+   --------------------------------------------------------- */
+
+a {
+    color: var(--sut-primary);
+    text-underline-offset: 0.2em;
+}
+
+a:hover {
+    color: var(--sut-primary-hover);
+}
+
+
+/* ---------------------------------------------------------
+   5. Navegacion
+   --------------------------------------------------------- */
+
+.sut-navbar {
+    min-height: 64px;
+
+    background-color: var(--sut-primary);
+
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08),
+        var(--sut-shadow-sm);
+}
+
+
+.sut-navbar .navbar-brand {
+    color: #ffffff;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    letter-spacing: -0.015em;
+}
+
+
+.sut-navbar .navbar-brand:hover,
+.sut-navbar .navbar-brand:focus {
+    color: #ffffff;
+}
+
+
+.sut-navbar .btn-light {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: var(--sut-primary);
+}
+
+
+.sut-navbar .btn-light:hover,
+.sut-navbar .btn-light:focus {
+    background-color: var(--sut-primary-soft);
+    border-color: var(--sut-primary-soft);
+    color: var(--sut-primary-hover);
+}
+
+
+.sut-navbar .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.78);
+    color: #ffffff;
+}
+
+
+.sut-navbar .btn-outline-light:hover,
+.sut-navbar .btn-outline-light:focus {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: var(--sut-primary);
+}
+
+
+.sut-navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* ---------------------------------------------------------
+   6. Usuario autenticado en navbar
+   --------------------------------------------------------- */
+
+.sut-navbar span[aria-label="Usuario actual"],
+.sut-user-chip {
+    display: inline-flex;
+
+    min-height: 44px;
+
+    align-items: center;
+    gap: 0.35rem;
+
+    padding: 0.45rem 0.85rem !important;
+
+    background-color: rgba(255, 255, 255, 0.14);
+
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: var(--sut-radius-sm);
+
+    color: #ffffff !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    white-space: nowrap;
+}
+
+
+.sut-navbar span[aria-label="Usuario actual"] strong,
+.sut-user-chip strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+
+.sut-user-label {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* ---------------------------------------------------------
+   7. Botones
+   --------------------------------------------------------- */
+
+.btn {
+    min-height: 44px;
+
+    border-radius: var(--sut-radius-sm);
+
+    font-weight: 650;
+
+    transition:
+        background-color var(--sut-transition),
+        border-color var(--sut-transition),
+        color var(--sut-transition),
+        box-shadow var(--sut-transition);
+}
+
+
+.btn-primary {
+    background-color: var(--sut-primary);
+    border-color: var(--sut-primary);
+    color: #ffffff;
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--sut-primary-hover);
+    border-color: var(--sut-primary-hover);
+    color: #ffffff;
+}
+
+
+.btn-outline-primary {
+    background-color: transparent;
+    border-color: var(--sut-primary);
+    color: var(--sut-primary);
+}
+
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--sut-primary);
+    border-color: var(--sut-primary);
+    color: #ffffff;
+}
+
+
+.btn-sut-secondary {
+    background-color: var(--sut-secondary);
+    border-color: var(--sut-secondary);
+    color: #ffffff;
+}
+
+
+.btn-sut-secondary:hover,
+.btn-sut-secondary:focus {
+    background-color: var(--sut-secondary-hover);
+    border-color: var(--sut-secondary-hover);
+    color: #ffffff;
+}
+
+
+/* ---------------------------------------------------------
+   8. Superficies generales
+   --------------------------------------------------------- */
+
+.card,
+.sut-surface {
+    background-color: var(--sut-surface);
+
+    border: 1px solid var(--sut-border);
+
+    border-radius: var(--sut-radius-md);
+
+    box-shadow: var(--sut-shadow-sm);
+}
+
+
+.card-title {
+    color: var(--sut-text);
+}
+
+
+/* ---------------------------------------------------------
+   9. Home - Primera vez
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-inicio"]
+.col-lg-5
+.sut-surface {
+    background-color: var(--sut-surface-soft);
+
+    border-color: var(--sut-border-strong);
+
+    box-shadow: var(--sut-shadow-md);
+}
+
+
+section[aria-labelledby="titulo-inicio"]
+.col-lg-5
+.d-flex.gap-3
+> strong {
+    display: inline-flex;
+
+    width: 2rem;
+    height: 2rem;
+
+    flex: 0 0 2rem;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--sut-primary);
+
+    border-radius: 999px;
+
+    color: #ffffff;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+section[aria-labelledby="titulo-inicio"]
+.col-lg-5
+.fw-semibold {
+    color: var(--sut-text);
+}
+
+
+/* ---------------------------------------------------------
+   10. Home - Servicios
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-servicios"]
+.sut-surface {
+    min-height: 150px;
+
+    border-color: var(--sut-border);
+
+    box-shadow: none;
+}
+
+
+section[aria-labelledby="titulo-servicios"]
+.sut-surface::before {
+    content: "";
+
+    display: block;
+
+    width: 2.75rem;
+    height: 0.25rem;
+
+    margin-bottom: 1rem;
+
+    background-color: var(--sut-primary);
+
+    border-radius: 999px;
+}
+
+
+section[aria-labelledby="titulo-servicios"]
+h3 {
+    color: var(--sut-text);
+}
+
+
+section[aria-labelledby="titulo-servicios"]
+p {
+    color: var(--sut-text-muted);
+}
+
+
+/* ---------------------------------------------------------
+   11. Formularios
+   --------------------------------------------------------- */
+
+.form-control,
+.form-select {
+    min-height: 44px;
+
+    background-color: var(--sut-surface);
+
+    border-color: var(--sut-border);
+
+    border-radius: var(--sut-radius-sm);
+
+    color: var(--sut-text);
+}
+
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--sut-primary);
+
+    box-shadow:
+        0 0 0 0.2rem rgba(47, 98, 74, 0.16);
+}
+
+
+/* ---------------------------------------------------------
+   12. Alertas
+   --------------------------------------------------------- */
+
+.alert {
+    border-radius: var(--sut-radius-md);
+}
+
+
+/* ---------------------------------------------------------
+   13. Accesibilidad
+   --------------------------------------------------------- */
+
+:focus-visible {
+    outline: 3px solid var(--sut-focus);
+    outline-offset: 3px;
+}
+
+
+.sut-skip-link {
+    z-index: 1100;
+}
+
+
+/* ---------------------------------------------------------
+   14. Utilidades SUT
+   --------------------------------------------------------- */
+
+.sut-surface {
+    color: var(--sut-text);
+}
+
+
+.sut-section-title {
+    margin-bottom: 0.5rem;
+}
+
+
+.sut-section-description {
+    max-width: 60rem;
+    color: var(--sut-text-muted);
+}
+
+
+/* =========================================================
+   COMUNICACIONES
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   15. Comunicaciones - Identidad principal
+   --------------------------------------------------------- */
+
+.sut-comunicaciones-hero {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--sut-surface-soft) 0%,
+            #f7faf8 55%,
+            var(--sut-surface) 100%
+        );
+
+    border: 1px solid var(--sut-border-strong);
+
+    box-shadow: var(--sut-shadow-md);
+}
+
+
+.sut-comunicaciones-hero::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 6px;
+    height: 100%;
+
+    background-color: var(--sut-primary);
+}
+
+
+.sut-comunicaciones-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+.sut-comunicaciones-hero .text-primary {
+    display: inline-flex;
+
+    width: fit-content;
+
+    padding: 0.3rem 0.7rem;
+
+    background-color: var(--sut-primary-soft);
+
+    border: 1px solid var(--sut-border-strong);
+    border-radius: 999px;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+.sut-comunicaciones-hero h1 {
+    max-width: 12ch;
+
+    color: var(--sut-text);
+
+    letter-spacing: -0.03em;
+}
+
+
+.sut-comunicaciones-hero .lead {
+    max-width: 40rem;
+
+    color: #4d6054;
+
+    font-size: clamp(
+        1.1rem,
+        1.45vw,
+        1.32rem
+    );
+
+    font-weight: 550;
+    line-height: 1.55;
+}
+
+
+/* ---------------------------------------------------------
+   16. Comunicaciones - Guia rapida
+   --------------------------------------------------------- */
+
+.sut-help-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background-color: var(--sut-surface-soft);
+
+    border: 1px solid var(--sut-border-strong);
+
+    box-shadow: var(--sut-shadow-md);
+}
+
+
+.sut-help-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background-color: var(--sut-primary);
+}
+
+
+.sut-help-card > .fw-semibold {
+    color: var(--sut-primary);
+
+    font-weight: 700;
+}
+
+
+.sut-help-card h2 {
+    color: var(--sut-text);
+
+    font-weight: 750;
+}
+
+
+.sut-help-step {
+    display: inline-flex;
+
+    width: 2rem;
+    height: 2rem;
+
+    flex: 0 0 2rem;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--sut-primary);
+
+    border-radius: 999px;
+
+    color: #ffffff;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    box-shadow:
+        0 3px 8px rgba(47, 98, 74, 0.16);
+}
+
+
+.sut-help-card .d-flex .fw-semibold {
+    color: var(--sut-text);
+
+    font-weight: 700;
+}
+
+
+.sut-help-card .small {
+    color: var(--sut-text-muted);
+
+    line-height: 1.45;
+}
+
+
+.sut-help-card .btn-primary {
+    min-width: 170px;
+
+    background-color: var(--sut-primary);
+
+    border-color: var(--sut-primary);
+
+    color: #ffffff;
+}
+
+
+.sut-help-card .btn-primary:hover,
+.sut-help-card .btn-primary:focus {
+    background-color: var(--sut-primary-hover);
+
+    border-color: var(--sut-primary-hover);
+
+    color: #ffffff;
+}
+
+
+/* ---------------------------------------------------------
+   17. Comunicaciones - Contenedor publicaciones
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface {
+    background-color: #fdfefc;
+
+    border: 1px solid var(--sut-border);
+
+    border-radius: var(--sut-radius-lg);
+
+    box-shadow: var(--sut-shadow-md);
+}
+
+
+/* Encabezado principal del bloque */
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface
+> .mb-4 {
+    position: relative;
+
+    max-width: none;
+
+    padding:
+        1.25rem
+        1.4rem;
+
+    background-color: var(--sut-surface-soft);
+
+    border: 1px solid var(--sut-border-strong);
+    border-radius: var(--sut-radius-md);
+
+    box-shadow:
+        0 3px 10px rgba(27, 55, 39, 0.04);
+}
+
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface
+> .mb-4::before {
+    content: "";
+
+    display: block;
+
+    width: 3rem;
+    height: 0.25rem;
+
+    margin-bottom: 1rem;
+
+    background-color: var(--sut-primary);
+
+    border-radius: 999px;
+}
+
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface
+> .mb-4
+.text-primary {
+    margin-bottom: 0.4rem !important;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.92rem;
+
+    font-weight: 700;
+}
+
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface
+> .mb-4
+h2 {
+    margin-bottom: 0.5rem !important;
+
+    color: var(--sut-text);
+
+    font-weight: 750;
+}
+
+
+section[aria-labelledby="titulo-publicaciones"]
+> .sut-surface
+> .mb-4
+p:last-child {
+    max-width: 52rem;
+
+    color: #53655a;
+
+    font-size: 1.02rem;
+}
+
+
+/* ---------------------------------------------------------
+   18. Comunicaciones - Cabecera Noticias
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-noticias"]
+> .mb-3 {
+    position: relative;
+
+    margin-bottom: 1rem !important;
+
+    padding:
+        1rem
+        1.1rem;
+
+    background-color: #f7faf8;
+
+    border: 1px solid var(--sut-border);
+    border-left: 4px solid var(--sut-primary);
+    border-radius: var(--sut-radius-md);
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+> .mb-3
+.text-primary {
+    margin-bottom: 0.25rem !important;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.82rem;
+
+    font-weight: 750;
+
+    letter-spacing: 0.055em;
+
+    text-transform: uppercase;
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+> .mb-3
+h2 {
+    color: var(--sut-text);
+
+    font-weight: 750;
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+> .mb-3::after {
+    content: "Información reciente de la comunidad.";
+
+    display: block;
+
+    margin-top: 0.35rem;
+
+    color: var(--sut-text-muted);
+
+    font-size: 0.9rem;
+
+    line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   19. Comunicaciones - Zona Avisos
+   --------------------------------------------------------- */
+
+.sut-comunicaciones-avisos {
+    background:
+        linear-gradient(
+            180deg,
+            var(--sut-surface-soft) 0%,
+            #f5f8f5 100%
+        );
+
+    border: 1px solid var(--sut-border-strong);
+
+    border-radius: var(--sut-radius-md);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+
+section[aria-labelledby="titulo-avisos"]
+> .mb-3 {
+    position: relative;
+
+    margin-bottom: 1rem !important;
+
+    padding:
+        1rem
+        1.1rem;
+
+    background-color: #dfece2;
+
+    border: 1px solid var(--sut-border-strong);
+    border-left: 4px solid var(--sut-secondary);
+    border-radius: var(--sut-radius-md);
+}
+
+
+section[aria-labelledby="titulo-avisos"]
+> .mb-3
+.text-primary {
+    margin-bottom: 0.25rem !important;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.82rem;
+
+    font-weight: 750;
+
+    letter-spacing: 0.055em;
+
+    text-transform: uppercase;
+}
+
+
+section[aria-labelledby="titulo-avisos"]
+> .mb-3
+h2 {
+    color: var(--sut-text);
+
+    font-weight: 750;
+}
+
+
+section[aria-labelledby="titulo-avisos"]
+> .mb-3::after {
+    content: "Información que requiere tu atención.";
+
+    display: block;
+
+    margin-top: 0.35rem;
+
+    color: #4e6255;
+
+    font-size: 0.9rem;
+
+    font-weight: 550;
+
+    line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   20. Comunicaciones - Tarjetas publicaciones
+   --------------------------------------------------------- */
+
+.sut-publication-card,
+section[aria-labelledby="titulo-noticias"]
+article.card,
+section[aria-labelledby="titulo-avisos"]
+article.card {
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid var(--sut-border) !important;
+
+    border-radius: var(--sut-radius-md);
+
+    box-shadow: var(--sut-shadow-sm) !important;
+
+    transition:
+        border-color var(--sut-transition),
+        box-shadow var(--sut-transition),
+        transform var(--sut-transition);
+}
+
+
+/* Barra lateral Noticias */
+
+section[aria-labelledby="titulo-noticias"]
+.sut-publication-card::before,
+section[aria-labelledby="titulo-noticias"]
+article.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background-color: var(--sut-primary);
+}
+
+
+/* Barra lateral Avisos */
+
+section[aria-labelledby="titulo-avisos"]
+.sut-publication-card::before,
+section[aria-labelledby="titulo-avisos"]
+article.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background-color: var(--sut-secondary);
+}
+
+
+/* Interior */
+
+section[aria-labelledby="titulo-noticias"]
+article.card
+.card-body,
+section[aria-labelledby="titulo-avisos"]
+article.card
+.card-body {
+    padding:
+        1.6rem
+        1.6rem
+        1.6rem
+        1.9rem !important;
+}
+
+
+/* Hover */
+
+section[aria-labelledby="titulo-noticias"]
+article.card:hover,
+section[aria-labelledby="titulo-avisos"]
+article.card:hover {
+    border-color: var(--sut-border-strong) !important;
+
+    box-shadow: var(--sut-shadow-md) !important;
+
+    transform: translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   21. Comunicaciones - Tipografia tarjetas
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-noticias"]
+article h3,
+section[aria-labelledby="titulo-noticias"]
+article h4,
+section[aria-labelledby="titulo-avisos"]
+article h3,
+section[aria-labelledby="titulo-avisos"]
+article h4 {
+    color: var(--sut-text);
+
+    font-size: 1.18rem;
+
+    font-weight: 750;
+
+    line-height: 1.3;
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+article p:not(.small),
+section[aria-labelledby="titulo-avisos"]
+article p:not(.small) {
+    line-height: 1.55;
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+article p.small,
+section[aria-labelledby="titulo-avisos"]
+article p.small {
+    color: var(--sut-text-muted) !important;
+
+    font-size: 0.9rem;
+
+    opacity: 0.95;
+}
+
+
+/* ---------------------------------------------------------
+   22. Comunicaciones - Contadores
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-noticias"]
+.badge.text-bg-light,
+section[aria-labelledby="titulo-avisos"]
+.badge.text-bg-light {
+    padding: 0.45rem 0.7rem;
+
+    background-color: var(--sut-primary-soft) !important;
+
+    border: 1px solid var(--sut-border-strong) !important;
+
+    border-radius: 999px;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.82rem;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+
+/* Avisos un poco más marcados */
+
+section[aria-labelledby="titulo-avisos"]
+.badge.text-bg-light {
+    background-color: #dce9df !important;
+
+    border-color: #afc8b5 !important;
+
+    color: var(--sut-primary-hover) !important;
+}
+
+
+/* ---------------------------------------------------------
+   23. Comunicaciones - Badge Aviso
+   --------------------------------------------------------- */
+
+section[aria-labelledby="titulo-avisos"]
+article
+.badge.text-bg-secondary,
+.sut-alert-badge {
+    padding: 0.42rem 0.72rem;
+
+    background-color: var(--sut-secondary) !important;
+
+    border: 1px solid var(--sut-secondary);
+
+    border-radius: 999px;
+
+    color: #ffffff !important;
+
+    font-size: 0.78rem;
+
+    font-weight: 750;
+}
+
+
+/* ---------------------------------------------------------
+   24. Comunicaciones - Etiquetas internas
+   --------------------------------------------------------- */
+
+.sut-publication-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 0.32rem 0.7rem;
+
+    background-color: var(--sut-primary-soft);
+
+    border: 1px solid var(--sut-border-strong);
+
+    border-radius: 999px;
+
+    color: var(--sut-primary);
+
+    font-size: 0.78rem;
+
+    font-weight: 750;
+
+    letter-spacing: 0.025em;
+
+    line-height: 1;
+
+    text-transform: uppercase;
+}
+
+
+.sut-publication-content {
+    color: var(--sut-text-muted) !important;
+
+    font-size: 1rem;
+
+    line-height: 1.6;
+}
+
+
+.sut-publication-meta {
+    padding-top: 0.9rem;
+
+    border-top: 1px solid var(--sut-border);
+
+    color: var(--sut-text-muted);
+
+    font-size: 0.88rem;
+}
+
+
+/* ---------------------------------------------------------
+   25. Comunicaciones - Noticias
+   --------------------------------------------------------- */
+
+.sut-news-card {
+    background-color: var(--sut-surface);
+}
+
+
+.sut-news-card:hover {
+    border-color: var(--sut-border-strong) !important;
+
+    box-shadow: var(--sut-shadow-md) !important;
+}
+
+
+.sut-news-card::before {
+    background-color: var(--sut-primary) !important;
+}
+
+
+/* ---------------------------------------------------------
+   26. Comunicaciones - Avisos
+   --------------------------------------------------------- */
+
+.sut-alert-card {
+    background-color: #fbfcfb;
+
+    border-color: var(--sut-border-strong) !important;
+}
+
+
+.sut-alert-card .sut-publication-label {
+    padding-left: 0;
+
+    background-color: transparent;
+
+    border-color: transparent;
+
+    color: var(--sut-secondary);
+
+    text-transform: uppercase;
+}
+
+
+.sut-alert-card::before {
+    background-color: var(--sut-secondary) !important;
+}
+
+
+/* ---------------------------------------------------------
+   27. Comunicaciones - Estados vacios
+   --------------------------------------------------------- */
+
+.sut-empty-state {
+    background-color: rgba(255, 255, 255, 0.55);
+
+    border: 1px dashed var(--sut-border-strong) !important;
+}
+
+
+section[aria-labelledby="titulo-noticias"]
+.card
+.text-center,
+section[aria-labelledby="titulo-avisos"]
+.card
+.text-center {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* ---------------------------------------------------------
+   28. Comunicaciones - Avisos interactivos
+   --------------------------------------------------------- */
+
+.sut-alert-card {
+    cursor: pointer;
+}
+
+.sut-alert-card:hover {
+    border-color: var(--sut-primary) !important;
+
+    box-shadow:
+        0 10px 28px rgba(27, 55, 39, 0.11) !important;
+
+    transform: translateY(-2px);
+}
+
+.sut-alert-card:active {
+    transform: translateY(0);
+}
+
+/*
+   El boton permanece static para que Bootstrap
+   extienda stretched-link a toda la tarjeta.
+*/
+
+.sut-alert-card .stretched-link {
+    position: static;
+}
+
+
+/* ---------------------------------------------------------
+   29. Comunicaciones - Panel lateral de aviso
+   --------------------------------------------------------- */
+
+.sut-aviso-panel {
+    width: min(
+        100%,
+        560px
+    );
+
+    background-color: var(--sut-surface);
+
+    border-left: 1px solid var(--sut-border-strong);
+
+    border-radius:
+        var(--sut-radius-lg)
+        0
+        0
+        var(--sut-radius-lg);
+
+    overflow: hidden;
+
+    box-shadow:
+        -16px 0 48px rgba(27, 55, 39, 0.16);
+}
+
+/* Cabecera */
+
+.sut-aviso-panel .offcanvas-header {
+    position: relative;
+
+    align-items: flex-start;
+
+    padding:
+        2rem
+        2rem
+        1.75rem;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--sut-surface-soft) 0%,
+            #f7faf8 100%
+        );
+
+    border-bottom: 1px solid var(--sut-border-strong);
+}
+
+.sut-aviso-panel .offcanvas-header::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background-color: var(--sut-primary);
+}
+
+.sut-aviso-panel .offcanvas-header > div {
+    padding-right: 1.5rem;
+}
+
+.sut-aviso-panel .offcanvas-header .text-primary {
+    margin-bottom: 0.45rem !important;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.82rem;
+
+    font-weight: 750;
+
+    letter-spacing: 0.055em;
+
+    text-transform: uppercase;
+}
+
+.sut-aviso-panel .offcanvas-title {
+    max-width: 13ch;
+
+    color: var(--sut-text);
+
+    font-size: clamp(
+        1.65rem,
+        3vw,
+        2rem
+    );
+
+    font-weight: 750;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.025em;
+}
+
+/* Boton cerrar */
+
+.sut-aviso-panel .btn-close {
+    flex: 0 0 auto;
+
+    margin-top: 0.1rem;
+
+    padding: 0.75rem;
+
+    border-radius: 999px;
+
+    opacity: 0.65;
+
+    transition:
+        opacity var(--sut-transition),
+        background-color var(--sut-transition);
+}
+
+.sut-aviso-panel .btn-close:hover,
+.sut-aviso-panel .btn-close:focus {
+    background-color: rgba(47, 98, 74, 0.10);
+
+    opacity: 1;
+}
+
+/* Cuerpo */
+
+.sut-aviso-panel .offcanvas-body {
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 2rem;
+
+    background-color: var(--sut-surface);
+}
+
+/* Etiqueta Aviso */
+
+.sut-aviso-panel .sut-alert-badge {
+    width: fit-content;
+
+    margin-bottom: 1.25rem !important;
+
+    padding:
+        0.4rem
+        0.75rem;
+
+    background-color: var(--sut-primary-soft) !important;
+
+    border: 1px solid var(--sut-border-strong);
+
+    border-radius: 999px;
+
+    color: var(--sut-primary) !important;
+
+    font-size: 0.78rem;
+
+    font-weight: 750;
+
+    letter-spacing: 0.03em;
+}
+
+/* Contenido principal del aviso */
+
+.sut-aviso-contenido {
+    position: relative;
+
+    margin-bottom: 1.75rem;
+
+    padding:
+        1.35rem
+        1.4rem
+        1.35rem
+        1.6rem;
+
+    background-color: #f7faf8;
+
+    border: 1px solid var(--sut-border);
+
+    border-left: 4px solid var(--sut-primary);
+
+    border-radius: var(--sut-radius-md);
+
+    color: var(--sut-text) !important;
+
+    font-size: 1.08rem;
+
+    font-weight: 500;
+
+    line-height: 1.75;
+
+    white-space: pre-line;
+}
+
+/* Fecha de publicacion */
+
+.sut-aviso-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: baseline;
+
+    gap:
+        0.3rem
+        0.55rem;
+
+    padding-top: 1rem;
+
+    background-color: transparent;
+
+    border: 0;
+
+    border-top: 1px solid var(--sut-border);
+
+    border-radius: 0;
+}
+
+.sut-aviso-meta .small {
+    margin: 0 !important;
+
+    color: var(--sut-text-muted);
+
+    font-size: 0.78rem;
+
+    font-weight: 650;
+
+    letter-spacing: 0.035em;
+
+    text-transform: uppercase;
+}
+
+.sut-aviso-meta .fw-semibold {
+    margin: 0 !important;
+
+    color: var(--sut-text-muted);
+
+    font-size: 0.92rem;
+
+    font-weight: 550;
+}
+
+/* Boton Entendido */
+
+.sut-aviso-panel
+.offcanvas-body
+> .mt-4:last-child {
+    margin-top: auto !important;
+
+    padding-top: 2rem;
+}
+
+.sut-aviso-panel
+.offcanvas-body
+> .mt-4:last-child
+.btn {
+    width: 100%;
+
+    min-height: 52px;
+
+    border-radius: var(--sut-radius-md);
+
+    font-size: 1rem;
+
+    font-weight: 700;
+}
+
+/* Fondo del panel */
+
+.offcanvas-backdrop.show {
+    opacity: 0.38;
+}
+
+/* Panel lateral - Responsive */
+
+@media (max-width: 767.98px) {
+
+    .sut-aviso-panel {
+        width: 100%;
+
+        border-radius: 0;
+    }
+
+    .sut-aviso-panel .offcanvas-header {
+        padding:
+            1.5rem
+            1.25rem
+            1.25rem;
+    }
+
+    .sut-aviso-panel .offcanvas-body {
+        padding:
+            1.5rem
+            1.25rem;
+    }
+
+    .sut-aviso-contenido {
+        padding:
+            1.15rem
+            1.15rem
+            1.15rem
+            1.35rem;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   28. Tablet
+   --------------------------------------------------------- */
+
+@media (max-width: 991.98px) {
+
+    .display-5 {
+        max-width: none;
+    }
+
+
+    .sut-comunicaciones-hero,
+    .sut-help-card {
+        box-shadow: var(--sut-shadow-sm);
+    }
+
+
+    .sut-comunicaciones-avisos {
+        margin-top: 0.5rem;
+    }
+
+
+    section[aria-labelledby="titulo-noticias"]
+    > .mb-3,
+    section[aria-labelledby="titulo-avisos"]
+    > .mb-3 {
+        padding: 0.9rem 1rem;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   29. Movil
+   --------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+    #contenido-principal {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+
+    body {
+        font-size: 1rem;
+    }
+
+
+    h1,
+    .display-5 {
+        font-size: clamp(
+            2rem,
+            8vw,
+            2.55rem
+        );
+    }
+
+
+    .btn {
+        width: 100%;
+    }
+
+
+    .sut-navbar span[aria-label="Usuario actual"],
+    .sut-user-chip {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    section[aria-labelledby="titulo-servicios"]
+    .sut-surface {
+        min-height: auto;
+    }
+
+
+    .sut-help-card .btn-primary {
+        min-width: 0;
+    }
+
+
+    section[aria-labelledby="titulo-publicaciones"]
+    > .sut-surface {
+        padding: 1.25rem !important;
+    }
+
+
+    section[aria-labelledby="titulo-publicaciones"]
+    > .sut-surface
+    > .mb-4 {
+        padding: 1rem;
+    }
+
+
+    .sut-comunicaciones-avisos {
+        padding: 1.25rem !important;
+    }
+
+
+    section[aria-labelledby="titulo-noticias"]
+    article.card
+    .card-body,
+    section[aria-labelledby="titulo-avisos"]
+    article.card
+    .card-body {
+        padding:
+            1.25rem
+            1.25rem
+            1.25rem
+            1.5rem !important;
+    }
+
+
+    section[aria-labelledby="titulo-noticias"]
+    > .mb-3,
+    section[aria-labelledby="titulo-avisos"]
+    > .mb-3 {
+        padding: 0.9rem;
+    }
+
+
+    .sut-comunicaciones-hero::before {
+        width: 4px;
+    }
+
+}

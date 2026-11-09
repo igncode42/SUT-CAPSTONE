@@ -66,15 +66,16 @@ check --deploy → sin observaciones bajo perfil de producción simulado
 | Elemento solicitado | Estado actual | Respaldo |
 |---|---|---|
 | Arquitectura | **Implementada y documentada** | `docs/diagramas/01-arquitectura-sut.svg`; `config/`; Docker |
-| Modelo de datos | **Implementado** | modelos Django, 15 migraciones y PostgreSQL |
+| Modelo de datos | **Implementado y documentado** | modelos Django; 15 migraciones; `docs/diagramas/02-modelo-datos-sut.svg`; PostgreSQL |
 | Procesos principales | **Documentados** | diagramas de Proyectos, Reservas y Actividades |
 | Dockerización | **Implementada y verificada** | `Dockerfile`; `compose.yml`; `.dockerignore` |
 | Requisitos funcionales y no funcionales | **Documentados** | `docs/especificaciones/especificaciones-tecnicas.md` |
-| Pruebas automatizadas | **97/97 aprobadas** | archivos de tests; `docs/pruebas/` |
-| Plan formal de pruebas | v0.1 histórico; v0.2 pendiente de cierre | `docs/pruebas/` |
+| Pruebas automatizadas | **97/97 aprobadas** | archivos de tests; `docs/pruebas/pruebas.md` |
+| Plan formal de pruebas | **v0.2 completado** | `docs/pruebas/Plan_de_Pruebas_SUT_v0.2.xlsx`; v0.1 conservado en `docs/pruebas/historico/` |
+| End to End | **2 recorridos manuales ejecutados** | Proyectos y Certificados; Plan v0.2; `docs/pruebas/pruebas.md` |
 | Control de versiones | **Implementado** | Git / GitHub |
 | Gestión del trabajo | Scrum mediante Jira | tablero Jira; sincronización final 2.2 pendiente |
-| Evidencias | Histórico disponible; evidencia final 2.2 pendiente de consolidación | `docs/evidencias/` |
+| Evidencias | Histórico organizado; evidencia final 2.2 pendiente de consolidación | `docs/evidencias/historico/`; `docs/evidencias/fase-2.2/` |
 | Documentación de cierre | 2.1 histórica; cierre 2.2 pendiente | `docs/cierre/` |
 
 ## 6. Estado de pruebas
@@ -101,10 +102,20 @@ Total             97
 0 fallidas
 ```
 
+El Plan de Pruebas vigente para la Entrega 2.2 registra:
+
+```text
+Casos representativos    28
+OK                       28
+NOK                       0
+No ejecutados             0
+Avance                  100 %
+```
+
 También se ejecutaron recorridos End to End manuales de:
 
-- postulación, resolución y notificación de Proyecto;
-- solicitud, aprobación y emisión de Certificado.
+- `Registro → membresía → postulación → revisión → aprobación → notificación`;
+- `Solicitud → aprobación → emisión → visualización`.
 
 No se dispone actualmente de pruebas End to End automatizadas mediante navegador.
 
@@ -126,4 +137,4 @@ La cadena utilizada durante el proyecto es:
 
 `Requisito → Jira → Implementación → Prueba → Commit → Evidencia → Documentación`
 
-Para la Entrega 2.2, Jira, evidencias y documentación se sincronizan con el estado técnico final antes de preparar la presentación y demostración.
+Para la Entrega 2.2, el producto, la documentación técnica y el plan de pruebas se encuentran consolidados. Jira y las evidencias finales se sincronizan antes de preparar la presentación y demostración.

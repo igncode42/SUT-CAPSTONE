@@ -204,7 +204,7 @@ Los casos negativos validan las reglas del sistema también frente a usos incorr
 
 ## 7. End to End manual
 
-Se ejecutaron recorridos completos de los dos flujos críticos definidos en el Plan de Pruebas v0.1.
+Se ejecutaron recorridos completos de los dos flujos críticos inicialmente definidos en el Plan de Pruebas v0.1 y registrados como ejecutados en la versión v0.2.
 
 ### Proyecto
 
@@ -264,9 +264,14 @@ Plan de Pruebas
 → planificación y registro formal
 ```
 
-`Plan_de_Pruebas_SUT_v0.1.xlsx` se conserva como evidencia histórica.
+Las versiones se organizan de la siguiente forma:
 
-Para la Entrega 2.2 se preparará `Plan_de_Pruebas_SUT_v0.2.xlsx`, reflejando el estado final del sistema y los recorridos ejecutados.
+- `historico/Plan_de_Pruebas_SUT_v0.1.xlsx`: evidencia histórica del checkpoint anterior;
+- `Plan_de_Pruebas_SUT_v0.2.xlsx`: plan vigente de la Entrega 2.2.
+
+La versión v0.2 contiene 28 casos representativos del trabajo realizado para la Entrega 2.2 y registra los recorridos End to End ejecutados.
+
+La suite automatizada completa permanece como respaldo técnico de las 97 pruebas del sistema.
 
 ## 10. Límites
 
