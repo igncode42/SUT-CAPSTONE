@@ -5,69 +5,199 @@
 {% block content %}
 
 
-<div class="row justify-content-center">
+<section
+    class="sut-reservation-create-section"
+    aria-labelledby="titulo-nueva-reserva"
+>
 
-    <div class="col-12 col-lg-8 col-xl-7">
+    <div class="row g-4 align-items-start justify-content-center">
 
 
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+        <!-- ================================================= -->
+        <!-- ORIENTACION                                       -->
+        <!-- ================================================= -->
 
-            <div>
+        <div class="col-12 col-lg-4">
 
-                <p class="text-primary fw-semibold mb-2">
+            <div
+                class="sut-surface sut-reservation-create-intro p-4 p-lg-5"
+            >
+
+                <p class="sut-reservation-create-kicker mb-3">
                     Reservas de espacios
                 </p>
 
-                <h1 class="fw-bold mb-2">
+                <h1
+                    id="titulo-nueva-reserva"
+                    class="display-5 fw-bold mb-3"
+                >
                     Nueva reserva
                 </h1>
 
-                <p class="text-secondary mb-0">
-                    Selecciona un espacio comunitario, la fecha
-                    y el horario que deseas reservar.
+                <p class="lead mb-4">
+                    Selecciona un espacio comunitario,
+                    la fecha y el horario que necesitas.
                 </p>
 
-            </div>
+
+                <div class="sut-reservation-create-guide">
+
+                    <p class="fw-semibold mb-3">
+                        Reservar es simple
+                    </p>
 
 
-            <div class="flex-shrink-0">
+                    <div class="d-grid gap-3">
 
-                <a
-                    href="{% url 'reservas:mis_reservas' %}"
-                    class="btn btn-outline-secondary"
-                >
-                    Volver
-                </a>
+
+                        <div class="d-flex gap-3">
+
+                            <strong class="sut-reservation-create-step">
+                                1
+                            </strong>
+
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Elige el espacio
+                                </p>
+
+                                <p class="small mb-0">
+                                    Selecciona el espacio comunitario.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex gap-3">
+
+                            <strong class="sut-reservation-create-step">
+                                2
+                            </strong>
+
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Define fecha y horario
+                                </p>
+
+                                <p class="small mb-0">
+                                    Indica cuándo deseas utilizarlo.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex gap-3">
+
+                            <strong class="sut-reservation-create-step">
+                                3
+                            </strong>
+
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Confirma tu reserva
+                                </p>
+
+                                <p class="small mb-0">
+                                    El sistema verificará la disponibilidad.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="sut-reservation-calendar-help mt-4">
+
+                    <p class="small mb-2">
+                        ¿Quieres revisar la disponibilidad primero?
+                    </p>
+
+                    <a
+                        href="{% url 'reservas:calendario' %}"
+                        class="btn btn-outline-primary w-100"
+                    >
+                        Ver calendario
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
 
-        <div
-            class="alert alert-info"
-            role="status"
-        >
-            El sistema verificará que el horario seleccionado
-            no se superponga con otra reserva existente.
-        </div>
+        <!-- ================================================= -->
+        <!-- FORMULARIO                                        -->
+        <!-- ================================================= -->
+
+        <div class="col-12 col-lg-8">
+
+            <div
+                class="sut-surface sut-reservation-create-card p-4 p-md-5"
+            >
 
 
-        <div class="card border-0 shadow-sm">
+                <header class="sut-reservation-create-header mb-4">
 
-            <div class="card-body p-4 p-md-5">
+                    <p class="text-primary fw-semibold mb-2">
+                        Datos de la reserva
+                    </p>
+
+                    <h2 class="h2 fw-bold mb-2">
+                        Reserva un espacio
+                    </h2>
+
+                    <p class="mb-0">
+                        Completa los datos para registrar tu solicitud.
+                    </p>
+
+                </header>
+
+
+                <div class="sut-reservation-create-info mb-4">
+
+                    <div class="sut-reservation-create-info-mark">
+                        i
+                    </div>
+
+                    <p class="mb-0">
+                        El sistema verificará que el horario seleccionado
+                        no se superponga con otra reserva existente.
+                    </p>
+
+                </div>
 
 
                 {% if form.non_field_errors %}
 
                     <div
-                        class="alert alert-danger"
+                        class="alert alert-danger sut-reservation-create-error"
                         role="alert"
                     >
 
-                        {% for error in form.non_field_errors %}
-                            <div>{{ error }}</div>
-                        {% endfor %}
+                        <strong>
+                            No pudimos registrar la reserva.
+                        </strong>
+
+                        <div class="small mt-1">
+
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+
+                        </div>
 
                     </div>
 
@@ -77,7 +207,7 @@
                 <form
                     method="post"
                     novalidate
-                    class="reserva-form"
+                    class="reserva-form sut-reservation-create-form"
                 >
 
                     {% csrf_token %}
@@ -102,51 +232,57 @@
                                 "
                             >
 
-                                <label
-                                    for="{{ field.id_for_label }}"
-                                    class="form-label fw-semibold"
-                                >
-                                    {{ field.label }}
+                                <div class="sut-reservation-create-field">
 
-                                    {% if field.field.required %}
-
-                                        <span
-                                            class="text-danger"
-                                            aria-hidden="true"
-                                        >
-                                            *
-                                        </span>
-
-                                    {% endif %}
-                                </label>
-
-
-                                {{ field }}
-
-
-                                {% if field.help_text %}
-
-                                    <div class="form-text">
-                                        {{ field.help_text }}
-                                    </div>
-
-                                {% endif %}
-
-
-                                {% if field.errors %}
-
-                                    <div
-                                        class="text-danger small mt-1"
-                                        role="alert"
+                                    <label
+                                        for="{{ field.id_for_label }}"
+                                        class="form-label fw-semibold"
                                     >
 
-                                        {% for error in field.errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
+                                        {{ field.label }}
 
-                                    </div>
+                                        {% if field.field.required %}
 
-                                {% endif %}
+                                            <span
+                                                class="sut-required"
+                                                aria-hidden="true"
+                                            >
+                                                *
+                                            </span>
+
+                                        {% endif %}
+
+                                    </label>
+
+
+                                    {{ field }}
+
+
+                                    {% if field.help_text %}
+
+                                        <div class="form-text">
+                                            {{ field.help_text }}
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    {% if field.errors %}
+
+                                        <div
+                                            class="sut-field-error mt-2"
+                                            role="alert"
+                                        >
+
+                                            {% for error in field.errors %}
+                                                <div>{{ error }}</div>
+                                            {% endfor %}
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
 
                             </div>
 
@@ -156,14 +292,21 @@
                     </div>
 
 
-                    <p class="text-secondary small mt-4 mb-4">
-                        Los campos marcados con
-                        <span class="text-danger">*</span>
-                        son obligatorios.
-                    </p>
+                    <div class="sut-reservation-create-required mt-4">
+
+                        <span
+                            class="sut-required"
+                            aria-hidden="true"
+                        >
+                            *
+                        </span>
+
+                        Los campos marcados son obligatorios.
+
+                    </div>
 
 
-                    <div class="d-grid d-sm-flex gap-2">
+                    <div class="sut-reservation-create-actions mt-4">
 
                         <button
                             type="submit"
@@ -172,14 +315,12 @@
                             Reservar espacio
                         </button>
 
-
                         <a
                             href="{% url 'reservas:calendario' %}"
                             class="btn btn-outline-primary"
                         >
                             Ver calendario
                         </a>
-
 
                         <a
                             href="{% url 'reservas:mis_reservas' %}"
@@ -197,37 +338,10 @@
 
         </div>
 
+
     </div>
 
-</div>
-
-
-<style>
-
-    .reserva-form input:not([type="checkbox"]):not([type="radio"]),
-    .reserva-form select,
-    .reserva-form textarea {
-        display: block;
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: var(--bs-body-color);
-        background-color: var(--bs-body-bg);
-        border: var(--bs-border-width) solid var(--bs-border-color);
-        border-radius: var(--bs-border-radius);
-    }
-
-
-    .reserva-form input:focus,
-    .reserva-form select:focus,
-    .reserva-form textarea:focus {
-        border-color: #86b7fe;
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-</style>
+</section>
 
 
 {% endblock %}

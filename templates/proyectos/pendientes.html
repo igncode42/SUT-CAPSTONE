@@ -5,99 +5,217 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Administración
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Proyectos pendientes
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Revisa las postulaciones vecinales y registra su resolución.
-        </p>
-
-    </div>
+<section
+    class="sut-project-review-section"
+    aria-labelledby="titulo-proyectos-pendientes"
+>
 
 
-    <div class="flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
+    <header class="sut-project-review-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-project-review-kicker mb-3">
+                    Administración
+                </p>
+
+                <h1
+                    id="titulo-proyectos-pendientes"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Proyectos pendientes
+                </h1>
+
+                <p class="lead mb-0">
+                    Revisa las postulaciones vecinales
+                    y registra su resolución.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <div class="sut-project-review-hero-actions">
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    {% if proyectos %}
+
+
+        <!-- ================================================= -->
+        <!-- 2. ORIENTACION                                   -->
+        <!-- ================================================= -->
+
+        <div
+            class="sut-project-review-info mb-4"
+            role="status"
         >
-            Volver al panel
-        </a>
 
-    </div>
+            <span
+                class="sut-project-review-info-mark"
+                aria-hidden="true"
+            >
+                i
+            </span>
 
-</div>
+            <div>
 
+                <p class="fw-semibold mb-1">
+                    Revisión pendiente
+                </p>
 
-{% if proyectos %}
+                <p class="mb-0">
+                    Cada proyecto permanecerá pendiente hasta que sea
+                    <strong>aprobado</strong> o
+                    <strong>rechazado</strong>.
+                </p>
 
+            </div>
 
-    <div
-        class="alert alert-info"
-        role="status"
-    >
-        Cada proyecto permanecerá pendiente hasta que sea
-        <strong>aprobado</strong> o <strong>rechazado</strong>.
-    </div>
-
-
-    <div class="row g-3">
-
-        {% for proyecto in proyectos %}
-
-            <div class="col-12">
-
-                <article class="card border-0 shadow-sm">
-
-                    <div class="card-body p-4">
+        </div>
 
 
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-3">
+        <!-- ================================================= -->
+        <!-- 3. LISTADO                                       -->
+        <!-- ================================================= -->
 
-                            <div class="flex-grow-1">
+        <section
+            class="sut-project-review-shell p-3 p-md-4"
+            aria-labelledby="titulo-listado-pendientes"
+        >
 
-                                <h2 class="h5 fw-bold mb-2">
-                                    {{ proyecto.titulo }}
-                                </h2>
 
-                                <p class="text-secondary mb-0">
+            <header class="sut-project-review-list-header mb-4">
+
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
+
+                    <div>
+
+                        <p class="text-primary fw-semibold mb-2">
+                            Revisión administrativa
+                        </p>
+
+                        <h2
+                            id="titulo-listado-pendientes"
+                            class="h3 fw-bold mb-2"
+                        >
+                            Postulaciones por resolver
+                        </h2>
+
+                        <p class="mb-0">
+                            Revisa la información de cada propuesta
+                            antes de registrar una decisión.
+                        </p>
+
+                    </div>
+
+
+                    <span class="sut-project-review-count">
+
+                        {{ proyectos|length }}
+
+                        {% if proyectos|length == 1 %}
+                            pendiente
+                        {% else %}
+                            pendientes
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="d-grid gap-3">
+
+                {% for proyecto in proyectos %}
+
+                    <article class="sut-project-review-card">
+
+                        <div class="sut-project-review-card-body">
+
+
+                            <!-- CABECERA DEL PROYECTO -->
+
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
+
+                                <div class="flex-grow-1">
+
+                                    <span class="sut-project-review-label">
+                                        Proyecto vecinal
+                                    </span>
+
+                                    <h3 class="h4 fw-bold mb-0">
+                                        {{ proyecto.titulo }}
+                                    </h3>
+
+                                </div>
+
+
+                                <span class="sut-project-review-status flex-shrink-0">
+                                    Pendiente de revisión
+                                </span>
+
+                            </div>
+
+
+                            <!-- DESCRIPCION -->
+
+                            <div class="sut-project-review-description mb-3">
+
+                                <span class="sut-project-review-detail-label">
+                                    Descripción
+                                </span>
+
+                                <p class="mb-0">
                                     {{ proyecto.descripcion }}
                                 </p>
 
                             </div>
 
 
-                            <div class="flex-shrink-0">
+                            <!-- POSTULANTE -->
 
-                                <span class="badge text-bg-secondary">
-                                    Pendiente de revisión
+                            <div class="sut-project-review-author mb-4">
+
+                                <span class="sut-project-review-detail-label">
+                                    Postulado por
                                 </span>
+
+                                <strong>
+                                    {{ proyecto.vecino }}
+                                </strong>
 
                             </div>
 
-                        </div>
 
+                            <!-- ACCIONES -->
 
-                        <div class="border-top pt-3">
-
-                            <p class="small text-secondary mb-3">
-                                Postulado por:
-                                <strong class="text-body">
-                                    {{ proyecto.vecino }}
-                                </strong>
-                            </p>
-
-
-                            <div class="d-grid d-sm-flex gap-2">
+                            <div class="sut-project-review-actions">
 
 
                                 <form
@@ -109,7 +227,7 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-success w-100"
+                                        class="btn sut-project-approve"
                                     >
                                         Aprobar proyecto
                                     </button>
@@ -126,9 +244,9 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-outline-danger w-100"
+                                        class="btn sut-project-reject"
                                     >
-                                        Rechazar
+                                        Rechazar proyecto
                                     </button>
 
                                 </form>
@@ -136,41 +254,52 @@
 
                             </div>
 
+
                         </div>
 
+                    </article>
 
-                    </div>
-
-                </article>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
 
-    </div>
-
-
-{% else %}
+        </section>
 
 
-    <div class="card border-0 shadow-sm">
+    {% else %}
 
-        <div class="card-body p-4 p-md-5 text-center">
 
-            <h2 class="h4 fw-bold mb-2">
+        <!-- ================================================= -->
+        <!-- 4. ESTADO VACIO                                  -->
+        <!-- ================================================= -->
+
+        <section class="sut-project-review-empty">
+
+            <div class="sut-project-review-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Administración
+            </p>
+
+            <h2 class="h3 fw-bold mb-2">
                 No hay proyectos pendientes
             </h2>
 
-            <p class="text-secondary mb-0">
-                Las nuevas postulaciones aparecerán aquí cuando requieran revisión.
+            <p class="mb-0">
+                Las nuevas postulaciones aparecerán aquí
+                cuando requieran revisión.
             </p>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

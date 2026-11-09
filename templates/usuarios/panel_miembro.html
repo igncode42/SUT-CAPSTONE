@@ -4,112 +4,229 @@
 
 {% block content %}
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
 
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Zona de miembro
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Miembro de junta
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Desde esta sección puedes postular proyectos vecinales
-            y consultar el estado de tus postulaciones.
-        </p>
-
-    </div>
-
-    <div class="flex-shrink-0">
-
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
+<section
+    class="sut-member-section"
+    aria-labelledby="titulo-miembro-junta"
+>
 
 
-<section aria-labelledby="titulo-proyectos">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-    <h2
-        id="titulo-proyectos"
-        class="h4 fw-bold mb-3"
+    <header class="sut-member-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-member-kicker mb-3">
+                    Zona de miembro
+                </p>
+
+                <h1
+                    id="titulo-miembro-junta"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Miembro de junta
+                </h1>
+
+                <p class="lead mb-0">
+                    Desde esta sección puedes postular proyectos vecinales
+                    y consultar el estado de tus postulaciones.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <div class="sut-member-hero-actions">
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- 2. PROYECTOS VECINALES                            -->
+    <!-- ================================================= -->
+
+    <section
+        class="sut-member-projects-shell p-3 p-md-4"
+        aria-labelledby="titulo-proyectos"
     >
-        Proyectos vecinales
-    </h2>
 
 
-    <div class="row g-4">
+        <header class="sut-member-projects-header mb-4">
+
+            <p class="text-primary fw-semibold mb-2">
+                Participación vecinal
+            </p>
+
+            <h2
+                id="titulo-proyectos"
+                class="h3 fw-bold mb-2"
+            >
+                Proyectos vecinales
+            </h2>
+
+            <p class="mb-0">
+                Presenta nuevas propuestas para la comunidad
+                y revisa el estado de los proyectos que ya enviaste.
+            </p>
+
+        </header>
 
 
-        <div class="col-12 col-md-6">
+        <div class="row g-4">
 
-            <div class="card border-0 shadow-sm h-100">
 
-                <div class="card-body p-4 d-flex flex-column">
+            <!-- ============================================= -->
+            <!-- POSTULAR PROYECTO                             -->
+            <!-- ============================================= -->
 
-                    <h3 class="h5 fw-bold">
-                        Postular proyecto
-                    </h3>
+            <div class="col-12 col-lg-6">
 
-                    <p class="text-secondary flex-grow-1">
-                        Presenta una nueva propuesta para que pueda ser
-                        revisada y resuelta por la directiva.
-                    </p>
+                <article class="sut-member-project-card h-100">
 
-                    <a
-                        href="{% url 'proyectos:crear' %}"
-                        class="btn btn-primary align-self-start"
-                    >
-                        Nueva postulación
-                    </a>
+                    <div class="sut-member-project-card-body">
 
-                </div>
+
+                        <span class="sut-member-project-label">
+                            Nueva propuesta
+                        </span>
+
+
+                        <h3 class="h4 fw-bold mb-2">
+                            Postular proyecto
+                        </h3>
+
+                        <p class="mb-4">
+                            Presenta una nueva propuesta para que pueda ser
+                            revisada y resuelta por la directiva.
+                        </p>
+
+
+                        <div class="sut-member-project-help mb-4">
+
+                            <span class="sut-member-project-help-mark">
+                                1
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Envía tu propuesta
+                                </strong>
+
+                                <p class="small mb-0">
+                                    Completa los datos del proyecto
+                                    y registra tu postulación.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'proyectos:crear' %}"
+                            class="btn btn-primary mt-auto align-self-start"
+                        >
+                            Nueva postulación
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
+
+
+            <!-- ============================================= -->
+            <!-- MIS PROYECTOS                                 -->
+            <!-- ============================================= -->
+
+            <div class="col-12 col-lg-6">
+
+                <article class="sut-member-project-card sut-member-project-card-secondary h-100">
+
+                    <div class="sut-member-project-card-body">
+
+
+                        <span class="sut-member-project-label">
+                            Seguimiento
+                        </span>
+
+
+                        <h3 class="h4 fw-bold mb-2">
+                            Mis proyectos
+                        </h3>
+
+                        <p class="mb-4">
+                            Consulta tus proyectos enviados y revisa
+                            el estado actual de cada postulación.
+                        </p>
+
+
+                        <div class="sut-member-project-help mb-4">
+
+                            <span class="sut-member-project-help-mark">
+                                2
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Revisa tus postulaciones
+                                </strong>
+
+                                <p class="small mb-0">
+                                    Consulta el estado de los proyectos
+                                    que ya fueron registrados.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'proyectos:mis_proyectos' %}"
+                            class="btn btn-outline-primary mt-auto align-self-start"
+                        >
+                            Ver mis proyectos
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
 
         </div>
 
 
-        <div class="col-12 col-md-6">
+    </section>
 
-            <div class="card border-0 shadow-sm h-100">
-
-                <div class="card-body p-4 d-flex flex-column">
-
-                    <h3 class="h5 fw-bold">
-                        Mis proyectos
-                    </h3>
-
-                    <p class="text-secondary flex-grow-1">
-                        Consulta tus proyectos enviados y revisa
-                        el estado actual de cada postulación.
-                    </p>
-
-                    <a
-                        href="{% url 'proyectos:mis_proyectos' %}"
-                        class="btn btn-outline-primary align-self-start"
-                    >
-                        Ver mis proyectos
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-    </div>
 
 </section>
+
 
 {% endblock %}

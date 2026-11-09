@@ -5,137 +5,177 @@
 {% block content %}
 
 
-<div class="row justify-content-center">
-
-    <div class="col-12 col-lg-10 col-xl-9">
-
-
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
-
-            <div>
-
-                <p class="text-primary fw-semibold mb-1">
-                    Certificados de residencia
-                </p>
-
-                <p class="text-secondary mb-0">
-                    Documento emitido por el Sistema Unidad Territorial.
-                </p>
-
-            </div>
+<section
+    class="sut-certificate-view-section"
+    aria-labelledby="titulo-certificado"
+>
 
 
-            <a
-                href="{% url 'certificados:mis_solicitudes' %}"
-                class="btn btn-outline-secondary align-self-start align-self-sm-auto"
-            >
-                Volver a mis certificados
-            </a>
+    <!-- ================================================= -->
+    <!-- 1. NAVEGACION                                    -->
+    <!-- ================================================= -->
+
+    <div class="sut-certificate-view-topbar mb-4">
+
+        <div>
+
+            <p class="text-primary fw-semibold mb-1">
+                Certificados de residencia
+            </p>
+
+            <p class="mb-0">
+                Documento emitido por el Sistema Unidad Territorial.
+            </p>
 
         </div>
 
 
-        <article class="card border-0 shadow-sm">
-
-            <div class="card-body p-4 p-md-5">
-
-
-                <header class="text-center mb-5">
-
-                    <span class="badge text-bg-success mb-3">
-                        Emitido
-                    </span>
-
-                    <h1 class="fw-bold mb-2">
-                        Certificado de residencia
-                    </h1>
-
-                    <p class="text-secondary mb-0">
-                        Sistema Unidad Territorial
-                    </p>
-
-                </header>
-
-
-                <section class="mb-5">
-
-                    <p class="text-secondary mb-2">
-                        Se certifica que:
-                    </p>
-
-                    <h2 class="h3 fw-bold mb-0">
-                        {{ certificado.nombre_vecino }}
-                        {{ certificado.apellido_vecino }}
-                    </h2>
-
-                </section>
-
-
-                <section aria-label="Datos del certificado">
-
-                    <dl class="row mb-0">
-
-
-                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
-                            Identificación
-                        </dt>
-
-                        <dd class="col-12 col-md-8 mb-3">
-                            {{ certificado.identificacion_vecino }}
-                        </dd>
-
-
-                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
-                            Dirección
-                        </dt>
-
-                        <dd class="col-12 col-md-8 mb-3">
-                            {{ certificado.direccion_vecino }}
-                        </dd>
-
-
-                        <dt class="col-12 col-md-4 mb-1 mb-md-3">
-                            Fecha de emisión
-                        </dt>
-
-                        <dd class="col-12 col-md-8 mb-3">
-                            {{ certificado.fecha_emision }}
-                        </dd>
-
-
-                        <dt class="col-12 col-md-4 mb-1">
-                            N.º de certificado
-                        </dt>
-
-                        <dd class="col-12 col-md-8 mb-0">
-                            {{ certificado.pk }}
-                        </dd>
-
-
-                    </dl>
-
-                </section>
-
-
-                <hr class="my-5">
-
-
-                <footer>
-
-                    <p class="text-secondary small mb-0">
-                        Este documento fue emitido por el Sistema Unidad Territorial.
-                    </p>
-
-                </footer>
-
-
-            </div>
-
-        </article>
+        <a
+            href="{% url 'certificados:mis_solicitudes' %}"
+            class="btn btn-outline-secondary"
+        >
+            ← Volver a mis certificados
+        </a>
 
     </div>
 
-</div>
+
+    <!-- ================================================= -->
+    <!-- 2. DOCUMENTO                                     -->
+    <!-- ================================================= -->
+
+    <article class="sut-certificate-document">
+
+
+        <div class="sut-certificate-document-inner">
+
+
+            <!-- CABECERA -->
+
+            <header class="sut-certificate-document-header">
+
+                <div class="sut-certificate-document-brand mb-4">
+                    SUT
+                </div>
+
+                <span class="sut-certificate-view-status mb-3">
+                    Emitido
+                </span>
+
+                <h1
+                    id="titulo-certificado"
+                    class="display-5 fw-bold mb-2"
+                >
+                    Certificado de residencia
+                </h1>
+
+                <p class="mb-0">
+                    Sistema Unidad Territorial
+                </p>
+
+            </header>
+
+
+            <!-- DECLARACION -->
+
+            <section class="sut-certificate-declaration">
+
+                <p class="sut-certificate-declaration-label mb-2">
+                    Se certifica que
+                </p>
+
+                <h2 class="h2 fw-bold mb-0">
+                    {{ certificado.nombre_vecino }}
+                    {{ certificado.apellido_vecino }}
+                </h2>
+
+            </section>
+
+
+            <!-- DATOS -->
+
+            <section
+                class="sut-certificate-data"
+                aria-label="Datos del certificado"
+            >
+
+                <div class="sut-certificate-data-row">
+
+                    <span class="sut-certificate-data-label">
+                        Identificación
+                    </span>
+
+                    <strong>
+                        {{ certificado.identificacion_vecino }}
+                    </strong>
+
+                </div>
+
+
+                <div class="sut-certificate-data-row">
+
+                    <span class="sut-certificate-data-label">
+                        Dirección
+                    </span>
+
+                    <strong>
+                        {{ certificado.direccion_vecino }}
+                    </strong>
+
+                </div>
+
+
+                <div class="sut-certificate-data-row">
+
+                    <span class="sut-certificate-data-label">
+                        Fecha de emisión
+                    </span>
+
+                    <strong>
+                        {{ certificado.fecha_emision }}
+                    </strong>
+
+                </div>
+
+
+                <div class="sut-certificate-data-row">
+
+                    <span class="sut-certificate-data-label">
+                        N.º de certificado
+                    </span>
+
+                    <strong>
+                        #{{ certificado.pk }}
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- PIE -->
+
+            <footer class="sut-certificate-document-footer">
+
+                <div class="sut-certificate-footer-line"></div>
+
+                <p class="mb-1">
+                    Sistema Unidad Territorial
+                </p>
+
+                <p class="small mb-0">
+                    Este documento fue emitido por el Sistema Unidad Territorial.
+                </p>
+
+            </footer>
+
+
+        </div>
+
+    </article>
+
+
+</section>
 
 
 {% endblock %}

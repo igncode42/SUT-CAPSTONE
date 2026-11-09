@@ -17,7 +17,7 @@
     <div class="row g-4 align-items-stretch">
 
 
-        <!-- IDENTIDAD DE LA PAGINA -->
+        <!-- IDENTIDAD -->
 
         <div class="col-12 col-lg-7">
 
@@ -197,12 +197,12 @@
     aria-labelledby="titulo-publicaciones"
 >
 
-    <div class="sut-surface p-4 p-lg-5">
+    <div class="sut-surface sut-publicaciones-shell p-4 p-lg-5">
 
 
         <!-- ENCABEZADO -->
 
-        <div class="mb-4">
+        <header class="sut-publicaciones-header mb-4">
 
             <p class="text-primary fw-semibold mb-2">
                 Comunidad
@@ -220,10 +220,10 @@
                 de tu comunidad.
             </p>
 
-        </div>
+        </header>
 
 
-        <div class="row g-4">
+        <div class="row g-4 align-items-start">
 
 
             <!-- ============================================= -->
@@ -235,12 +235,12 @@
                 aria-labelledby="titulo-noticias"
             >
 
-                <div class="h-100">
+                <div class="sut-comunicaciones-noticias h-100 p-4">
 
 
                     <!-- CABECERA -->
 
-                    <div class="mb-3">
+                    <header class="sut-publicaciones-subheader mb-4">
 
                         <div
                             class="d-flex justify-content-between align-items-end gap-3"
@@ -264,7 +264,7 @@
 
                             {% if noticias %}
 
-                                <span class="badge text-bg-light border">
+                                <span class="sut-count-badge">
 
                                     {{ noticias|length }}
 
@@ -280,7 +280,11 @@
 
                         </div>
 
-                    </div>
+                        <p class="sut-subheader-description mb-0">
+                            Información reciente para mantenerte al día.
+                        </p>
+
+                    </header>
 
 
                     <!-- LISTADO -->
@@ -292,10 +296,10 @@
                             {% for noticia in noticias %}
 
                                 <article
-                                    class="card border-0 shadow-sm sut-publication-card sut-news-card"
+                                    class="card sut-publication-card sut-news-card"
                                 >
 
-                                    <div class="card-body p-4">
+                                    <div class="card-body">
 
                                         <span class="sut-publication-label mb-3">
                                             Noticia
@@ -309,6 +313,7 @@
                                             {{ noticia.contenido }}
                                         </p>
 
+
                                         <div class="sut-publication-meta">
 
                                             <span>
@@ -317,6 +322,31 @@
                                             </span>
 
                                         </div>
+
+
+                                        {% if puede_publicar %}
+
+                                            <div class="sut-publication-admin-actions">
+
+                                                <a
+                                                    href="{% url 'comunicaciones:editar_noticia' noticia.pk %}"
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    aria-label="Editar noticia: {{ noticia.titulo }}"
+                                                >
+                                                    Editar
+                                                </a>
+
+                                                <a
+                                                    href="{% url 'comunicaciones:eliminar_noticia' noticia.pk %}"
+                                                    class="btn btn-outline-danger btn-sm"
+                                                    aria-label="Eliminar noticia: {{ noticia.titulo }}"
+                                                >
+                                                    Eliminar
+                                                </a>
+
+                                            </div>
+
+                                        {% endif %}
 
                                     </div>
 
@@ -329,7 +359,7 @@
 
                     {% else %}
 
-                        <div class="card border-0 shadow-sm sut-empty-state">
+                        <div class="card sut-empty-state">
 
                             <div class="card-body p-4 text-center">
 
@@ -370,7 +400,7 @@
 
                     <!-- CABECERA -->
 
-                    <div class="mb-3">
+                    <header class="sut-publicaciones-subheader sut-avisos-subheader mb-4">
 
                         <div
                             class="d-flex justify-content-between align-items-end gap-3"
@@ -394,7 +424,7 @@
 
                             {% if avisos %}
 
-                                <span class="badge text-bg-light border">
+                                <span class="sut-count-badge sut-count-badge-alert">
 
                                     {{ avisos|length }}
 
@@ -410,7 +440,11 @@
 
                         </div>
 
-                    </div>
+                        <p class="sut-subheader-description mb-0">
+                            Información que conviene revisar con atención.
+                        </p>
+
+                    </header>
 
 
                     <!-- LISTADO -->
@@ -422,16 +456,16 @@
                             {% for aviso in avisos %}
 
                                 <article
-                                    class="card border-0 shadow-sm sut-publication-card sut-alert-card position-relative"
+                                    class="card sut-publication-card sut-alert-card position-relative"
                                 >
 
-                                    <div class="card-body p-4">
+                                    <div class="card-body">
 
                                         <div
                                             class="d-flex justify-content-between align-items-start gap-3 mb-3"
                                         >
 
-                                            <span class="sut-publication-label">
+                                            <span class="sut-publication-label sut-important-label">
                                                 Importante
                                             </span>
 
@@ -456,7 +490,7 @@
 
                                         <button
                                             type="button"
-                                            class="btn btn-primary btn-sm mb-4 stretched-link"
+                                            class="btn btn-primary btn-sm sut-view-alert mb-4 stretched-link"
                                             data-bs-toggle="offcanvas"
                                             data-bs-target="#aviso-{{ aviso.id }}"
                                             aria-controls="aviso-{{ aviso.id }}"
@@ -474,6 +508,31 @@
                                             </span>
 
                                         </div>
+
+
+                                        {% if puede_publicar %}
+
+                                            <div class="sut-publication-admin-actions">
+
+                                                <a
+                                                    href="{% url 'comunicaciones:editar_aviso' aviso.pk %}"
+                                                    class="btn btn-outline-primary btn-sm"
+                                                    aria-label="Editar aviso: {{ aviso.titulo }}"
+                                                >
+                                                    Editar
+                                                </a>
+
+                                                <a
+                                                    href="{% url 'comunicaciones:eliminar_aviso' aviso.pk %}"
+                                                    class="btn btn-outline-danger btn-sm"
+                                                    aria-label="Eliminar aviso: {{ aviso.titulo }}"
+                                                >
+                                                    Eliminar
+                                                </a>
+
+                                            </div>
+
+                                        {% endif %}
 
                                     </div>
 
@@ -495,12 +554,12 @@
 
                                         <div>
 
-                                            <p class="text-primary fw-semibold mb-1">
+                                            <p class="sut-aviso-kicker mb-2">
                                                 Información importante
                                             </p>
 
                                             <h2
-                                                class="offcanvas-title h4 fw-bold mb-0"
+                                                class="offcanvas-title fw-bold mb-0"
                                                 id="titulo-aviso-{{ aviso.id }}"
                                             >
                                                 {{ aviso.titulo }}
@@ -521,32 +580,38 @@
 
                                     <div class="offcanvas-body">
 
-                                        <span
-                                            class="sut-alert-badge d-inline-flex mb-4"
-                                        >
-                                            Aviso
-                                        </span>
+                                        <div class="sut-aviso-body-top">
 
-
-                                        <p class="sut-aviso-contenido">
-                                            {{ aviso.contenido }}
-                                        </p>
-
-
-                                        <div class="sut-aviso-meta mt-4">
-
-                                            <p class="small mb-1">
-                                                Publicado
-                                            </p>
-
-                                            <p class="fw-semibold mb-0">
-                                                {{ aviso.fecha_publicacion }}
-                                            </p>
+                                            <span
+                                                class="sut-alert-badge d-inline-flex"
+                                            >
+                                                Aviso
+                                            </span>
 
                                         </div>
 
 
-                                        <div class="mt-4">
+                                        <div class="sut-aviso-contenido">
+
+                                            {{ aviso.contenido }}
+
+                                        </div>
+
+
+                                        <div class="sut-aviso-meta">
+
+                                            <span class="sut-aviso-meta-label">
+                                                Publicado
+                                            </span>
+
+                                            <span class="sut-aviso-meta-value">
+                                                {{ aviso.fecha_publicacion }}
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="sut-aviso-actions">
 
                                             <button
                                                 type="button"
@@ -555,6 +620,25 @@
                                             >
                                                 Entendido
                                             </button>
+
+
+                                            {% if puede_publicar %}
+
+                                                <a
+                                                    href="{% url 'comunicaciones:editar_aviso' aviso.pk %}"
+                                                    class="btn btn-outline-primary"
+                                                >
+                                                    Editar aviso
+                                                </a>
+
+                                                <a
+                                                    href="{% url 'comunicaciones:eliminar_aviso' aviso.pk %}"
+                                                    class="btn btn-outline-danger"
+                                                >
+                                                    Eliminar
+                                                </a>
+
+                                            {% endif %}
 
                                         </div>
 
@@ -569,7 +653,7 @@
 
                     {% else %}
 
-                        <div class="card border-0 shadow-sm sut-empty-state">
+                        <div class="card sut-empty-state">
 
                             <div class="card-body p-4 text-center">
 

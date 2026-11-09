@@ -5,96 +5,225 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Proyectos vecinales
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Mis proyectos
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta las postulaciones realizadas desde tu cuenta
-            y revisa su estado actual.
-        </p>
-
-    </div>
+<section
+    class="sut-projects-section"
+    aria-labelledby="titulo-mis-proyectos"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'proyectos:crear' %}"
-            class="btn btn-primary"
+    <header class="sut-projects-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-projects-kicker mb-3">
+                    Proyectos vecinales
+                </p>
+
+                <h1
+                    id="titulo-mis-proyectos"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Mis proyectos
+                </h1>
+
+                <p class="lead mb-0">
+                    Consulta las postulaciones realizadas desde tu cuenta
+                    y revisa su estado actual.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <div class="sut-projects-hero-actions">
+
+                    <a
+                        href="{% url 'proyectos:crear' %}"
+                        class="btn btn-primary"
+                    >
+                        Nuevo proyecto
+                    </a>
+
+                    <a
+                        href="{% url 'panel_miembro' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    {% if proyectos %}
+
+
+        <!-- ================================================= -->
+        <!-- 2. LISTADO                                       -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-projects-shell p-3 p-md-4"
+            aria-labelledby="titulo-listado-proyectos"
         >
-            Nuevo proyecto
-        </a>
-
-        <a
-            href="{% url 'panel_miembro' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver
-        </a>
-
-    </div>
-
-</div>
 
 
-{% if proyectos %}
+            <header class="sut-projects-list-header mb-4">
 
-    <div class="row g-3">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
 
-        {% for proyecto in proyectos %}
+                    <div>
 
-            <div class="col-12">
+                        <p class="text-primary fw-semibold mb-2">
+                            Seguimiento
+                        </p>
 
-                <article class="card border-0 shadow-sm">
+                        <h2
+                            id="titulo-listado-proyectos"
+                            class="h3 fw-bold mb-2"
+                        >
+                            Tus postulaciones
+                        </h2>
 
-                    <div class="card-body p-4">
+                        <p class="mb-0">
+                            Revisa cada propuesta y su estado de evaluación.
+                        </p>
 
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3">
+                    </div>
 
 
-                            <div class="flex-grow-1">
+                    <span class="sut-projects-count">
 
-                                <h2 class="h5 fw-bold mb-2">
-                                    {{ proyecto.titulo }}
-                                </h2>
+                        {{ proyectos|length }}
 
-                                <p class="text-secondary mb-0">
+                        {% if proyectos|length == 1 %}
+                            proyecto
+                        {% else %}
+                            proyectos
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="d-grid gap-3">
+
+                {% for proyecto in proyectos %}
+
+                    <article class="sut-project-card">
+
+                        <div class="sut-project-card-body">
+
+
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-3">
+
+                                <div class="flex-grow-1">
+
+                                    <span class="sut-project-label">
+                                        Proyecto vecinal
+                                    </span>
+
+                                    <h3 class="h4 fw-bold mb-2">
+                                        {{ proyecto.titulo }}
+                                    </h3>
+
+                                </div>
+
+
+                                <div class="flex-shrink-0">
+
+                                    {% with estado=proyecto.get_estado_display %}
+
+                                        {% if estado == "Aprobado" %}
+
+                                            <span class="sut-project-status sut-project-status-approved">
+                                                Aprobado
+                                            </span>
+
+                                        {% elif estado == "Rechazado" %}
+
+                                            <span class="sut-project-status sut-project-status-rejected">
+                                                Rechazado
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="sut-project-status sut-project-status-pending">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% endwith %}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="sut-project-description">
+
+                                <span class="sut-project-description-label">
+                                    Descripción
+                                </span>
+
+                                <p class="mb-0">
                                     {{ proyecto.descripcion }}
                                 </p>
 
                             </div>
 
 
-                            <div class="flex-shrink-0">
+                            <div class="sut-project-status-help mt-3">
 
                                 {% with estado=proyecto.get_estado_display %}
 
                                     {% if estado == "Aprobado" %}
 
-                                        <span class="badge text-bg-success">
-                                            Aprobado
+                                        <span class="sut-project-status-help-mark">
+                                            ✓
                                         </span>
+
+                                        <p class="mb-0">
+                                            La propuesta fue aprobada.
+                                        </p>
 
                                     {% elif estado == "Rechazado" %}
 
-                                        <span class="badge text-bg-danger">
-                                            Rechazado
+                                        <span class="sut-project-status-help-mark sut-project-status-help-mark-danger">
+                                            !
                                         </span>
+
+                                        <p class="mb-0">
+                                            La propuesta fue rechazada.
+                                        </p>
 
                                     {% else %}
 
-                                        <span class="badge text-bg-secondary">
-                                            {{ estado }}
+                                        <span class="sut-project-status-help-mark sut-project-status-help-mark-pending">
+                                            i
                                         </span>
+
+                                        <p class="mb-0">
+                                            La propuesta continúa en proceso de revisión.
+                                        </p>
 
                                     {% endif %}
 
@@ -105,29 +234,38 @@
 
                         </div>
 
-                    </div>
+                    </article>
 
-                </article>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
 
-    </div>
-
-
-{% else %}
+        </section>
 
 
-    <div class="card border-0 shadow-sm">
+    {% else %}
 
-        <div class="card-body p-4 p-md-5 text-center">
 
-            <h2 class="h4 fw-bold mb-2">
+        <!-- ================================================= -->
+        <!-- 3. ESTADO VACIO                                  -->
+        <!-- ================================================= -->
+
+        <section class="sut-projects-empty">
+
+            <div class="sut-projects-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Proyectos vecinales
+            </p>
+
+            <h2 class="h3 fw-bold mb-2">
                 Aún no tienes proyectos
             </h2>
 
-            <p class="text-secondary mb-4">
+            <p class="mb-4">
                 Cuando envíes una postulación podrás consultar
                 su estado desde esta sección.
             </p>
@@ -139,12 +277,13 @@
                 Postular mi primer proyecto
             </a>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

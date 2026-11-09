@@ -13,17 +13,78 @@ class ReservaForm(forms.ModelForm):
             "hora_inicio",
             "hora_fin",
         )
+
         widgets = {
-            "fecha": forms.DateInput(attrs={"type": "date"}),
-            "hora_inicio": forms.TimeInput(attrs={"type": "time"}),
-            "hora_fin": forms.TimeInput(attrs={"type": "time"}),
+            "fecha": forms.DateInput(
+                attrs={
+                    "type": "date",
+                }
+            ),
+            "hora_inicio": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                }
+            ),
+            "hora_fin": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Solo espacios disponibles
         self.fields["espacio"].queryset = Espacio.objects.filter(
             activo=True
+        )
+
+        # Texto inicial del selector
+        self.fields["espacio"].empty_label = "Selecciona un espacio"
+
+        # Etiquetas más claras
+        self.fields["espacio"].label = "Espacio"
+        self.fields["fecha"].label = "Fecha de reserva"
+        self.fields["hora_inicio"].label = "Hora de inicio"
+        self.fields["hora_fin"].label = "Hora de término"
+
+        # Ayuda para usuarios poco familiarizados
+        self.fields["espacio"].help_text = (
+            "Elige el espacio comunitario que deseas utilizar."
+        )
+
+        self.fields["fecha"].help_text = (
+            "Selecciona el día desde el calendario. "
+            "No puedes elegir una fecha pasada."
+        )
+
+        self.fields["hora_inicio"].help_text = (
+            "Indica la hora en que comenzará tu reserva."
+        )
+
+        self.fields["hora_fin"].help_text = (
+            "Debe ser posterior a la hora de inicio."
+        )
+
+        # Evita seleccionar días anteriores a hoy
+        self.fields["fecha"].widget.attrs.update(
+            {
+                "min": timezone.localdate().isoformat(),
+                "title": "Selecciona la fecha de la reserva",
+            }
+        )
+
+        self.fields["hora_inicio"].widget.attrs.update(
+            {
+                "title": "Selecciona la hora de inicio",
+            }
+        )
+
+        self.fields["hora_fin"].widget.attrs.update(
+            {
+                "title": "Selecciona la hora de término",
+            }
         )
 
     def clean(self):

@@ -1,5 +1,12 @@
-﻿from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+﻿from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.shortcuts import redirect, render
+
+from .forms import (
+    PerfilUsuarioForm,
+    PerfilVecinoForm,
+)
 
 from .permisos import (
     es_miembro_junta,
@@ -45,4 +52,59 @@ def panel_miembro(request):
     return render(
         request,
         "usuarios/panel_miembro.html",
+    )
+
+
+@permiso_requerido(es_vecino)
+def perfil(request):
+
+    vecino = request.user.vecino
+
+    if request.method == "POST":
+
+        usuario_form = PerfilUsuarioForm(
+            request.POST,
+            instance=request.user,
+        )
+
+        vecino_form = PerfilVecinoForm(
+            request.POST,
+            instance=vecino,
+        )
+
+        if (
+            usuario_form.is_valid()
+            and vecino_form.is_valid()
+        ):
+
+            with transaction.atomic():
+
+                usuario_form.save()
+                vecino_form.save()
+
+            messages.success(
+                request,
+                "Tus datos fueron actualizados correctamente.",
+            )
+
+            return redirect("perfil")
+
+    else:
+
+        usuario_form = PerfilUsuarioForm(
+            instance=request.user,
+        )
+
+        vecino_form = PerfilVecinoForm(
+            instance=vecino,
+        )
+
+    return render(
+        request,
+        "usuarios/perfil.html",
+        {
+            "usuario_form": usuario_form,
+            "vecino_form": vecino_form,
+            "vecino": vecino,
+        },
     )

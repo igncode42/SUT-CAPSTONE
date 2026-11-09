@@ -5,135 +5,321 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Administración
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Gestión de certificados
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta el estado de las solicitudes aprobadas,
-            rechazadas y emitidas.
-        </p>
-
-    </div>
+<section
+    class="sut-certificate-management-section"
+    aria-labelledby="titulo-gestion-certificados"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'certificados:pendientes' %}"
-            class="btn btn-primary"
+    <header class="sut-certificate-management-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-certificate-management-kicker mb-3">
+                    Administración
+                </p>
+
+                <h1
+                    id="titulo-gestion-certificados"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Gestión de certificados
+                </h1>
+
+                <p class="lead mb-0">
+                    Consulta el estado de las solicitudes aprobadas,
+                    rechazadas y emitidas.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <div class="sut-certificate-management-hero-actions">
+
+                    <a
+                        href="{% url 'certificados:pendientes' %}"
+                        class="btn btn-primary"
+                    >
+                        Revisar pendientes
+                    </a>
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    {% if solicitudes %}
+
+
+        <!-- ================================================= -->
+        <!-- 2. LISTADO                                       -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-certificate-management-shell p-3 p-md-4"
+            aria-labelledby="titulo-listado-certificados"
         >
-            Revisar pendientes
-        </a>
-
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
 
 
-{% if solicitudes %}
+            <header class="sut-certificate-management-list-header mb-4">
 
-    <div class="row g-3">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
 
-        {% for solicitud in solicitudes %}
+                    <div>
 
-            <div class="col-12">
+                        <p class="text-primary fw-semibold mb-2">
+                            Solicitudes registradas
+                        </p>
 
-                <article class="card border-0 shadow-sm">
+                        <h2
+                            id="titulo-listado-certificados"
+                            class="h3 fw-bold mb-2"
+                        >
+                            Historial de certificados
+                        </h2>
 
-                    <div class="card-body p-4">
+                        <p class="mb-0">
+                            Revisa el estado actual de cada solicitud
+                            y emite los certificados que ya fueron aprobados.
+                        </p>
 
-
-                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
-
-
-                            <div class="flex-grow-1">
-
-                                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 mb-2">
-
-                                    <h2 class="h5 fw-bold mb-0">
-                                        Solicitud #{{ solicitud.pk }}
-                                    </h2>
+                    </div>
 
 
-                                    {% with estado=solicitud.get_estado_display %}
+                    <span class="sut-certificate-management-count">
 
-                                        {% if estado == "Emitida" %}
+                        {{ solicitudes|length }}
 
-                                            <span class="badge text-bg-success align-self-start">
-                                                Emitida
-                                            </span>
+                        {% if solicitudes|length == 1 %}
+                            solicitud
+                        {% else %}
+                            solicitudes
+                        {% endif %}
 
-                                        {% elif estado == "Aprobada" %}
+                    </span>
 
-                                            <span class="badge text-bg-primary align-self-start">
-                                                Aprobada
-                                            </span>
+                </div>
 
-                                        {% elif estado == "Rechazada" %}
+            </header>
 
-                                            <span class="badge text-bg-danger align-self-start">
-                                                Rechazada
-                                            </span>
 
-                                        {% else %}
+            <div class="d-grid gap-3">
 
-                                            <span class="badge text-bg-secondary align-self-start">
-                                                {{ estado }}
-                                            </span>
+                {% for solicitud in solicitudes %}
 
-                                        {% endif %}
+                    <article class="sut-certificate-management-card">
 
-                                    {% endwith %}
+                        <div class="sut-certificate-management-card-body">
+
+
+                            <!-- CABECERA -->
+
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+
+                                <div class="flex-grow-1">
+
+                                    <span class="sut-certificate-management-label">
+                                        Certificado
+                                    </span>
+
+                                    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+
+                                        <h3 class="h4 fw-bold mb-0">
+                                            Solicitud #{{ solicitud.pk }}
+                                        </h3>
+
+
+                                        {% with estado=solicitud.get_estado_display %}
+
+                                            {% if solicitud.estado == "EMITIDA" %}
+
+                                                <span class="sut-certificate-management-status sut-certificate-management-status-issued">
+                                                    Emitida
+                                                </span>
+
+                                            {% elif solicitud.estado == "APROBADA" %}
+
+                                                <span class="sut-certificate-management-status sut-certificate-management-status-approved">
+                                                    Aprobada
+                                                </span>
+
+                                            {% elif solicitud.estado == "RECHAZADA" %}
+
+                                                <span class="sut-certificate-management-status sut-certificate-management-status-rejected">
+                                                    Rechazada
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="sut-certificate-management-status sut-certificate-management-status-pending">
+                                                    {{ estado }}
+                                                </span>
+
+                                            {% endif %}
+
+                                        {% endwith %}
+
+                                    </div>
 
                                 </div>
 
 
-                                <p class="text-secondary mb-0">
-                                    Vecino:
-                                    <strong class="text-body">
-                                        {{ solicitud.vecino }}
-                                    </strong>
-                                </p>
+                                {% if solicitud.estado == "APROBADA" %}
+
+                                    <div class="flex-shrink-0">
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'certificados:emitir' solicitud.pk %}"
+                                            class="m-0"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary sut-certificate-management-emit"
+                                            >
+                                                Emitir certificado
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                {% endif %}
 
                             </div>
 
 
+                            <!-- VECINO -->
+
+                            <div class="sut-certificate-management-owner mb-3">
+
+                                <span class="sut-certificate-management-detail-label">
+                                    Vecino
+                                </span>
+
+                                <strong>
+                                    {{ solicitud.vecino }}
+                                </strong>
+
+                            </div>
+
+
+                            <!-- ESTADO EXPLICADO -->
+
                             {% if solicitud.estado == "APROBADA" %}
 
-                                <div class="flex-shrink-0">
+                                <div class="sut-certificate-management-message sut-certificate-management-message-approved">
 
-                                    <form
-                                        method="post"
-                                        action="{% url 'certificados:emitir' solicitud.pk %}"
-                                        class="m-0"
-                                    >
+                                    <span class="sut-certificate-management-message-mark">
+                                        ✓
+                                    </span>
 
-                                        {% csrf_token %}
+                                    <div>
 
-                                        <button
-                                            type="submit"
-                                            class="btn btn-primary w-100"
-                                        >
-                                            Emitir certificado
-                                        </button>
+                                        <strong>
+                                            Lista para emitir
+                                        </strong>
 
-                                    </form>
+                                        <p class="small mb-0">
+                                            La solicitud fue aprobada
+                                            y está disponible para emitir el certificado.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% elif solicitud.estado == "EMITIDA" %}
+
+                                <div class="sut-certificate-management-message sut-certificate-management-message-issued">
+
+                                    <span class="sut-certificate-management-message-mark">
+                                        ✓
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Certificado emitido
+                                        </strong>
+
+                                        <p class="small mb-0">
+                                            El certificado fue emitido correctamente.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% elif solicitud.estado == "RECHAZADA" %}
+
+                                <div class="sut-certificate-management-message sut-certificate-management-message-rejected">
+
+                                    <span class="sut-certificate-management-message-mark">
+                                        !
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Solicitud rechazada
+                                        </strong>
+
+                                        <p class="small mb-0">
+                                            Esta solicitud fue resuelta como rechazada.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% else %}
+
+                                <div class="sut-certificate-management-message sut-certificate-management-message-pending">
+
+                                    <span class="sut-certificate-management-message-mark">
+                                        i
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            En revisión
+                                        </strong>
+
+                                        <p class="small mb-0">
+                                            La solicitud aún no cuenta
+                                            con una resolución definitiva.
+                                        </p>
+
+                                    </div>
 
                                 </div>
 
@@ -142,63 +328,49 @@
 
                         </div>
 
+                    </article>
 
-                        {% if solicitud.estado == "APROBADA" %}
-
-                            <div class="border-top mt-3 pt-3">
-
-                                <p class="text-secondary small mb-0">
-                                    La solicitud fue aprobada y está lista para emitir el certificado.
-                                </p>
-
-                            </div>
-
-                        {% elif solicitud.estado == "EMITIDA" %}
-
-                            <div class="border-top mt-3 pt-3">
-
-                                <p class="text-secondary small mb-0">
-                                    Certificado emitido correctamente.
-                                </p>
-
-                            </div>
-
-                        {% endif %}
-
-
-                    </div>
-
-                </article>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
 
-    </div>
-
-
-{% else %}
+        </section>
 
 
-    <div class="card border-0 shadow-sm">
+    {% else %}
 
-        <div class="card-body p-4 p-md-5 text-center">
 
-            <h2 class="h4 fw-bold mb-2">
+        <!-- ================================================= -->
+        <!-- 3. ESTADO VACIO                                  -->
+        <!-- ================================================= -->
+
+        <section class="sut-certificate-management-empty">
+
+            <div class="sut-certificate-management-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Administración
+            </p>
+
+            <h2 class="h3 fw-bold mb-2">
                 No existen solicitudes
             </h2>
 
-            <p class="text-secondary mb-0">
+            <p class="mb-0">
                 Las solicitudes de certificados aparecerán aquí
                 cuando sean registradas por los vecinos.
             </p>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

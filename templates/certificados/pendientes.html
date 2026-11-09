@@ -5,108 +5,228 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Administración
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Solicitudes pendientes
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Revisa las solicitudes de certificados de residencia
-            y registra su resolución.
-        </p>
-
-    </div>
+<section
+    class="sut-certificate-review-section"
+    aria-labelledby="titulo-solicitudes-pendientes"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'certificados:gestion' %}"
-            class="btn btn-outline-primary"
+    <header class="sut-certificate-review-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-certificate-review-kicker mb-3">
+                    Administración
+                </p>
+
+                <h1
+                    id="titulo-solicitudes-pendientes"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Solicitudes pendientes
+                </h1>
+
+                <p class="lead mb-0">
+                    Revisa las solicitudes de certificados de residencia
+                    y registra su resolución.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <div class="sut-certificate-review-hero-actions">
+
+                    <a
+                        href="{% url 'certificados:gestion' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        Gestión de certificados
+                    </a>
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    {% if solicitudes %}
+
+
+        <!-- ================================================= -->
+        <!-- 2. ORIENTACION                                   -->
+        <!-- ================================================= -->
+
+        <div
+            class="sut-certificate-review-info mb-4"
+            role="status"
         >
-            Gestión de certificados
-        </a>
 
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
+            <span
+                class="sut-certificate-review-info-mark"
+                aria-hidden="true"
+            >
+                i
+            </span>
+
+            <div>
+
+                <p class="fw-semibold mb-1">
+                    Solicitudes por resolver
+                </p>
+
+                <p class="mb-0">
+                    Cada solicitud permanecerá pendiente hasta que sea
+                    <strong>aprobada</strong> o
+                    <strong>rechazada</strong>.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- 3. LISTADO                                       -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-certificate-review-shell p-3 p-md-4"
+            aria-labelledby="titulo-listado-solicitudes"
         >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
 
 
-{% if solicitudes %}
+            <header class="sut-certificate-review-list-header mb-4">
+
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
+
+                    <div>
+
+                        <p class="text-primary fw-semibold mb-2">
+                            Revisión administrativa
+                        </p>
+
+                        <h2
+                            id="titulo-listado-solicitudes"
+                            class="h3 fw-bold mb-2"
+                        >
+                            Solicitudes por revisar
+                        </h2>
+
+                        <p class="mb-0">
+                            Revisa cada solicitud antes de registrar
+                            una resolución.
+                        </p>
+
+                    </div>
 
 
-    <div
-        class="alert alert-info"
-        role="status"
-    >
-        Cada solicitud permanecerá pendiente hasta que sea
-        <strong>aprobada</strong> o <strong>rechazada</strong>.
-    </div>
+                    <span class="sut-certificate-review-count">
+
+                        {{ solicitudes|length }}
+
+                        {% if solicitudes|length == 1 %}
+                            pendiente
+                        {% else %}
+                            pendientes
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
 
 
-    <div class="row g-3">
+            <div class="d-grid gap-3">
 
-        {% for solicitud in solicitudes %}
+                {% for solicitud in solicitudes %}
 
-            <div class="col-12">
+                    <article class="sut-certificate-review-card">
 
-                <article class="card border-0 shadow-sm">
-
-                    <div class="card-body p-4">
+                        <div class="sut-certificate-review-card-body">
 
 
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-3">
+                            <!-- CABECERA -->
 
-                            <div>
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
 
-                                <h2 class="h5 fw-bold mb-1">
-                                    Solicitud #{{ solicitud.pk }}
-                                </h2>
+                                <div class="flex-grow-1">
 
-                                <p class="text-secondary mb-0">
-                                    Vecino:
-                                    <strong class="text-body">
-                                        {{ solicitud.vecino }}
-                                    </strong>
-                                </p>
+                                    <span class="sut-certificate-review-label">
+                                        Certificado de residencia
+                                    </span>
 
-                            </div>
+                                    <h3 class="h4 fw-bold mb-0">
+                                        Solicitud #{{ solicitud.pk }}
+                                    </h3>
+
+                                </div>
 
 
-                            <div class="flex-shrink-0">
-
-                                <span class="badge text-bg-secondary">
+                                <span class="sut-certificate-review-status flex-shrink-0">
                                     Pendiente
                                 </span>
 
                             </div>
 
-                        </div>
+
+                            <!-- VECINO -->
+
+                            <div class="sut-certificate-review-owner mb-3">
+
+                                <span class="sut-certificate-review-detail-label">
+                                    Vecino
+                                </span>
+
+                                <strong>
+                                    {{ solicitud.vecino }}
+                                </strong>
+
+                            </div>
 
 
-                        <div class="border-top pt-3">
+                            <!-- ORIENTACION -->
 
-                            <p class="text-secondary small mb-3">
-                                Selecciona una resolución para continuar
-                                con el proceso del certificado.
-                            </p>
+                            <div class="sut-certificate-review-decision mb-4">
+
+                                <span
+                                    class="sut-certificate-review-decision-mark"
+                                    aria-hidden="true"
+                                >
+                                    i
+                                </span>
+
+                                <p class="mb-0">
+                                    Selecciona una resolución para continuar
+                                    con el proceso del certificado.
+                                </p>
+
+                            </div>
 
 
-                            <div class="d-grid d-sm-flex gap-2">
+                            <!-- ACCIONES -->
+
+                            <div class="sut-certificate-review-actions">
 
 
                                 <form
@@ -118,7 +238,7 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-success w-100"
+                                        class="btn sut-certificate-approve"
                                     >
                                         Aprobar solicitud
                                     </button>
@@ -135,9 +255,9 @@
 
                                     <button
                                         type="submit"
-                                        class="btn btn-outline-danger w-100"
+                                        class="btn sut-certificate-reject"
                                     >
-                                        Rechazar
+                                        Rechazar solicitud
                                     </button>
 
                                 </form>
@@ -145,32 +265,41 @@
 
                             </div>
 
+
                         </div>
 
+                    </article>
 
-                    </div>
-
-                </article>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
 
-    </div>
-
-
-{% else %}
+        </section>
 
 
-    <div class="card border-0 shadow-sm">
+    {% else %}
 
-        <div class="card-body p-4 p-md-5 text-center">
 
-            <h2 class="h4 fw-bold mb-2">
+        <!-- ================================================= -->
+        <!-- 4. ESTADO VACIO                                  -->
+        <!-- ================================================= -->
+
+        <section class="sut-certificate-review-empty">
+
+            <div class="sut-certificate-review-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Administración
+            </p>
+
+            <h2 class="h3 fw-bold mb-2">
                 No hay solicitudes pendientes
             </h2>
 
-            <p class="text-secondary mb-3">
+            <p class="mb-4">
                 Las nuevas solicitudes aparecerán aquí
                 cuando requieran revisión.
             </p>
@@ -182,12 +311,13 @@
                 Ver gestión de certificados
             </a>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

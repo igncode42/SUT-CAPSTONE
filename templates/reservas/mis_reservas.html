@@ -5,227 +5,374 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Reservas de espacios
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Mis reservas
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta los espacios que has reservado,
-            sus horarios y el estado de cada solicitud.
-        </p>
-
-    </div>
+<section
+    class="sut-reservations-section"
+    aria-labelledby="titulo-reservas"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'reservas:crear' %}"
-            class="btn btn-primary"
-        >
-            Nueva reserva
-        </a>
+    <header
+        class="sut-surface sut-reservations-hero p-4 p-lg-5 mb-4"
+    >
 
-        <a
-            href="{% url 'reservas:calendario' %}"
-            class="btn btn-outline-primary"
-        >
-            Ver calendario
-        </a>
-
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
+        <div class="row g-4 align-items-center">
 
 
-{% if reservas %}
+            <div class="col-12 col-lg">
 
+                <p class="sut-reservations-kicker mb-3">
+                    Reservas de espacios
+                </p>
 
-    <!-- ===================================================== -->
-    <!-- ESCRITORIO / TABLET                                   -->
-    <!-- ===================================================== -->
+                <h1
+                    id="titulo-reservas"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Mis reservas
+                </h1>
 
-    <div class="d-none d-md-block">
-
-        <div class="card border-0 shadow-sm">
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle mb-0">
-
-                    <thead class="table-light">
-
-                        <tr>
-
-                            <th scope="col">
-                                Espacio
-                            </th>
-
-                            <th scope="col">
-                                Fecha
-                            </th>
-
-                            <th scope="col">
-                                Horario
-                            </th>
-
-                            <th scope="col">
-                                Estado
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% for reserva in reservas %}
-
-                            <tr>
-
-                                <td>
-                                    <strong>
-                                        {{ reserva.espacio.nombre }}
-                                    </strong>
-                                </td>
-
-
-                                <td>
-                                    {{ reserva.fecha }}
-                                </td>
-
-
-                                <td>
-                                    {{ reserva.hora_inicio }}
-                                    –
-                                    {{ reserva.hora_fin }}
-                                </td>
-
-
-                                <td>
-
-                                    <span class="badge text-bg-secondary">
-                                        {{ reserva.get_estado_display }}
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
+                <p class="lead mb-0">
+                    Consulta los espacios que has reservado,
+                    sus horarios y el estado de cada solicitud.
+                </p>
 
             </div>
 
-        </div>
 
-    </div>
+            <div class="col-12 col-lg-auto">
 
+                <div class="sut-reservations-hero-actions">
 
-    <!-- ===================================================== -->
-    <!-- MÓVIL                                                 -->
-    <!-- ===================================================== -->
+                    <a
+                        href="{% url 'reservas:crear' %}"
+                        class="btn btn-primary"
+                    >
+                        Nueva reserva
+                    </a>
 
-    <div class="d-md-none">
+                    <a
+                        href="{% url 'reservas:calendario' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        Ver calendario
+                    </a>
 
-        <div class="row g-3">
-
-            {% for reserva in reservas %}
-
-                <div class="col-12">
-
-                    <article class="card border-0 shadow-sm">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
-
-                                <h2 class="h5 fw-bold mb-0">
-                                    {{ reserva.espacio.nombre }}
-                                </h2>
-
-                                <span class="badge text-bg-secondary flex-shrink-0">
-                                    {{ reserva.get_estado_display }}
-                                </span>
-
-                            </div>
-
-
-                            <dl class="row mb-0">
-
-                                <dt class="col-12 small text-secondary">
-                                    Fecha
-                                </dt>
-
-                                <dd class="col-12 mb-3">
-                                    {{ reserva.fecha }}
-                                </dd>
-
-
-                                <dt class="col-12 small text-secondary">
-                                    Horario
-                                </dt>
-
-                                <dd class="col-12 mb-0">
-                                    {{ reserva.hora_inicio }}
-                                    –
-                                    {{ reserva.hora_fin }}
-                                </dd>
-
-                            </dl>
-
-
-                        </div>
-
-                    </article>
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
 
                 </div>
 
-            {% endfor %}
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- 2. ORIENTACION                                    -->
+    <!-- ================================================= -->
+
+    <div class="sut-reservation-info mb-4">
+
+        <div class="sut-reservation-info-mark">
+            i
+        </div>
+
+        <div>
+
+            <p class="fw-semibold mb-1">
+                Antes de reservar
+            </p>
+
+            <p class="mb-0">
+                Revisa el calendario para consultar la disponibilidad
+                de los espacios antes de crear una nueva reserva.
+            </p>
 
         </div>
 
     </div>
 
 
-{% else %}
+    {% if reservas %}
 
 
-    <div class="card border-0 shadow-sm">
+        <!-- ================================================= -->
+        <!-- 3. RESERVAS                                      -->
+        <!-- ================================================= -->
 
-        <div class="card-body p-4 p-md-5 text-center">
+        <section
+            class="sut-reservations-shell p-4 p-lg-5"
+            aria-labelledby="titulo-listado-reservas"
+        >
 
-            <h2 class="h4 fw-bold mb-2">
+
+            <header class="sut-reservations-list-header mb-4">
+
+                <p class="text-primary fw-semibold mb-2">
+                    Seguimiento
+                </p>
+
+                <div
+                    class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3"
+                >
+
+                    <div>
+
+                        <h2
+                            id="titulo-listado-reservas"
+                            class="h2 fw-bold mb-2"
+                        >
+                            Tus reservas
+                        </h2>
+
+                        <p class="mb-0">
+                            Revisa tus espacios, fechas, horarios y estado.
+                        </p>
+
+                    </div>
+
+
+                    <span class="sut-reservations-count">
+
+                        {{ reservas|length }}
+
+                        {% if reservas|length == 1 %}
+                            reserva
+                        {% else %}
+                            reservas
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <!-- ============================================= -->
+            <!-- ESCRITORIO / TABLET                           -->
+            <!-- ============================================= -->
+
+            <div class="d-none d-md-block">
+
+                <div class="sut-reservations-table-wrap">
+
+                    <div class="table-responsive">
+
+                        <table class="table sut-reservations-table align-middle mb-0">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th scope="col">
+                                        Espacio
+                                    </th>
+
+                                    <th scope="col">
+                                        Fecha
+                                    </th>
+
+                                    <th scope="col">
+                                        Horario
+                                    </th>
+
+                                    <th scope="col">
+                                        Estado
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for reserva in reservas %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>
+                                                {{ reserva.espacio.nombre }}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+                                            {{ reserva.fecha }}
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="sut-reservation-time">
+                                                {{ reserva.hora_inicio }}
+                                                –
+                                                {{ reserva.hora_fin }}
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="sut-reservation-status">
+                                                {{ reserva.get_estado_display }}
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- MOVIL                                         -->
+            <!-- ============================================= -->
+
+            <div class="d-md-none">
+
+                <div class="d-grid gap-3">
+
+                    {% for reserva in reservas %}
+
+                        <article class="sut-reservation-card">
+
+                            <div class="sut-reservation-card-body">
+
+
+                                <div
+                                    class="d-flex justify-content-between align-items-start gap-3 mb-4"
+                                >
+
+                                    <div>
+
+                                        <span class="sut-reservation-label">
+                                            Espacio comunitario
+                                        </span>
+
+                                        <h3 class="h5 fw-bold mb-0">
+                                            {{ reserva.espacio.nombre }}
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span class="sut-reservation-status flex-shrink-0">
+                                        {{ reserva.get_estado_display }}
+                                    </span>
+
+                                </div>
+
+
+                                <dl class="sut-reservation-details mb-0">
+
+
+                                    <div>
+
+                                        <dt>
+                                            Fecha
+                                        </dt>
+
+                                        <dd>
+                                            {{ reserva.fecha }}
+                                        </dd>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <dt>
+                                            Horario
+                                        </dt>
+
+                                        <dd class="mb-0">
+                                            {{ reserva.hora_inicio }}
+                                            –
+                                            {{ reserva.hora_fin }}
+                                        </dd>
+
+                                    </div>
+
+
+                                </dl>
+
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- ================================================= -->
+        <!-- 4. ESTADO VACIO                                   -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-reservations-empty"
+            aria-labelledby="titulo-sin-reservas"
+        >
+
+            <div class="sut-reservations-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Reservas
+            </p>
+
+            <h2
+                id="titulo-sin-reservas"
+                class="h3 fw-bold mb-2"
+            >
                 Aún no tienes reservas
             </h2>
 
-            <p class="text-secondary mb-4">
+            <p class="mb-4">
                 Consulta la disponibilidad de los espacios comunitarios
-                y registra tu primera reserva.
+                y registra tu primera reserva cuando encuentres
+                un horario disponible.
             </p>
 
 
-            <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+            <div class="sut-reservations-empty-actions">
 
                 <a
                     href="{% url 'reservas:crear' %}"
@@ -243,12 +390,13 @@
 
             </div>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

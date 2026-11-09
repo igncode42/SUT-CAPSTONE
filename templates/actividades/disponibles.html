@@ -5,198 +5,339 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Actividades vecinales
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Actividades disponibles
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Revisa las próximas actividades de la comunidad
-            e inscríbete mientras existan cupos disponibles.
-        </p>
-
-    </div>
+<section class="sut-activities-section">
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ===================================================== -->
+    <!-- HERO                                                  -->
+    <!-- ===================================================== -->
 
-        <a
-            href="{% url 'actividades:mis_actividades' %}"
-            class="btn btn-outline-primary"
-        >
-            Mis actividades
-        </a>
+    <header class="sut-activities-hero p-4 p-md-5 mb-4">
 
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
+        <div class="row g-4 align-items-center">
 
-    </div>
+            <div class="col-12 col-lg">
 
-</div>
+                <p class="sut-activities-kicker mb-3">
+                    Actividades vecinales
+                </p>
 
+                <h1 class="fw-bold mb-3">
+                    Actividades disponibles
+                </h1>
 
-{% if actividades %}
-
-    <div class="row g-4">
-
-        {% for actividad in actividades %}
-
-            <div class="col-12 col-md-6">
-
-                <article class="card border-0 shadow-sm h-100">
-
-                    <div class="card-body p-4 d-flex flex-column">
-
-
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-2 mb-3">
-
-                            <h2 class="h5 fw-bold mb-0">
-                                {{ actividad.nombre }}
-                            </h2>
-
-
-                            <div class="flex-shrink-0">
-
-                                {% if actividad.id in inscripciones_usuario %}
-
-                                    <span class="badge text-bg-success">
-                                        Inscrito
-                                    </span>
-
-                                {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
-
-                                    <span class="badge text-bg-secondary">
-                                        Sin cupos
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge text-bg-primary">
-                                        Disponible
-                                    </span>
-
-                                {% endif %}
-
-                            </div>
-
-                        </div>
-
-
-                        <p class="text-secondary flex-grow-1">
-                            {{ actividad.descripcion }}
-                        </p>
-
-
-                        <div class="border-top pt-3 mt-auto">
-
-                            <dl class="row mb-4">
-
-                                <dt class="col-5 col-sm-4 text-secondary fw-normal">
-                                    Fecha
-                                </dt>
-
-                                <dd class="col-7 col-sm-8 fw-semibold">
-                                    {{ actividad.fecha }}
-                                </dd>
-
-
-                                <dt class="col-5 col-sm-4 text-secondary fw-normal">
-                                    Inscritos
-                                </dt>
-
-                                <dd class="col-7 col-sm-8 mb-0">
-                                    <strong>
-                                        {{ actividad.cantidad_inscritos }}
-                                    </strong>
-                                    de
-                                    {{ actividad.cupo_maximo }}
-                                </dd>
-
-                            </dl>
-
-
-                            {% if actividad.id in inscripciones_usuario %}
-
-                                <p class="text-success fw-semibold mb-0">
-                                    Ya estás inscrito en esta actividad.
-                                </p>
-
-
-                            {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
-
-                                <p class="text-secondary fw-semibold mb-0">
-                                    La actividad alcanzó su cupo máximo.
-                                </p>
-
-
-                            {% else %}
-
-                                <form
-                                    method="post"
-                                    action="{% url 'actividades:inscribir' actividad.id %}"
-                                    class="m-0"
-                                >
-
-                                    {% csrf_token %}
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary"
-                                    >
-                                        Inscribirme
-                                    </button>
-
-                                </form>
-
-                            {% endif %}
-
-                        </div>
-
-
-                    </div>
-
-                </article>
+                <p class="lead mb-0">
+                    Revisa las próximas actividades de tu comunidad
+                    e inscríbete mientras existan cupos disponibles.
+                </p>
 
             </div>
 
-        {% endfor %}
 
-    </div>
+            <div class="col-12 col-lg-auto">
 
+                <div class="sut-activities-hero-actions">
 
-{% else %}
+                    <a
+                        href="{% url 'actividades:mis_actividades' %}"
+                        class="btn btn-primary"
+                    >
+                        Mis actividades
+                    </a>
 
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Volver al panel
+                    </a>
 
-    <div class="card border-0 shadow-sm">
+                </div>
 
-        <div class="card-body p-4 p-md-5 text-center">
-
-            <h2 class="h4 fw-bold mb-2">
-                No hay actividades disponibles
-            </h2>
-
-            <p class="text-secondary mb-0">
-                Las próximas actividades vecinales aparecerán aquí
-                cuando sean publicadas.
-            </p>
+            </div>
 
         </div>
 
-    </div>
+    </header>
 
 
-{% endif %}
+    {% if actividades %}
+
+
+        <!-- ================================================= -->
+        <!-- LISTADO                                           -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-activities-shell p-3 p-md-4"
+            aria-labelledby="titulo-listado-actividades"
+        >
+
+
+            <div class="sut-activities-list-header mb-4">
+
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
+
+                    <div>
+
+                        <p class="text-primary mb-1">
+                            Comunidad
+                        </p>
+
+                        <h2
+                            id="titulo-listado-actividades"
+                            class="h3 fw-bold mb-1"
+                        >
+                            Próximas actividades
+                        </h2>
+
+                        <p class="mb-0">
+                            Consulta la fecha, los cupos disponibles
+                            y el estado de tu inscripción.
+                        </p>
+
+                    </div>
+
+
+                    <span class="sut-activities-count">
+                        {{ actividades|length }}
+                        {% if actividades|length == 1 %}
+                            actividad
+                        {% else %}
+                            actividades
+                        {% endif %}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="row g-4">
+
+                {% for actividad in actividades %}
+
+                    <div class="col-12 col-lg-6">
+
+                        <article class="sut-activity-card h-100">
+
+                            <div class="sut-activity-card-body">
+
+
+                                <!-- Estado superior -->
+
+                                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+
+                                    <span class="sut-activity-label">
+                                        Actividad
+                                    </span>
+
+
+                                    {% if actividad.id in inscripciones_usuario %}
+
+                                        <span class="sut-activity-status sut-activity-status-registered">
+                                            Inscrito
+                                        </span>
+
+                                    {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                        <span class="sut-activity-status sut-activity-status-full">
+                                            Sin cupos
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="sut-activity-status sut-activity-status-available">
+                                            Disponible
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- Titulo y descripcion -->
+
+                                <h3 class="h4 fw-bold mb-2">
+                                    {{ actividad.nombre }}
+                                </h3>
+
+                                <p class="sut-activity-description mb-4">
+                                    {{ actividad.descripcion }}
+                                </p>
+
+
+                                <!-- Datos importantes -->
+
+                                <div class="sut-activity-details mb-4">
+
+                                    <div>
+
+                                        <span class="sut-activity-detail-label">
+                                            Fecha
+                                        </span>
+
+                                        <strong class="sut-activity-detail-value">
+                                            {{ actividad.fecha }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="sut-activity-detail-label">
+                                            Inscritos
+                                        </span>
+
+                                        <strong class="sut-activity-detail-value">
+                                            {{ actividad.cantidad_inscritos }}
+                                            de
+                                            {{ actividad.cupo_maximo }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Accion -->
+
+                                <div class="sut-activity-action mt-auto">
+
+
+                                    {% if actividad.id in inscripciones_usuario %}
+
+                                        <div class="sut-activity-message sut-activity-message-success">
+
+                                            <span class="sut-activity-message-mark">
+                                                ✓
+                                            </span>
+
+                                            <div>
+
+                                                <strong>
+                                                    Ya estás inscrito
+                                                </strong>
+
+                                                <p class="small mb-0">
+                                                    Esta actividad ya forma parte
+                                                    de tus inscripciones.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                        <div class="sut-activity-message sut-activity-message-full">
+
+                                            <span class="sut-activity-message-mark">
+                                                !
+                                            </span>
+
+                                            <div>
+
+                                                <strong>
+                                                    Cupo completo
+                                                </strong>
+
+                                                <p class="small mb-0">
+                                                    La actividad alcanzó
+                                                    su cantidad máxima de participantes.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    {% else %}
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'actividades:inscribir' actividad.id %}"
+                                            class="m-0"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary"
+                                            >
+                                                Inscribirme
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- ================================================= -->
+        <!-- ESTADO VACIO                                      -->
+        <!-- ================================================= -->
+
+        <section class="sut-activities-shell p-3 p-md-4">
+
+            <div class="sut-activities-empty">
+
+                <span
+                    class="sut-activities-empty-mark"
+                    aria-hidden="true"
+                >
+                    SUT
+                </span>
+
+                <p class="text-primary fw-semibold mb-2">
+                    Actividades vecinales
+                </p>
+
+                <h2 class="h3 fw-bold mb-3">
+                    No hay actividades disponibles
+                </h2>
+
+                <p class="mb-4">
+                    Las próximas actividades de la comunidad aparecerán
+                    aquí cuando sean publicadas.
+                </p>
+
+                <a
+                    href="{% url 'actividades:mis_actividades' %}"
+                    class="btn btn-outline-primary"
+                >
+                    Ver mis actividades
+                </a>
+
+            </div>
+
+        </section>
+
+
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

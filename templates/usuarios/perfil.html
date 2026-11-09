@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}Mi perfil | SUT{% endblock %}
+
+{% block content %}
+
+
+<section
+    class="sut-profile-section"
+    aria-labelledby="titulo-perfil"
+>
+
+
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
+
+    <header class="sut-profile-hero p-4 p-lg-5 mb-4">
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg">
+
+                <p class="sut-profile-kicker mb-3">
+                    Área personal
+                </p>
+
+                <h1
+                    id="titulo-perfil"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Mi perfil
+                </h1>
+
+                <p class="lead mb-0">
+                    Consulta tu información personal y mantén
+                    actualizados tus datos de contacto.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-auto">
+
+                <a
+                    href="{% url 'panel' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    ← Volver al panel
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- 2. CONTENIDO                                     -->
+    <!-- ================================================= -->
+
+    <form
+        method="post"
+        novalidate
+        class="sut-profile-form"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="row g-4 align-items-start">
+
+
+            <!-- ============================================= -->
+            <!-- DATOS EDITABLES                               -->
+            <!-- ============================================= -->
+
+            <div class="col-12 col-lg-8">
+
+                <div class="d-grid gap-4">
+
+
+                    <!-- DATOS DE CUENTA -->
+
+                    <section class="sut-profile-card p-4 p-md-5">
+
+                        <header class="sut-profile-card-header mb-4">
+
+                            <p class="text-primary fw-semibold mb-2">
+                                Cuenta
+                            </p>
+
+                            <h2 class="h3 fw-bold mb-2">
+                                Datos de cuenta
+                            </h2>
+
+                            <p class="mb-0">
+                                Información utilizada para identificar
+                                y contactar tu cuenta.
+                            </p>
+
+                        </header>
+
+
+                        <div class="sut-profile-readonly mb-4">
+
+                            <span class="sut-profile-field-label">
+                                Nombre de usuario
+                            </span>
+
+                            <strong>
+                                {{ user.username }}
+                            </strong>
+
+                            <span class="sut-profile-lock-note">
+                                Este dato no puede modificarse desde el perfil.
+                            </span>
+
+                        </div>
+
+
+                        <div class="sut-profile-field">
+
+                            <label
+                                for="{{ usuario_form.email.id_for_label }}"
+                                class="form-label"
+                            >
+                                {{ usuario_form.email.label }}
+                            </label>
+
+                            {{ usuario_form.email }}
+
+
+                            {% if usuario_form.email.help_text %}
+
+                                <div class="form-text">
+                                    {{ usuario_form.email.help_text }}
+                                </div>
+
+                            {% endif %}
+
+
+                            {% for error in usuario_form.email.errors %}
+
+                                <div
+                                    class="sut-field-error mt-2"
+                                    role="alert"
+                                >
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- DATOS PERSONALES -->
+
+                    <section class="sut-profile-card p-4 p-md-5">
+
+                        <header class="sut-profile-card-header mb-4">
+
+                            <p class="text-primary fw-semibold mb-2">
+                                Información personal
+                            </p>
+
+                            <h2 class="h3 fw-bold mb-2">
+                                Datos del vecino
+                            </h2>
+
+                            <p class="mb-0">
+                                Mantén actualizada la información
+                                asociada a tu registro vecinal.
+                            </p>
+
+                        </header>
+
+
+                        <div class="row g-4">
+
+
+                            <!-- NOMBRE -->
+
+                            <div class="col-12 col-md-6">
+
+                                <div class="sut-profile-field">
+
+                                    <label
+                                        for="{{ vecino_form.nombre.id_for_label }}"
+                                        class="form-label"
+                                    >
+                                        {{ vecino_form.nombre.label }}
+                                    </label>
+
+                                    {{ vecino_form.nombre }}
+
+
+                                    {% for error in vecino_form.nombre.errors %}
+
+                                        <div
+                                            class="sut-field-error mt-2"
+                                            role="alert"
+                                        >
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- APELLIDO -->
+
+                            <div class="col-12 col-md-6">
+
+                                <div class="sut-profile-field">
+
+                                    <label
+                                        for="{{ vecino_form.apellido.id_for_label }}"
+                                        class="form-label"
+                                    >
+                                        {{ vecino_form.apellido.label }}
+                                    </label>
+
+                                    {{ vecino_form.apellido }}
+
+
+                                    {% for error in vecino_form.apellido.errors %}
+
+                                        <div
+                                            class="sut-field-error mt-2"
+                                            role="alert"
+                                        >
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DIRECCION -->
+
+                            <div class="col-12">
+
+                                <div class="sut-profile-field">
+
+                                    <label
+                                        for="{{ vecino_form.direccion.id_for_label }}"
+                                        class="form-label"
+                                    >
+                                        {{ vecino_form.direccion.label }}
+                                    </label>
+
+                                    {{ vecino_form.direccion }}
+
+
+                                    {% for error in vecino_form.direccion.errors %}
+
+                                        <div
+                                            class="sut-field-error mt-2"
+                                            role="alert"
+                                        >
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- IDENTIFICACION -->
+
+                            <div class="col-12">
+
+                                <div class="sut-profile-readonly">
+
+                                    <span class="sut-profile-field-label">
+                                        Identificación
+                                    </span>
+
+                                    <strong>
+                                        {{ vecino.identificacion }}
+                                    </strong>
+
+                                    <span class="sut-profile-lock-note">
+                                        La identificación forma parte del registro administrativo
+                                        y no puede modificarse desde el perfil.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="sut-profile-actions">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Guardar cambios
+                        </button>
+
+                        <a
+                            href="{% url 'panel' %}"
+                            class="btn btn-outline-secondary"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- RESUMEN / SEGURIDAD                           -->
+            <!-- ============================================= -->
+
+            <div class="col-12 col-lg-4">
+
+                <div class="d-grid gap-4">
+
+
+                    <!-- RESUMEN -->
+
+                    <aside class="sut-profile-summary p-4">
+
+                        <span class="sut-profile-avatar mb-3">
+                            {{ vecino.nombre|first }}{{ vecino.apellido|first }}
+                        </span>
+
+                        <p class="sut-profile-summary-label mb-1">
+                            Vecino registrado
+                        </p>
+
+                        <h2 class="h4 fw-bold mb-1">
+                            {{ vecino.nombre }}
+                            {{ vecino.apellido }}
+                        </h2>
+
+                        <p class="sut-profile-summary-user mb-4">
+                            @{{ user.username }}
+                        </p>
+
+
+                        <div class="sut-profile-summary-row">
+
+                            <span>
+                                Participación
+                            </span>
+
+
+                            {% if vecino.miembro_junta %}
+
+                                <strong class="sut-profile-member-status">
+                                    Miembro de junta
+                                </strong>
+
+                            {% else %}
+
+                                <strong class="sut-profile-normal-status">
+                                    Vecino
+                                </strong>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="sut-profile-summary-row">
+
+                            <span>
+                                Cuenta
+                            </span>
+
+                            <strong>
+                                Activa
+                            </strong>
+
+                        </div>
+
+                    </aside>
+
+
+                    <!-- SEGURIDAD -->
+
+                    <aside class="sut-profile-security p-4">
+
+                        <p class="text-primary fw-semibold mb-2">
+                            Seguridad
+                        </p>
+
+                        <h2 class="h5 fw-bold mb-2">
+                            Contraseña
+                        </h2>
+
+                        <p class="small mb-3">
+                            Actualiza tu contraseña para mantener
+                            protegida tu cuenta.
+                        </p>
+
+                        <a
+                            href="{% url 'password_change' %}"
+                            class="btn btn-outline-primary w-100"
+                        >
+                            Cambiar contraseña
+                        </a>
+
+                    </aside>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </form>
+
+
+</section>
+
+
+{% endblock %}

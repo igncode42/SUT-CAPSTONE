@@ -5,173 +5,296 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Certificados de residencia
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Mis solicitudes
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Solicita certificados de residencia y consulta
-            el estado de tus solicitudes.
-        </p>
-
-    </div>
-
-
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
-
-        <form
-            method="post"
-            action="{% url 'certificados:solicitar' %}"
-            class="m-0"
-        >
-            {% csrf_token %}
-
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Solicitar certificado
-            </button>
-        </form>
-
-
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
-
-
-<div
-    class="alert alert-info"
-    role="status"
+<section
+    class="sut-certificates-section"
+    aria-labelledby="titulo-certificados"
 >
-    Al solicitar un certificado se registrará una nueva solicitud
-    <strong>pendiente de revisión</strong>.
-</div>
 
 
-{% if solicitudes %}
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-    <div class="row g-3">
+    <header
+        class="sut-surface sut-certificates-hero p-4 p-lg-5 mb-4"
+    >
 
-        {% for solicitud in solicitudes %}
-
-            <div class="col-12">
-
-                <article class="card border-0 shadow-sm">
-
-                    <div class="card-body p-4">
+        <div class="row g-4 align-items-center">
 
 
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3">
+            <div class="col-12 col-lg">
+
+                <p class="sut-certificates-kicker mb-3">
+                    Certificados de residencia
+                </p>
+
+                <h1
+                    id="titulo-certificados"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Mis solicitudes
+                </h1>
+
+                <p class="lead mb-0">
+                    Solicita certificados de residencia
+                    y consulta el estado de cada solicitud.
+                </p>
+
+            </div>
 
 
-                            <div>
+            <div class="col-12 col-lg-auto">
 
-                                <h2 class="h5 fw-bold mb-1">
-                                    Solicitud #{{ solicitud.pk }}
-                                </h2>
+                <div class="sut-certificates-hero-actions">
 
-                                <p class="text-secondary small mb-0">
-                                    Solicitada el {{ solicitud.fecha_solicitud }}
-                                </p>
+                    <form
+                        method="post"
+                        action="{% url 'certificados:solicitar' %}"
+                        class="m-0"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Solicitar certificado
+                        </button>
+
+                    </form>
+
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- 2. INFORMACION DEL PROCESO                        -->
+    <!-- ================================================= -->
+
+    <div
+        class="sut-certificate-info mb-4"
+        role="status"
+    >
+
+        <div class="sut-certificate-info-mark">
+            i
+        </div>
+
+        <div>
+
+            <p class="fw-semibold mb-1">
+                ¿Qué ocurre al solicitarlo?
+            </p>
+
+            <p class="mb-0">
+                Se creará una nueva solicitud
+                <strong>pendiente de revisión</strong>.
+                Podrás consultar su estado desde esta misma página.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- 3. SOLICITUDES                                    -->
+    <!-- ================================================= -->
+
+    {% if solicitudes %}
+
+        <section
+            class="sut-certificates-shell p-4 p-lg-5"
+            aria-labelledby="titulo-listado-certificados"
+        >
+
+
+            <header class="sut-certificates-list-header mb-4">
+
+                <p class="text-primary fw-semibold mb-2">
+                    Seguimiento
+                </p>
+
+                <div
+                    class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3"
+                >
+
+                    <div>
+
+                        <h2
+                            id="titulo-listado-certificados"
+                            class="h2 fw-bold mb-2"
+                        >
+                            Tus solicitudes
+                        </h2>
+
+                        <p class="mb-0">
+                            Revisa el estado de los certificados que has solicitado.
+                        </p>
+
+                    </div>
+
+
+                    <span class="sut-certificates-count">
+
+                        {{ solicitudes|length }}
+
+                        {% if solicitudes|length == 1 %}
+                            solicitud
+                        {% else %}
+                            solicitudes
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <div class="d-grid gap-3">
+
+                {% for solicitud in solicitudes %}
+
+                    <article class="sut-certificate-card">
+
+                        <div class="sut-certificate-card-body">
+
+
+                            <div
+                                class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3"
+                            >
+
+
+                                <div>
+
+                                    <span class="sut-certificate-label">
+                                        Certificado de residencia
+                                    </span>
+
+                                    <h3 class="h4 fw-bold mb-2">
+                                        Solicitud #{{ solicitud.pk }}
+                                    </h3>
+
+                                    <p class="sut-certificate-date mb-0">
+                                        Solicitada el {{ solicitud.fecha_solicitud }}
+                                    </p>
+
+                                </div>
+
+
+                                <div class="flex-shrink-0">
+
+                                    {% with estado=solicitud.get_estado_display %}
+
+                                        {% if solicitud.estado == "EMITIDA" %}
+
+                                            <span class="sut-certificate-status sut-status-issued">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% elif solicitud.estado == "APROBADA" %}
+
+                                            <span class="sut-certificate-status sut-status-approved">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% elif solicitud.estado == "RECHAZADA" %}
+
+                                            <span class="sut-certificate-status sut-status-rejected">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="sut-certificate-status sut-status-pending">
+                                                {{ estado }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% endwith %}
+
+                                </div>
+
 
                             </div>
 
 
-                            <div class="flex-shrink-0">
+                            {% if solicitud.estado == "EMITIDA" %}
 
-                                {% with estado=solicitud.get_estado_display %}
+                                <div class="sut-certificate-actions">
 
-                                    {% if estado == "Emitida" %}
+                                    <a
+                                        href="{% url 'certificados:ver' solicitud.pk %}"
+                                        class="btn btn-primary"
+                                    >
+                                        Ver certificado
+                                    </a>
 
-                                        <span class="badge text-bg-success">
-                                            Emitida
-                                        </span>
+                                </div>
 
-                                    {% elif estado == "Aprobada" %}
-
-                                        <span class="badge text-bg-primary">
-                                            Aprobada
-                                        </span>
-
-                                    {% elif estado == "Rechazada" %}
-
-                                        <span class="badge text-bg-danger">
-                                            Rechazada
-                                        </span>
-
-                                    {% else %}
-
-                                        <span class="badge text-bg-secondary">
-                                            {{ estado }}
-                                        </span>
-
-                                    {% endif %}
-
-                                {% endwith %}
-
-                            </div>
+                            {% endif %}
 
 
                         </div>
 
+                    </article>
 
-                        {% if solicitud.estado == "EMITIDA" %}
-
-                            <div class="border-top mt-3 pt-3">
-
-                                <a
-                                    href="{% url 'certificados:ver' solicitud.pk %}"
-                                    class="btn btn-outline-primary"
-                                >
-                                    Ver certificado
-                                </a>
-
-                            </div>
-
-                        {% endif %}
-
-
-                    </div>
-
-                </article>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
 
-    </div>
-
-
-{% else %}
+        </section>
 
 
-    <div class="card border-0 shadow-sm">
+    {% else %}
 
-        <div class="card-body p-4 p-md-5 text-center">
 
-            <h2 class="h4 fw-bold mb-2">
+        <!-- ================================================= -->
+        <!-- 4. ESTADO VACIO                                   -->
+        <!-- ================================================= -->
+
+        <section
+            class="sut-certificates-empty"
+            aria-labelledby="titulo-sin-solicitudes"
+        >
+
+            <div class="sut-certificates-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Certificados
+            </p>
+
+            <h2
+                id="titulo-sin-solicitudes"
+                class="h3 fw-bold mb-2"
+            >
                 Aún no tienes solicitudes
             </h2>
 
-            <p class="text-secondary mb-4">
-                Cuando solicites un certificado podrás consultar
-                su estado desde esta sección.
+            <p class="mb-4">
+                Cuando solicites un certificado podrás
+                consultar aquí su estado y acceder al documento
+                una vez que sea emitido.
             </p>
 
 
@@ -179,6 +302,7 @@
                 method="post"
                 action="{% url 'certificados:solicitar' %}"
             >
+
                 {% csrf_token %}
 
                 <button
@@ -190,12 +314,13 @@
 
             </form>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

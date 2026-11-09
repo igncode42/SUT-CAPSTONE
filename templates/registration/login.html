@@ -4,35 +4,110 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
 
-    <div class="col-12 col-md-7 col-lg-5 col-xl-4">
+<section
+    class="sut-login-section"
+    aria-labelledby="titulo-login"
+>
 
-        <div class="text-center mb-4">
+    <div class="row g-4 align-items-stretch justify-content-center">
 
-            <h1 class="h2 fw-bold mb-2">
-                Iniciar sesión
-            </h1>
 
-            <p class="text-secondary mb-0">
-                Accede a tu cuenta del Sistema Unidad Territorial.
-            </p>
+        <!-- ================================================= -->
+        <!-- ORIENTACION                                       -->
+        <!-- ================================================= -->
+
+        <div class="col-12 col-lg-6">
+
+            <div
+                class="sut-surface sut-login-intro p-4 p-lg-5 h-100 d-flex flex-column justify-content-center"
+            >
+
+                <p class="sut-login-kicker mb-3">
+                    Acceso SUT
+                </p>
+
+                <h1
+                    id="titulo-login"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Bienvenido de vuelta.
+                </h1>
+
+                <p class="lead mb-4">
+                    Ingresa a tu cuenta para gestionar
+                    tus trámites y servicios comunitarios.
+                </p>
+
+
+                <div class="sut-login-info">
+
+                    <p class="fw-semibold mb-1">
+                        ¿Solo quieres informarte?
+                    </p>
+
+                    <p class="small mb-3">
+                        Las noticias y avisos de la comunidad
+                        son públicos y no requieren iniciar sesión.
+                    </p>
+
+                    <a
+                        href="{% url 'comunicaciones:inicio' %}"
+                        class="sut-login-public-link"
+                    >
+                        Ver noticias y avisos →
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
 
 
-        <div class="card border-0 shadow-sm">
+        <!-- ================================================= -->
+        <!-- FORMULARIO                                        -->
+        <!-- ================================================= -->
 
-            <div class="card-body p-4 p-md-5">
+        <div class="col-12 col-md-8 col-lg-5">
+
+            <div
+                class="sut-surface sut-login-card p-4 p-md-5 h-100 d-flex flex-column justify-content-center"
+            >
+
+
+                <header class="mb-4">
+
+                    <p class="text-primary fw-semibold mb-2">
+                        Tu cuenta
+                    </p>
+
+                    <h2 class="h2 fw-bold mb-2">
+                        Iniciar sesión
+                    </h2>
+
+                    <p class="mb-0">
+                        Ingresa tu usuario y contraseña.
+                    </p>
+
+                </header>
 
 
                 {% if form.non_field_errors or form.errors %}
 
                     <div
-                        class="alert alert-danger"
+                        class="alert alert-danger sut-login-error"
                         role="alert"
                     >
-                        Usuario o contraseña incorrectos.
+
+                        <strong>
+                            No pudimos iniciar sesión.
+                        </strong>
+
+                        <div class="small mt-1">
+                            Revisa tu usuario y contraseña e inténtalo nuevamente.
+                        </div>
+
                     </div>
 
                 {% endif %}
@@ -41,10 +116,13 @@
                 <form
                     method="post"
                     novalidate
+                    class="sut-login-form"
                 >
 
                     {% csrf_token %}
 
+
+                    <!-- USUARIO -->
 
                     <div class="mb-3">
 
@@ -71,6 +149,8 @@
 
                     </div>
 
+
+                    <!-- CONTRASEÑA -->
 
                     <div class="mb-4">
 
@@ -111,20 +191,17 @@
 
                     <button
                         type="submit"
-                        class="btn btn-primary w-100"
+                        class="btn btn-primary sut-login-submit w-100"
                     >
-                        Ingresar
+                        Ingresar a mi cuenta
                     </button>
 
                 </form>
 
 
-                <hr class="my-4">
+                <div class="sut-login-register mt-4">
 
-
-                <div class="text-center">
-
-                    <p class="text-secondary mb-3">
+                    <p class="mb-2">
                         ¿Aún no tienes una cuenta?
                     </p>
 
@@ -132,54 +209,32 @@
                         href="{% url 'vecinos:registro' %}"
                         class="btn btn-outline-primary w-100"
                     >
-                        Registrarme como vecino
+                        Crear mi cuenta
                     </a>
 
                 </div>
+
+
+                <div class="text-center mt-4">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="sut-login-back"
+                    >
+                        ← Volver al inicio
+                    </a>
+
+                </div>
+
 
             </div>
 
         </div>
 
 
-        <p class="text-center mt-4 mb-0">
-
-            <a
-                href="{% url 'home' %}"
-                class="text-secondary text-decoration-none"
-            >
-                Volver al inicio
-            </a>
-
-        </p>
-
     </div>
 
-</div>
+</section>
 
-
-<style>
-
-    #id_username,
-    #id_password {
-        display: block;
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: var(--bs-body-color);
-        background-color: var(--bs-body-bg);
-        border: var(--bs-border-width) solid var(--bs-border-color);
-        border-radius: var(--bs-border-radius);
-    }
-
-    #id_username:focus,
-    #id_password:focus {
-        border-color: #86b7fe;
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-</style>
 
 {% endblock %}

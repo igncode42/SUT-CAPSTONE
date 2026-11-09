@@ -5,16 +5,29 @@
 {% block content %}
 
 
+<!-- ===================================================== -->
+<!-- 1. BIENVENIDA                                         -->
+<!-- ===================================================== -->
+
 <section
-    class="mb-4"
+    class="mb-5"
     aria-labelledby="titulo-inicio"
 >
 
     <div class="row g-4 align-items-stretch">
 
-        <div class="col-12 col-lg-7">
 
-            <div class="h-100 d-flex flex-column justify-content-center">
+        <!-- MENSAJE PRINCIPAL -->
+
+        <div class="col-12 {% if not user.is_authenticated %}col-lg-7{% endif %}">
+
+            <div
+                class="sut-surface sut-home-hero p-4 p-lg-5 h-100 d-flex flex-column justify-content-center"
+            >
+
+                <p class="text-primary fw-semibold mb-2">
+                    Tu comunidad
+                </p>
 
                 <h1
                     id="titulo-inicio"
@@ -24,7 +37,7 @@
                     simples y en un solo lugar.
                 </h1>
 
-                <p class="lead mb-4">
+                <p class="lead mb-0">
                     Accede a trámites, actividades y noticias
                     de tu comunidad de forma clara y sencilla.
                 </p>
@@ -32,13 +45,15 @@
 
                 {% if user.is_authenticated %}
 
-                    <div>
+                    <div class="mt-4">
+
                         <a
                             href="{% url 'panel' %}"
                             class="btn btn-primary btn-lg px-4"
                         >
                             Ir a mi panel
                         </a>
+
                     </div>
 
                 {% endif %}
@@ -48,272 +63,344 @@
         </div>
 
 
+        <!-- GUIA PRIMERA VEZ -->
+
         {% if not user.is_authenticated %}
 
-        <div class="col-12 col-lg-5">
+            <div class="col-12 col-lg-5">
 
-            <div class="sut-surface p-4 h-100">
+                <div
+                    class="sut-surface sut-home-guide p-4 h-100 d-flex flex-column"
+                >
 
-                <p class="fw-semibold mb-2">
-                    ¿Es tu primera vez?
-                </p>
+                    <p class="fw-semibold mb-2">
+                        ¿Es tu primera vez?
+                    </p>
 
-                <h2 class="h4 fw-bold mb-3">
-                    Comenzar es fácil
-                </h2>
+                    <h2 class="h4 fw-bold mb-4">
+                        Comenzar es fácil
+                    </h2>
 
 
-                <div class="d-grid gap-3">
+                    <div class="d-grid gap-3 mb-4">
 
-                    <div class="d-flex gap-3">
 
-                        <strong>
-                            1
-                        </strong>
+                        <div class="d-flex gap-3">
 
-                        <div>
-                            <p class="fw-semibold mb-0">
-                                Crea tu cuenta
-                            </p>
+                            <strong class="sut-home-step">
+                                1
+                            </strong>
 
-                            <p class="small mb-0">
-                                Regístrate como vecino.
-                            </p>
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Crea tu cuenta
+                                </p>
+
+                                <p class="small mb-0">
+                                    Regístrate como vecino.
+                                </p>
+
+                            </div>
+
                         </div>
+
+
+                        <div class="d-flex gap-3">
+
+                            <strong class="sut-home-step">
+                                2
+                            </strong>
+
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Inicia sesión
+                                </p>
+
+                                <p class="small mb-0">
+                                    Accede de forma segura.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex gap-3">
+
+                            <strong class="sut-home-step">
+                                3
+                            </strong>
+
+                            <div>
+
+                                <p class="fw-semibold mb-0">
+                                    Usa los servicios
+                                </p>
+
+                                <p class="small mb-0">
+                                    Gestiona tus trámites y actividades.
+                                </p>
+
+                            </div>
+
+                        </div>
+
 
                     </div>
 
 
-                    <div class="d-flex gap-3">
+                    <div class="mt-auto">
 
-                        <strong>
-                            2
-                        </strong>
-
-                        <div>
-                            <p class="fw-semibold mb-0">
-                                Inicia sesión
-                            </p>
-
-                            <p class="small mb-0">
-                                Accede de forma segura.
-                            </p>
-                        </div>
+                        <a
+                            href="{% url 'vecinos:registro' %}"
+                            class="btn btn-primary"
+                        >
+                            Crear cuenta
+                        </a>
 
                     </div>
-
-
-                    <div class="d-flex gap-3">
-
-                        <strong>
-                            3
-                        </strong>
-
-                        <div>
-                            <p class="fw-semibold mb-0">
-                                Usa los servicios
-                            </p>
-
-                            <p class="small mb-0">
-                                Gestiona tus trámites y actividades.
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="mt-4">
-
-                    <a
-                        href="{% url 'vecinos:registro' %}"
-                        class="btn btn-primary"
-                    >
-                        Crear cuenta
-                    </a>
 
                 </div>
 
             </div>
 
-        </div>
-
         {% endif %}
+
 
     </div>
 
 </section>
 
 
+<!-- ===================================================== -->
+<!-- 2. SERVICIOS                                          -->
+<!-- ===================================================== -->
+
 <section
     aria-labelledby="titulo-servicios"
 >
 
-    <div class="mb-3">
-
-        <h2
-            id="titulo-servicios"
-            class="h2 fw-bold mb-1"
-        >
-            ¿Qué necesitas hacer?
-        </h2>
-
-        <p class="mb-0">
-            Elige el servicio que necesitas.
-        </p>
-
-    </div>
+    <div class="sut-surface sut-home-services-shell p-4 p-lg-5">
 
 
-    <div class="row g-3">
+        <!-- ENCABEZADO -->
 
+        <header class="sut-home-services-header mb-4">
 
-        <div class="col-12 col-md-6 col-lg-3">
+            <p class="text-primary fw-semibold mb-2">
+                Servicios
+            </p>
 
-            <div
-                class="sut-surface sut-service-private p-4 h-100 position-relative"
+            <h2
+                id="titulo-servicios"
+                class="h2 fw-bold mb-2"
             >
+                ¿Qué necesitas hacer?
+            </h2>
 
-                <h3 class="h5 fw-bold mb-2">
-                    Solicitar certificado
-                </h3>
-
-                <p class="small mb-3">
-                    Certificado de residencia.
-                </p>
-
-
-                {% if user.is_authenticated %}
-
-                    <a
-                        href="{% url 'certificados:mis_solicitudes' %}"
-                        class="btn btn-primary btn-sm stretched-link"
-                    >
-                        Solicitar certificado
-                    </a>
-
-                {% else %}
-
-                    <a
-                        href="{% url 'login' %}"
-                        class="btn btn-outline-primary btn-sm stretched-link"
-                    >
-                        Solicitar certificado
-                    </a>
-
+            <p class="mb-0">
+                Elige el servicio que necesitas.
+                {% if not user.is_authenticated %}
+                    Los trámites requieren iniciar sesión,
+                    pero las noticias y avisos son públicos.
                 {% endif %}
+            </p>
 
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-3">
-
-            <div
-                class="sut-surface sut-service-private p-4 h-100 position-relative"
-            >
-
-                <h3 class="h5 fw-bold mb-2">
-                    Reservar un espacio
-                </h3>
-
-                <p class="small mb-3">
-                    Consulta espacios comunitarios.
-                </p>
+        </header>
 
 
-                {% if user.is_authenticated %}
-
-                    <a
-                        href="{% url 'reservas:mis_reservas' %}"
-                        class="btn btn-primary btn-sm stretched-link"
-                    >
-                        Reservar espacio
-                    </a>
-
-                {% else %}
-
-                    <a
-                        href="{% url 'login' %}"
-                        class="btn btn-outline-primary btn-sm stretched-link"
-                    >
-                        Reservar espacio
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-        </div>
+        <div class="row g-3">
 
 
-        <div class="col-12 col-md-6 col-lg-3">
+            <!-- CERTIFICADOS -->
 
-            <div
-                class="sut-surface sut-service-private p-4 h-100 position-relative"
-            >
+            <div class="col-12 col-md-6 col-lg-3">
 
-                <h3 class="h5 fw-bold mb-2">
-                    Ver actividades
-                </h3>
-
-                <p class="small mb-3">
-                    Revisa actividades y cupos.
-                </p>
-
-
-                {% if user.is_authenticated %}
-
-                    <a
-                        href="{% url 'actividades:disponibles' %}"
-                        class="btn btn-primary btn-sm stretched-link"
-                    >
-                        Ver actividades
-                    </a>
-
-                {% else %}
-
-                    <a
-                        href="{% url 'login' %}"
-                        class="btn btn-outline-primary btn-sm stretched-link"
-                    >
-                        Ver actividades
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-
-
-        <div class="col-12 col-md-6 col-lg-3">
-
-            <div
-                class="sut-surface sut-service-public p-4 h-100 position-relative"
-            >
-
-                <h3 class="h5 fw-bold mb-2">
-                    Noticias y avisos
-                </h3>
-
-                <p class="small mb-3">
-                    Mantente informado.
-                </p>
-
-                <a
-                    href="{% url 'comunicaciones:inicio' %}"
-                    class="btn btn-primary btn-sm stretched-link"
+                <article
+                    class="sut-home-service-card sut-service-private h-100 position-relative"
                 >
-                    Ver noticias y avisos
-                </a>
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label">
+                            Trámite
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Solicitar certificado
+                        </h3>
+
+                        <p class="small mb-4">
+                            Solicita y consulta tu certificado de residencia.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a
+                                href="{% url 'certificados:mis_solicitudes' %}"
+                                class="btn btn-primary btn-sm stretched-link"
+                            >
+                                Solicitar certificado
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'login' %}"
+                                class="btn btn-outline-primary btn-sm stretched-link"
+                            >
+                                Solicitar certificado
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
 
             </div>
 
-        </div>
 
+            <!-- RESERVAS -->
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <article
+                    class="sut-home-service-card sut-service-private h-100 position-relative"
+                >
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label">
+                            Espacios
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Reservar un espacio
+                        </h3>
+
+                        <p class="small mb-4">
+                            Consulta y solicita espacios comunitarios disponibles.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a
+                                href="{% url 'reservas:mis_reservas' %}"
+                                class="btn btn-primary btn-sm stretched-link"
+                            >
+                                Reservar espacio
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'login' %}"
+                                class="btn btn-outline-primary btn-sm stretched-link"
+                            >
+                                Reservar espacio
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- ACTIVIDADES -->
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <article
+                    class="sut-home-service-card sut-service-private h-100 position-relative"
+                >
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label">
+                            Comunidad
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Ver actividades
+                        </h3>
+
+                        <p class="small mb-4">
+                            Revisa actividades vecinales y sus cupos disponibles.
+                        </p>
+
+
+                        {% if user.is_authenticated %}
+
+                            <a
+                                href="{% url 'actividades:disponibles' %}"
+                                class="btn btn-primary btn-sm stretched-link"
+                            >
+                                Ver actividades
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'login' %}"
+                                class="btn btn-outline-primary btn-sm stretched-link"
+                            >
+                                Ver actividades
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- COMUNICACIONES -->
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <article
+                    class="sut-home-service-card sut-service-public h-100 position-relative"
+                >
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label sut-home-public-label">
+                            Público
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Noticias y avisos
+                        </h3>
+
+                        <p class="small mb-4">
+                            Consulta novedades e información importante de tu comunidad.
+                        </p>
+
+                        <a
+                            href="{% url 'comunicaciones:inicio' %}"
+                            class="btn btn-primary btn-sm stretched-link"
+                        >
+                            Ver noticias y avisos
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+        </div>
 
     </div>
 

@@ -5,59 +5,211 @@
 {% block content %}
 
 
-<div class="row justify-content-center">
+<section
+    class="sut-notice-create-section"
+    aria-labelledby="titulo-publicar-aviso"
+>
 
-    <div class="col-12 col-lg-8 col-xl-7">
+
+    <div class="row g-4 align-items-stretch">
 
 
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+        <!-- ================================================= -->
+        <!-- 1. ORIENTACION                                    -->
+        <!-- ================================================= -->
 
-            <div>
+        <div class="col-12 col-lg-5">
 
-                <p class="text-primary fw-semibold mb-2">
+            <aside class="sut-notice-create-intro p-4 p-lg-5 h-100">
+
+
+                <p class="sut-notice-create-kicker mb-3">
                     Comunicaciones
                 </p>
 
-                <h1 class="fw-bold mb-2">
+
+                <h1
+                    id="titulo-publicar-aviso"
+                    class="display-5 fw-bold mb-3"
+                >
                     Publicar aviso
                 </h1>
 
-                <p class="text-secondary mb-0">
+
+                <p class="lead mb-4">
                     Publica un aviso breve para comunicar información
                     importante a los vecinos de la comunidad.
                 </p>
 
-            </div>
+
+                <!-- GUIA -->
+
+                <div class="sut-notice-create-guide mb-4">
+
+                    <p class="fw-semibold mb-3">
+                        Antes de publicar
+                    </p>
 
 
-            <div class="flex-shrink-0">
+                    <div class="d-flex gap-3 mb-3">
 
-                <a
-                    href="{% url 'comunicaciones:inicio' %}"
-                    class="btn btn-outline-secondary"
-                >
-                    Volver
-                </a>
+                        <span class="sut-notice-create-step">
+                            1
+                        </span>
 
-            </div>
+                        <div>
+
+                            <p class="fw-semibold mb-0">
+                                Define el aviso
+                            </p>
+
+                            <p class="small mb-0">
+                                Utiliza un título que permita entender
+                                rápidamente el tema comunicado.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-3 mb-3">
+
+                        <span class="sut-notice-create-step">
+                            2
+                        </span>
+
+                        <div>
+
+                            <p class="fw-semibold mb-0">
+                                Escribe el contenido
+                            </p>
+
+                            <p class="small mb-0">
+                                Explica la información necesaria
+                                de manera clara y directa.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-3">
+
+                        <span class="sut-notice-create-step">
+                            3
+                        </span>
+
+                        <div>
+
+                            <p class="fw-semibold mb-0">
+                                Publica
+                            </p>
+
+                            <p class="small mb-0">
+                                El aviso quedará registrado
+                                en la sección de comunicaciones.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VOLVER -->
+
+                <div class="sut-notice-create-help">
+
+                    <p class="small mb-2">
+                        ¿No necesitas publicar ahora?
+                    </p>
+
+                    <a
+                        href="{% url 'comunicaciones:inicio' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        Ver comunicaciones
+                    </a>
+
+                </div>
+
+
+            </aside>
 
         </div>
 
 
-        <div class="card border-0 shadow-sm">
+        <!-- ================================================= -->
+        <!-- 2. FORMULARIO                                     -->
+        <!-- ================================================= -->
 
-            <div class="card-body p-4 p-md-5">
+        <div class="col-12 col-lg-7">
 
+            <div class="sut-notice-create-card p-4 p-md-5 h-100">
+
+
+                <header class="sut-notice-create-header mb-4">
+
+                    <p class="text-primary fw-semibold mb-2">
+                        Nuevo aviso
+                    </p>
+
+                    <h2 class="h2 fw-bold mb-2">
+                        Información del aviso
+                    </h2>
+
+                    <p class="mb-0">
+                        Completa los datos que serán publicados
+                        para la comunidad.
+                    </p>
+
+                </header>
+
+
+                <!-- INFORMACION -->
+
+                <div
+                    class="sut-notice-create-info mb-4"
+                    role="status"
+                >
+
+                    <span
+                        class="sut-notice-create-info-mark"
+                        aria-hidden="true"
+                    >
+                        i
+                    </span>
+
+                    <p class="mb-0">
+                        Revisa el título y el contenido
+                        antes de publicar el aviso.
+                    </p>
+
+                </div>
+
+
+                <!-- ERRORES GENERALES -->
 
                 {% if form.non_field_errors %}
 
                     <div
-                        class="alert alert-danger"
+                        class="sut-notice-create-error mb-4"
                         role="alert"
                     >
 
+                        <strong class="d-block mb-1">
+                            No pudimos publicar el aviso
+                        </strong>
+
                         {% for error in form.non_field_errors %}
-                            <div>{{ error }}</div>
+
+                            <div class="small">
+                                {{ error }}
+                            </div>
+
                         {% endfor %}
 
                     </div>
@@ -65,31 +217,39 @@
                 {% endif %}
 
 
+                <!-- FORMULARIO -->
+
                 <form
                     method="post"
                     novalidate
-                    class="comunicacion-form"
+                    class="comunicacion-form sut-notice-create-form"
                 >
 
                     {% csrf_token %}
 
 
-                    <div class="mb-4">
+                    <!-- TITULO -->
+
+                    <div class="sut-notice-create-field mb-4">
 
                         <label
                             for="{{ form.titulo.id_for_label }}"
-                            class="form-label fw-semibold"
+                            class="form-label"
                         >
+
                             Título
 
                             {% if form.titulo.field.required %}
+
                                 <span
-                                    class="text-danger"
+                                    class="sut-required"
                                     aria-hidden="true"
                                 >
                                     *
                                 </span>
+
                             {% endif %}
+
                         </label>
 
 
@@ -108,7 +268,7 @@
                         {% for error in form.titulo.errors %}
 
                             <div
-                                class="text-danger small mt-1"
+                                class="sut-field-error mt-2"
                                 role="alert"
                             >
                                 {{ error }}
@@ -119,22 +279,28 @@
                     </div>
 
 
-                    <div class="mb-4">
+                    <!-- CONTENIDO -->
+
+                    <div class="sut-notice-create-field mb-4">
 
                         <label
                             for="{{ form.contenido.id_for_label }}"
-                            class="form-label fw-semibold"
+                            class="form-label"
                         >
+
                             Contenido
 
                             {% if form.contenido.field.required %}
+
                                 <span
-                                    class="text-danger"
+                                    class="sut-required"
                                     aria-hidden="true"
                                 >
                                     *
                                 </span>
+
                             {% endif %}
+
                         </label>
 
 
@@ -153,7 +319,7 @@
                         {% for error in form.contenido.errors %}
 
                             <div
-                                class="text-danger small mt-1"
+                                class="sut-field-error mt-2"
                                 role="alert"
                             >
                                 {{ error }}
@@ -164,14 +330,22 @@
                     </div>
 
 
-                    <p class="text-secondary small mb-4">
-                        Los campos marcados con
-                        <span class="text-danger">*</span>
-                        son obligatorios.
-                    </p>
+                    <!-- CAMPOS OBLIGATORIOS -->
+
+                    <div class="sut-notice-create-required mb-4">
+
+                        <span class="sut-required">
+                            *
+                        </span>
+
+                        Los campos marcados son obligatorios.
+
+                    </div>
 
 
-                    <div class="d-grid d-sm-flex gap-2">
+                    <!-- ACCIONES -->
+
+                    <div class="sut-notice-create-actions">
 
                         <button
                             type="submit"
@@ -190,6 +364,7 @@
 
                     </div>
 
+
                 </form>
 
 
@@ -197,43 +372,10 @@
 
         </div>
 
+
     </div>
 
-</div>
-
-
-<style>
-
-    .comunicacion-form input,
-    .comunicacion-form select,
-    .comunicacion-form textarea {
-        display: block;
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: var(--bs-body-color);
-        background-color: var(--bs-body-bg);
-        border: var(--bs-border-width) solid var(--bs-border-color);
-        border-radius: var(--bs-border-radius);
-    }
-
-
-    .comunicacion-form textarea {
-        min-height: 180px;
-        resize: vertical;
-    }
-
-
-    .comunicacion-form input:focus,
-    .comunicacion-form select:focus,
-    .comunicacion-form textarea:focus {
-        border-color: #86b7fe;
-        outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-</style>
+</section>
 
 
 {% endblock %}

@@ -5,18 +5,92 @@
 {% block content %}
 
 
-<header class="mb-4">
+<!-- ===================================================== -->
+<!-- 1. CABECERA DEL PANEL                                 -->
+<!-- ===================================================== -->
 
-    <h1 class="fw-bold mb-2">
-        Mi panel
-    </h1>
+<header
+    class="sut-surface sut-panel-hero p-4 p-lg-5 mb-5"
+>
 
-    <p class="mb-0">
-        Accede a tus servicios y gestiona tu participación en la comunidad.
-    </p>
+    <div class="row g-4 align-items-center">
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+
+        <div
+            class="
+                col-12
+                {% if es_miembro_junta %}
+                    col-lg-7
+                {% endif %}
+            "
+        >
+
+            <p class="sut-panel-kicker mb-3">
+                Área personal
+            </p>
+
+            <h1 class="display-5 fw-bold mb-3">
+                Mi panel
+            </h1>
+
+            <p class="lead mb-0">
+                Accede a tus servicios y gestiona
+                tu participación en la comunidad.
+            </p>
+
+        </div>
+
+
+        <!-- MIEMBRO DE JUNTA -->
+
+        {% if es_miembro_junta %}
+
+            <div class="col-12 col-lg-5">
+
+                <aside
+                    class="sut-panel-hero-member"
+                    aria-labelledby="titulo-acceso-proyectos"
+                >
+
+                    <span class="sut-panel-hero-member-label">
+                        Miembro de junta
+                    </span>
+
+                    <h2
+                        id="titulo-acceso-proyectos"
+                        class="h4 fw-bold mb-2"
+                    >
+                        Proyectos vecinales
+                    </h2>
+
+                    <p class="mb-3">
+                        Postula nuevas propuestas y revisa
+                        el estado de tus proyectos.
+                    </p>
+
+                    <a
+                        href="{% url 'panel_miembro' %}"
+                        class="btn btn-primary"
+                    >
+                        Ver proyectos
+                    </a>
+
+                </aside>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
 
 </header>
 
+<!-- ===================================================== -->
+<!-- 2. SERVICIOS DEL VECINO                               -->
+<!-- ===================================================== -->
 
 {% if es_vecino %}
 
@@ -25,120 +99,181 @@
     aria-labelledby="titulo-servicios"
 >
 
-    <div class="mb-3">
-
-        <h2
-            id="titulo-servicios"
-            class="h3 fw-bold mb-1"
-        >
-            Mis servicios
-        </h2>
-
-        <p class="mb-0">
-            Elige lo que necesitas hacer.
-        </p>
-
-    </div>
+    <div class="sut-panel-shell p-4 p-lg-5">
 
 
-    <div class="row g-3">
+        <header class="sut-panel-section-header mb-4">
+
+            <p class="text-primary fw-semibold mb-2">
+                Tus servicios
+            </p>
+
+            <h2
+                id="titulo-servicios"
+                class="h2 fw-bold mb-2"
+            >
+                ¿Qué necesitas hacer?
+            </h2>
+
+            <p class="mb-0">
+                Elige un servicio para comenzar.
+            </p>
+
+        </header>
 
 
-        <div class="col-12 col-md-6 col-xl-3">
+        <div class="row g-3">
 
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
 
-                <h3 class="h5 fw-bold mb-2">
-                    Certificados
-                </h3>
+            <!-- CERTIFICADOS -->
 
-                <p class="small flex-grow-1">
-                    Solicita certificados de residencia y revisa su estado.
-                </p>
+            <div class="col-12 col-md-6 col-xl-3">
 
-                <a
-                    href="{% url 'certificados:mis_solicitudes' %}"
-                    class="btn btn-outline-primary align-self-start"
+                <article
+                    class="sut-panel-card h-100 position-relative"
                 >
-                    Mis certificados
-                </a>
+
+                    <div class="sut-panel-card-body">
+
+                        <span class="sut-panel-label">
+                            Trámite
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Certificados
+                        </h3>
+
+                        <p class="small mb-4">
+                            Solicita certificados de residencia
+                            y revisa su estado.
+                        </p>
+
+                        <a
+                            href="{% url 'certificados:mis_solicitudes' %}"
+                            class="btn btn-outline-primary btn-sm stretched-link"
+                        >
+                            Mis certificados
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
 
-        </div>
 
+            <!-- RESERVAS -->
 
-        <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl-3">
 
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Reservas
-                </h3>
-
-                <p class="small flex-grow-1">
-                    Consulta y solicita espacios comunitarios.
-                </p>
-
-                <a
-                    href="{% url 'reservas:mis_reservas' %}"
-                    class="btn btn-outline-primary align-self-start"
+                <article
+                    class="sut-panel-card h-100 position-relative"
                 >
-                    Mis reservas
-                </a>
+
+                    <div class="sut-panel-card-body">
+
+                        <span class="sut-panel-label">
+                            Espacios
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Reservas
+                        </h3>
+
+                        <p class="small mb-4">
+                            Consulta y solicita espacios
+                            comunitarios disponibles.
+                        </p>
+
+                        <a
+                            href="{% url 'reservas:mis_reservas' %}"
+                            class="btn btn-outline-primary btn-sm stretched-link"
+                        >
+                            Mis reservas
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
 
-        </div>
 
+            <!-- ACTIVIDADES -->
 
-        <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl-3">
 
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Actividades
-                </h3>
-
-                <p class="small flex-grow-1">
-                    Revisa actividades disponibles y sus cupos.
-                </p>
-
-                <a
-                    href="{% url 'actividades:disponibles' %}"
-                    class="btn btn-outline-primary align-self-start"
+                <article
+                    class="sut-panel-card h-100 position-relative"
                 >
-                    Ver actividades
-                </a>
+
+                    <div class="sut-panel-card-body">
+
+                        <span class="sut-panel-label">
+                            Comunidad
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Actividades
+                        </h3>
+
+                        <p class="small mb-4">
+                            Revisa actividades disponibles
+                            y sus cupos.
+                        </p>
+
+                        <a
+                            href="{% url 'actividades:disponibles' %}"
+                            class="btn btn-outline-primary btn-sm stretched-link"
+                        >
+                            Ver actividades
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
 
-        </div>
 
+            <!-- COMUNICACIONES -->
 
-        <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl-3">
 
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Noticias y avisos
-                </h3>
-
-                <p class="small flex-grow-1">
-                    Consulta las comunicaciones de tu comunidad.
-                </p>
-
-                <a
-                    href="{% url 'comunicaciones:inicio' %}"
-                    class="btn btn-outline-primary align-self-start"
+                <article
+                    class="sut-panel-card sut-panel-card-public h-100 position-relative"
                 >
-                    Ver comunicaciones
-                </a>
+
+                    <div class="sut-panel-card-body">
+
+                        <span class="sut-panel-label sut-panel-label-public">
+                            Público
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Noticias y avisos
+                        </h3>
+
+                        <p class="small mb-4">
+                            Consulta las novedades
+                            y comunicaciones de tu comunidad.
+                        </p>
+
+                        <a
+                            href="{% url 'comunicaciones:inicio' %}"
+                            class="btn btn-primary btn-sm stretched-link"
+                        >
+                            Ver comunicaciones
+                        </a>
+
+                    </div>
+
+                </article>
 
             </div>
 
-        </div>
 
+        </div>
 
     </div>
 
@@ -146,66 +281,9 @@
 
 {% endif %}
 
-
-{% if es_miembro_junta %}
-
-<section
-    class="mb-5"
-    aria-labelledby="titulo-miembro"
->
-
-    <div class="mb-3">
-
-        <h2
-            id="titulo-miembro"
-            class="h3 fw-bold mb-1"
-        >
-            Proyectos vecinales
-        </h2>
-
-        <p class="mb-0">
-            Espacio disponible para miembros de la junta de vecinos.
-        </p>
-
-    </div>
-
-
-    <div class="sut-surface p-4">
-
-        <div class="row align-items-center g-3">
-
-            <div class="col-12 col-lg">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Mis proyectos
-                </h3>
-
-                <p class="mb-0">
-                    Postula proyectos vecinales y revisa el estado de tus postulaciones.
-                </p>
-
-            </div>
-
-
-            <div class="col-12 col-lg-auto">
-
-                <a
-                    href="{% url 'panel_miembro' %}"
-                    class="btn btn-primary"
-                >
-                    Ver proyectos
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-{% endif %}
-
+<!-- ===================================================== -->
+<!-- 4. GESTION ADMINISTRATIVA                             -->
+<!-- ===================================================== -->
 
 {% if puede_resolver_proyectos or puede_gestionar_certificados or puede_publicar_comunicaciones or puede_gestionar_vecinos %}
 
@@ -213,136 +291,189 @@
     aria-labelledby="titulo-gestion"
 >
 
-    <div class="mb-3">
-
-        <h2
-            id="titulo-gestion"
-            class="h3 fw-bold mb-1"
-        >
-            Gestión administrativa
-        </h2>
-
-        <p class="mb-0">
-            Herramientas disponibles según tus permisos.
-        </p>
-
-    </div>
+    <div class="sut-panel-management-shell p-4 p-lg-5">
 
 
-    <div class="row g-3">
+        <header class="sut-panel-management-header mb-4">
+
+            <p class="text-primary fw-semibold mb-2">
+                Administración
+            </p>
+
+            <h2
+                id="titulo-gestion"
+                class="h2 fw-bold mb-2"
+            >
+                Gestión administrativa
+            </h2>
+
+            <p class="mb-0">
+                Herramientas disponibles según tus permisos.
+            </p>
+
+        </header>
 
 
-        {% if puede_resolver_proyectos %}
+        <div class="row g-3">
 
-        <div class="col-12 col-md-6">
 
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
+            {% if puede_resolver_proyectos %}
 
-                <h3 class="h5 fw-bold mb-2">
-                    Revisión de proyectos
-                </h3>
+                <div class="col-12 col-md-6">
 
-                <p class="flex-grow-1">
-                    Revisa y resuelve las postulaciones de proyectos vecinales.
-                </p>
+                    <article
+                        class="sut-panel-admin-card h-100 position-relative"
+                    >
 
-                <a
-                    href="{% url 'proyectos:pendientes' %}"
-                    class="btn btn-outline-primary align-self-start"
-                >
-                    Revisar proyectos
-                </a>
+                        <div class="sut-panel-card-body">
 
-            </div>
+                            <span class="sut-panel-admin-label">
+                                Gestión
+                            </span>
+
+                            <h3 class="h5 fw-bold mb-2">
+                                Revisión de proyectos
+                            </h3>
+
+                            <p class="mb-4">
+                                Revisa y resuelve las postulaciones
+                                de proyectos vecinales.
+                            </p>
+
+                            <a
+                                href="{% url 'proyectos:pendientes' %}"
+                                class="btn btn-outline-primary stretched-link"
+                            >
+                                Revisar proyectos
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if puede_gestionar_certificados %}
+
+                <div class="col-12 col-md-6">
+
+                    <article
+                        class="sut-panel-admin-card h-100 position-relative"
+                    >
+
+                        <div class="sut-panel-card-body">
+
+                            <span class="sut-panel-admin-label">
+                                Gestión
+                            </span>
+
+                            <h3 class="h5 fw-bold mb-2">
+                                Gestión de certificados
+                            </h3>
+
+                            <p class="mb-4">
+                                Revisa, resuelve y emite
+                                certificados de residencia.
+                            </p>
+
+                            <a
+                                href="{% url 'certificados:gestion' %}"
+                                class="btn btn-outline-primary stretched-link"
+                            >
+                                Gestionar certificados
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if puede_publicar_comunicaciones %}
+
+                <div class="col-12 col-md-6">
+
+                    <article
+                        class="sut-panel-admin-card h-100 position-relative"
+                    >
+
+                        <div class="sut-panel-card-body">
+
+                            <span class="sut-panel-admin-label">
+                                Gestión
+                            </span>
+
+                            <h3 class="h5 fw-bold mb-2">
+                                Comunicaciones
+                            </h3>
+
+                            <p class="mb-4">
+                                Publica noticias y avisos
+                                para la comunidad.
+                            </p>
+
+                            <a
+                                href="{% url 'comunicaciones:inicio' %}"
+                                class="btn btn-outline-primary stretched-link"
+                            >
+                                Gestionar comunicaciones
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if puede_gestionar_vecinos %}
+
+                <div class="col-12 col-md-6">
+
+                    <article
+                        class="sut-panel-admin-card h-100 position-relative"
+                    >
+
+                        <div class="sut-panel-card-body">
+
+                            <span class="sut-panel-admin-label">
+                                Gestión
+                            </span>
+
+                            <h3 class="h5 fw-bold mb-2">
+                                Gestión de vecinos
+                            </h3>
+
+                            <p class="mb-4">
+                                Revisa vecinos registrados y administra
+                                su condición de miembro.
+                            </p>
+
+                            <a
+                                href="{% url 'vecinos:gestion' %}"
+                                class="btn btn-outline-primary stretched-link"
+                            >
+                                Gestionar vecinos
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endif %}
+
 
         </div>
-
-        {% endif %}
-
-
-        {% if puede_gestionar_certificados %}
-
-        <div class="col-12 col-md-6">
-
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Gestión de certificados
-                </h3>
-
-                <p class="flex-grow-1">
-                    Revisa, resuelve y emite certificados de residencia.
-                </p>
-
-                <a
-                    href="{% url 'certificados:gestion' %}"
-                    class="btn btn-outline-primary align-self-start"
-                >
-                    Gestionar certificados
-                </a>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        {% if puede_publicar_comunicaciones %}
-
-        <div class="col-12 col-md-6">
-
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Comunicaciones
-                </h3>
-
-                <p class="flex-grow-1">
-                    Publica noticias y avisos para la comunidad.
-                </p>
-
-                <a
-                    href="{% url 'comunicaciones:inicio' %}"
-                    class="btn btn-outline-primary align-self-start"
-                >
-                    Gestionar comunicaciones
-                </a>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        {% if puede_gestionar_vecinos %}
-
-        <div class="col-12 col-md-6">
-
-            <div class="sut-surface p-4 h-100 d-flex flex-column">
-
-                <h3 class="h5 fw-bold mb-2">
-                    Gestión de vecinos
-                </h3>
-
-                <p class="flex-grow-1">
-                    Revisa vecinos registrados y administra su condición de miembro.
-                </p>
-
-                <a
-                    href="{% url 'vecinos:gestion' %}"
-                    class="btn btn-outline-primary align-self-start"
-                >
-                    Gestionar vecinos
-                </a>
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
 
     </div>
 

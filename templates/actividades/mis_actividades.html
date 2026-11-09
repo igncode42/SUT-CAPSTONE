@@ -5,197 +5,320 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Actividades vecinales
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Mis actividades
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta las actividades en las que estás inscrito
-            y la fecha en que realizaste cada inscripción.
-        </p>
-
-    </div>
+<section
+    class="sut-my-activities-section"
+    aria-labelledby="titulo-mis-actividades"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'actividades:disponibles' %}"
-            class="btn btn-primary"
-        >
-            Ver actividades
-        </a>
+    <header
+        class="sut-surface sut-my-activities-hero p-4 p-lg-5 mb-4"
+    >
 
-        <a
-            href="{% url 'panel' %}"
-            class="btn btn-outline-secondary"
-        >
-            Volver al panel
-        </a>
-
-    </div>
-
-</div>
+        <div class="row g-4 align-items-center">
 
 
-{% if inscripciones %}
+            <div class="col-12 col-lg">
 
+                <p class="sut-my-activities-kicker mb-3">
+                    Actividades vecinales
+                </p>
 
-    <!-- ===================================================== -->
-    <!-- ESCRITORIO / TABLET                                   -->
-    <!-- ===================================================== -->
+                <h1
+                    id="titulo-mis-actividades"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Mis actividades
+                </h1>
 
-    <div class="d-none d-md-block">
-
-        <div class="card border-0 shadow-sm">
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle mb-0">
-
-                    <thead class="table-light">
-
-                        <tr>
-
-                            <th scope="col">
-                                Actividad
-                            </th>
-
-                            <th scope="col">
-                                Fecha
-                            </th>
-
-                            <th scope="col">
-                                Fecha de inscripción
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% for inscripcion in inscripciones %}
-
-                            <tr>
-
-                                <td>
-                                    <strong>
-                                        {{ inscripcion.actividad.nombre }}
-                                    </strong>
-                                </td>
-
-
-                                <td>
-                                    {{ inscripcion.actividad.fecha }}
-                                </td>
-
-
-                                <td>
-                                    {{ inscripcion.fecha_inscripcion }}
-                                </td>
-
-                            </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
+                <p class="lead mb-0">
+                    Consulta las actividades en las que estás inscrito
+                    y revisa cuándo realizaste cada inscripción.
+                </p>
 
             </div>
 
-        </div>
 
-    </div>
+            <div class="col-12 col-lg-auto">
 
+                <div class="sut-my-activities-hero-actions">
 
-    <!-- ===================================================== -->
-    <!-- MÓVIL                                                 -->
-    <!-- ===================================================== -->
+                    <a
+                        href="{% url 'actividades:disponibles' %}"
+                        class="btn btn-primary"
+                    >
+                        Ver actividades
+                    </a>
 
-    <div class="d-md-none">
-
-        <div class="row g-3">
-
-            {% for inscripcion in inscripciones %}
-
-                <div class="col-12">
-
-                    <article class="card border-0 shadow-sm">
-
-                        <div class="card-body p-4">
-
-
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-
-                                <h2 class="h5 fw-bold mb-0">
-                                    {{ inscripcion.actividad.nombre }}
-                                </h2>
-
-                                <span class="badge text-bg-success flex-shrink-0">
-                                    Inscrito
-                                </span>
-
-                            </div>
-
-
-                            <dl class="row mb-0">
-
-                                <dt class="col-12 small text-secondary">
-                                    Fecha de actividad
-                                </dt>
-
-                                <dd class="col-12 mb-3">
-                                    {{ inscripcion.actividad.fecha }}
-                                </dd>
-
-
-                                <dt class="col-12 small text-secondary">
-                                    Fecha de inscripción
-                                </dt>
-
-                                <dd class="col-12 mb-0">
-                                    {{ inscripcion.fecha_inscripcion }}
-                                </dd>
-
-                            </dl>
-
-
-                        </div>
-
-                    </article>
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Volver al panel
+                    </a>
 
                 </div>
 
-            {% endfor %}
+            </div>
+
 
         </div>
 
-    </div>
+    </header>
 
 
-{% else %}
+    {% if inscripciones %}
 
 
-    <div class="card border-0 shadow-sm">
+        <!-- ================================================= -->
+        <!-- 2. LISTADO                                       -->
+        <!-- ================================================= -->
 
-        <div class="card-body p-4 p-md-5 text-center">
+        <section
+            class="sut-my-activities-shell p-4 p-lg-5"
+            aria-labelledby="titulo-listado-inscripciones"
+        >
 
-            <h2 class="h4 fw-bold mb-2">
+
+            <header class="sut-my-activities-list-header mb-4">
+
+                <p class="text-primary fw-semibold mb-2">
+                    Tus inscripciones
+                </p>
+
+                <div
+                    class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3"
+                >
+
+                    <div>
+
+                        <h2
+                            id="titulo-listado-inscripciones"
+                            class="h2 fw-bold mb-2"
+                        >
+                            Actividades inscritas
+                        </h2>
+
+                        <p class="mb-0">
+                            Revisa tus actividades y las fechas asociadas.
+                        </p>
+
+                    </div>
+
+
+                    <span class="sut-my-activities-count">
+
+                        {{ inscripciones|length }}
+
+                        {% if inscripciones|length == 1 %}
+                            inscripción
+                        {% else %}
+                            inscripciones
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <!-- ============================================= -->
+            <!-- ESCRITORIO / TABLET                           -->
+            <!-- ============================================= -->
+
+            <div class="d-none d-md-block">
+
+                <div class="sut-my-activities-table-wrap">
+
+                    <div class="table-responsive">
+
+                        <table class="table sut-my-activities-table align-middle mb-0">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th scope="col">
+                                        Actividad
+                                    </th>
+
+                                    <th scope="col">
+                                        Fecha de actividad
+                                    </th>
+
+                                    <th scope="col">
+                                        Fecha de inscripción
+                                    </th>
+
+                                    <th scope="col">
+                                        Estado
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for inscripcion in inscripciones %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>
+                                                {{ inscripcion.actividad.nombre }}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+                                            {{ inscripcion.actividad.fecha }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ inscripcion.fecha_inscripcion }}
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="sut-my-activity-status">
+                                                Inscrito
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- MOVIL                                         -->
+            <!-- ============================================= -->
+
+            <div class="d-md-none">
+
+                <div class="d-grid gap-3">
+
+                    {% for inscripcion in inscripciones %}
+
+                        <article class="sut-my-activity-card">
+
+                            <div class="sut-my-activity-card-body">
+
+
+                                <div
+                                    class="d-flex justify-content-between align-items-start gap-3 mb-4"
+                                >
+
+                                    <div>
+
+                                        <span class="sut-my-activity-label">
+                                            Actividad
+                                        </span>
+
+                                        <h3 class="h5 fw-bold mb-0">
+                                            {{ inscripcion.actividad.nombre }}
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span class="sut-my-activity-status flex-shrink-0">
+                                        Inscrito
+                                    </span>
+
+                                </div>
+
+
+                                <div class="sut-my-activity-details">
+
+
+                                    <div>
+
+                                        <span class="sut-my-activity-detail-label">
+                                            Fecha de actividad
+                                        </span>
+
+                                        <strong class="sut-my-activity-detail-value">
+                                            {{ inscripcion.actividad.fecha }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="sut-my-activity-detail-label">
+                                            Inscrito el
+                                        </span>
+
+                                        <strong class="sut-my-activity-detail-value">
+                                            {{ inscripcion.fecha_inscripcion }}
+                                        </strong>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- ================================================= -->
+        <!-- 3. ESTADO VACIO                                  -->
+        <!-- ================================================= -->
+
+        <section class="sut-my-activities-empty">
+
+            <div class="sut-my-activities-empty-mark">
+                SUT
+            </div>
+
+            <p class="text-primary fw-semibold mb-2">
+                Actividades vecinales
+            </p>
+
+            <h2 class="h3 fw-bold mb-2">
                 Aún no estás inscrito en actividades
             </h2>
 
-            <p class="text-secondary mb-4">
+            <p class="mb-4">
                 Revisa las actividades disponibles y participa
                 mientras existan cupos.
             </p>
@@ -207,12 +330,13 @@
                 Explorar actividades
             </a>
 
-        </div>
-
-    </div>
+        </section>
 
 
-{% endif %}
+    {% endif %}
+
+
+</section>
 
 
 {% endblock %}

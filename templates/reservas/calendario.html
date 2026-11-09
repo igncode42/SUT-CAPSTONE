@@ -5,293 +5,439 @@
 {% block content %}
 
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
-
-    <div>
-
-        <p class="text-primary fw-semibold mb-2">
-            Reservas de espacios
-        </p>
-
-        <h1 class="fw-bold mb-2">
-            Calendario de reservas
-        </h1>
-
-        <p class="text-secondary mb-0">
-            Consulta la disponibilidad de los espacios comunitarios
-            y las reservas registradas.
-        </p>
-
-    </div>
+<section
+    class="sut-calendar-section"
+    aria-labelledby="titulo-calendario"
+>
 
 
-    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+    <!-- ================================================= -->
+    <!-- 1. CABECERA                                      -->
+    <!-- ================================================= -->
 
-        <a
-            href="{% url 'reservas:crear' %}"
-            class="btn btn-primary"
-        >
-            Nueva reserva
-        </a>
+    <header
+        class="sut-surface sut-calendar-hero p-4 p-lg-5 mb-4"
+    >
 
-        <a
-            href="{% url 'reservas:mis_reservas' %}"
-            class="btn btn-outline-secondary"
-        >
-            Mis reservas
-        </a>
-
-    </div>
-
-</div>
+        <div class="row g-4 align-items-center">
 
 
-<section aria-labelledby="titulo-mes">
+            <div class="col-12 col-lg">
+
+                <p class="sut-calendar-kicker mb-3">
+                    Reservas de espacios
+                </p>
+
+                <h1
+                    id="titulo-calendario"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Calendario de reservas
+                </h1>
+
+                <p class="lead mb-0">
+                    Consulta la disponibilidad de los espacios comunitarios
+                    y las reservas registradas.
+                </p>
+
+            </div>
 
 
-    <div class="d-flex justify-content-between align-items-center gap-2 mb-4">
+            <div class="col-12 col-lg-auto">
 
-        <a
-            href="?mes={{ mes_anterior }}&anio={{ anio_anterior }}"
-            class="btn btn-outline-secondary"
-            aria-label="Ver mes anterior"
-        >
-            ←
-            <span class="d-none d-sm-inline">
-                Mes anterior
+                <div class="sut-calendar-hero-actions">
+
+                    <a
+                        href="{% url 'reservas:crear' %}"
+                        class="btn btn-primary"
+                    >
+                        Nueva reserva
+                    </a>
+
+                    <a
+                        href="{% url 'reservas:mis_reservas' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        ← Mis reservas
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- 2. AYUDA RAPIDA                                   -->
+    <!-- ================================================= -->
+
+    <div class="sut-calendar-guide mb-4">
+
+        <div>
+
+            <p class="fw-semibold mb-1">
+                ¿Cómo leer el calendario?
+            </p>
+
+            <p class="mb-0">
+                Los días sin reservas aparecen como disponibles.
+                Si un día tiene reservas, podrás ver claramente
+                el espacio y su horario ocupado.
+            </p>
+
+        </div>
+
+
+        <div class="sut-calendar-legend">
+
+            <span class="sut-calendar-legend-item">
+
+                <span class="sut-calendar-legend-dot sut-calendar-dot-free"></span>
+
+                Disponible
+
             </span>
-        </a>
 
 
-        <h2
-            id="titulo-mes"
-            class="h3 fw-bold text-center mb-0"
-        >
-            {{ mes_nombre }} {{ anio }}
-        </h2>
+            <span class="sut-calendar-legend-item">
 
+                <span class="sut-calendar-legend-dot sut-calendar-dot-busy"></span>
 
-        <a
-            href="?mes={{ mes_siguiente }}&anio={{ anio_siguiente }}"
-            class="btn btn-outline-secondary"
-            aria-label="Ver mes siguiente"
-        >
-            <span class="d-none d-sm-inline">
-                Mes siguiente
+                Con reservas
+
             </span>
-            →
-        </a>
+
+
+            <span class="sut-calendar-legend-item">
+
+                <span class="sut-calendar-legend-dot sut-calendar-dot-today"></span>
+
+                Hoy
+
+            </span>
+
+        </div>
 
     </div>
 
 
-    <!-- ===================================================== -->
-    <!-- ESCRITORIO / TABLET                                   -->
-    <!-- ===================================================== -->
+    <!-- ================================================= -->
+    <!-- 3. CALENDARIO                                     -->
+    <!-- ================================================= -->
 
-    <div class="d-none d-md-block">
-
-        <div class="card border-0 shadow-sm overflow-hidden">
-
-            <div class="table-responsive">
-
-                <table class="table table-bordered align-middle mb-0">
-
-                    <thead class="table-light">
-
-                        <tr>
-                            <th scope="col">Lunes</th>
-                            <th scope="col">Martes</th>
-                            <th scope="col">Miércoles</th>
-                            <th scope="col">Jueves</th>
-                            <th scope="col">Viernes</th>
-                            <th scope="col">Sábado</th>
-                            <th scope="col">Domingo</th>
-                        </tr>
-
-                    </thead>
+    <section
+        class="sut-calendar-shell p-4 p-lg-5"
+        aria-labelledby="titulo-mes"
+    >
 
 
-                    <tbody>
+        <!-- NAVEGACION DE MES -->
 
-                        {% for semana in semanas %}
+        <div class="sut-calendar-month-nav mb-4">
+
+            <a
+                href="?mes={{ mes_anterior }}&anio={{ anio_anterior }}"
+                class="btn btn-outline-secondary sut-calendar-nav-button"
+                aria-label="Ver mes anterior"
+            >
+                ←
+                <span class="d-none d-sm-inline">
+                    Mes anterior
+                </span>
+            </a>
+
+
+            <div class="sut-calendar-current-month">
+
+                <p class="mb-1">
+                    Calendario
+                </p>
+
+                <h2
+                    id="titulo-mes"
+                    class="h2 fw-bold mb-0"
+                >
+                    {{ mes_nombre }} {{ anio }}
+                </h2>
+
+            </div>
+
+
+            <a
+                href="?mes={{ mes_siguiente }}&anio={{ anio_siguiente }}"
+                class="btn btn-outline-secondary sut-calendar-nav-button"
+                aria-label="Ver mes siguiente"
+            >
+                <span class="d-none d-sm-inline">
+                    Mes siguiente
+                </span>
+                →
+            </a>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ESCRITORIO / TABLET                               -->
+        <!-- ================================================= -->
+
+        <div class="d-none d-md-block">
+
+            <div class="sut-calendar-desktop">
+
+                <div class="table-responsive">
+
+                    <table class="table sut-calendar-table mb-0">
+
+                        <thead>
 
                             <tr>
+                                <th scope="col">Lunes</th>
+                                <th scope="col">Martes</th>
+                                <th scope="col">Miércoles</th>
+                                <th scope="col">Jueves</th>
+                                <th scope="col">Viernes</th>
+                                <th scope="col">Sábado</th>
+                                <th scope="col">Domingo</th>
+                            </tr>
 
-                                {% for dia in semana %}
-
-                                    {% if dia %}
-
-                                        <td
-                                            style="min-width: 150px; height: 150px; vertical-align: top;"
-                                            {% if dia.es_hoy %}
-                                                class="table-primary"
-                                            {% endif %}
-                                        >
-
-                                            <div class="d-flex justify-content-between align-items-start">
-
-                                                <strong>
-                                                    {{ dia.numero }}
-                                                </strong>
-
-                                                {% if dia.es_hoy %}
-
-                                                    <span class="badge text-bg-primary">
-                                                        Hoy
-                                                    </span>
-
-                                                {% endif %}
-
-                                            </div>
+                        </thead>
 
 
-                                            {% if dia.reservas %}
+                        <tbody>
 
-                                                <div class="mt-2">
+                            {% for semana in semanas %}
 
-                                                    {% for reserva in dia.reservas %}
+                                <tr>
 
-                                                        <div class="border rounded p-2 mb-2 small bg-body">
+                                    {% for dia in semana %}
 
-                                                            <strong class="d-block">
-                                                                {{ reserva.espacio.nombre }}
-                                                            </strong>
+                                        {% if dia %}
 
-                                                            <span class="text-secondary">
-                                                                {{ reserva.hora_inicio }}
-                                                                –
-                                                                {{ reserva.hora_fin }}
-                                                            </span>
+                                            <td
+                                                class="
+                                                    sut-calendar-day
+                                                    {% if dia.es_hoy %}
+                                                        sut-calendar-day-today
+                                                    {% elif dia.reservas %}
+                                                        sut-calendar-day-busy
+                                                    {% else %}
+                                                        sut-calendar-day-free
+                                                    {% endif %}
+                                                "
+                                            >
 
-                                                        </div>
+                                                <div class="sut-calendar-day-header">
 
-                                                    {% endfor %}
+                                                    <strong class="sut-calendar-day-number">
+                                                        {{ dia.numero }}
+                                                    </strong>
+
+
+                                                    {% if dia.es_hoy %}
+
+                                                        <span class="sut-calendar-today-badge">
+                                                            Hoy
+                                                        </span>
+
+                                                    {% endif %}
 
                                                 </div>
 
-                                            {% else %}
 
-                                                <p class="text-secondary small mt-2 mb-0">
-                                                    Disponible
-                                                </p>
+                                                {% if dia.reservas %}
 
-                                            {% endif %}
+                                                    <div class="sut-calendar-reservations">
 
-                                        </td>
+                                                        {% for reserva in dia.reservas %}
 
-                                    {% else %}
+                                                            <div class="sut-calendar-reservation">
 
-                                        <td class="bg-body-tertiary"></td>
+                                                                <strong class="sut-calendar-reservation-space">
+                                                                    {{ reserva.espacio.nombre }}
+                                                                </strong>
 
-                                    {% endif %}
+                                                                <span class="sut-calendar-reservation-label">
+                                                                    Horario reservado
+                                                                </span>
 
-                                {% endfor %}
+                                                                <span class="sut-calendar-reservation-time">
 
-                            </tr>
+                                                                    <strong>
+                                                                        {{ reserva.hora_inicio|time:"H:i" }}
+                                                                    </strong>
 
-                        {% endfor %}
+                                                                    <span class="sut-calendar-time-separator">
+                                                                        a
+                                                                    </span>
 
-                    </tbody>
+                                                                    <strong>
+                                                                        {{ reserva.hora_fin|time:"H:i" }}
+                                                                    </strong>
 
-                </table>
+                                                                </span>
+
+                                                            </div>
+
+                                                        {% endfor %}
+
+                                                    </div>
+
+                                                {% else %}
+
+                                                    <div class="sut-calendar-available">
+
+                                                        <span class="sut-calendar-available-dot"></span>
+
+                                                        Disponible
+
+                                                    </div>
+
+                                                {% endif %}
+
+                                            </td>
+
+
+                                        {% else %}
+
+                                            <td class="sut-calendar-day-empty"></td>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
 
+        <!-- ================================================= -->
+        <!-- MOVIL                                             -->
+        <!-- ================================================= -->
 
-    <!-- ===================================================== -->
-    <!-- MÓVIL                                                 -->
-    <!-- ===================================================== -->
+        <div class="d-md-none">
 
-    <div class="d-md-none">
+            <div class="d-grid gap-3">
 
-        <div class="row g-3">
+                {% for semana in semanas %}
 
-            {% for semana in semanas %}
+                    {% for dia in semana %}
 
-                {% for dia in semana %}
-
-                    {% if dia %}
-
-                        <div class="col-12">
+                        {% if dia %}
 
                             <article
-                                class="card border-0 shadow-sm {% if dia.es_hoy %}border border-primary{% endif %}"
+                                class="
+                                    sut-calendar-mobile-day
+                                    {% if dia.es_hoy %}
+                                        sut-calendar-mobile-today
+                                    {% endif %}
+                                "
                             >
 
-                                <div class="card-body">
+                                <div class="sut-calendar-mobile-header">
 
+                                    <div>
 
-                                    <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+                                        <span class="sut-calendar-mobile-label">
+                                            Día
+                                        </span>
 
                                         <h3 class="h5 fw-bold mb-0">
                                             {{ dia.numero }} de {{ mes_nombre }}
                                         </h3>
 
-
-                                        {% if dia.es_hoy %}
-
-                                            <span class="badge text-bg-primary">
-                                                Hoy
-                                            </span>
-
-                                        {% endif %}
-
                                     </div>
 
 
-                                    {% if dia.reservas %}
+                                    {% if dia.es_hoy %}
 
-                                        <div class="d-grid gap-2">
-
-                                            {% for reserva in dia.reservas %}
-
-                                                <div class="border rounded p-3">
-
-                                                    <strong class="d-block mb-1">
-                                                        {{ reserva.espacio.nombre }}
-                                                    </strong>
-
-                                                    <span class="text-secondary small">
-                                                        {{ reserva.hora_inicio }}
-                                                        –
-                                                        {{ reserva.hora_fin }}
-                                                    </span>
-
-                                                </div>
-
-                                            {% endfor %}
-
-                                        </div>
-
-                                    {% else %}
-
-                                        <p class="text-secondary mb-0">
-                                            Disponible
-                                        </p>
+                                        <span class="sut-calendar-today-badge">
+                                            Hoy
+                                        </span>
 
                                     {% endif %}
 
-
                                 </div>
+
+
+                                {% if dia.reservas %}
+
+                                    <div class="d-grid gap-2 mt-3">
+
+                                        {% for reserva in dia.reservas %}
+
+                                            <div class="sut-calendar-mobile-reservation">
+
+                                                <strong class="sut-calendar-reservation-space">
+                                                    {{ reserva.espacio.nombre }}
+                                                </strong>
+
+                                                <span class="sut-calendar-reservation-label">
+                                                    Horario reservado
+                                                </span>
+
+                                                <span class="sut-calendar-reservation-time">
+
+                                                    <strong>
+                                                        {{ reserva.hora_inicio|time:"H:i" }}
+                                                    </strong>
+
+                                                    <span class="sut-calendar-time-separator">
+                                                        a
+                                                    </span>
+
+                                                    <strong>
+                                                        {{ reserva.hora_fin|time:"H:i" }}
+                                                    </strong>
+
+                                                </span>
+
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="sut-calendar-mobile-available mt-3">
+
+                                        <span class="sut-calendar-available-dot"></span>
+
+                                        Disponible para reservar
+
+                                    </div>
+
+                                {% endif %}
 
                             </article>
 
-                        </div>
+                        {% endif %}
 
-                    {% endif %}
+                    {% endfor %}
 
                 {% endfor %}
 
-            {% endfor %}
+            </div>
 
         </div>
 
-    </div>
+
+    </section>
 
 
 </section>
