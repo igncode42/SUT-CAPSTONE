@@ -1,14 +1,18 @@
-# Especificaciones técnicas — Sistema Unidad Territorial
+# Especificaciones técnicas · Sistema Unidad Territorial
 
 ## 1. Objetivo
 
-Documentar la arquitectura, tecnologías, requisitos y controles técnicos implementados en el Sistema Unidad Territorial (SUT) para la Entrega 2.2 de Capstone.
+Documentar la arquitectura, tecnologías, requisitos y controles técnicos implementados en la versión **v1.0** del Sistema Unidad Territorial (SUT).
+
+El documento describe únicamente capacidades implementadas, probadas o verificadas dentro del proyecto.
+
+---
 
 ## 2. Alcance
 
-El SUT es una aplicación web para apoyar la gestión administrativa y comunitaria de una junta de vecinos.
+El SUT es una aplicación web orientada a apoyar la gestión administrativa y comunitaria de una junta de vecinos.
 
-Actualmente permite gestionar:
+La versión v1.0 permite gestionar:
 
 - vecinos y membresía;
 - proyectos vecinales;
@@ -16,32 +20,32 @@ Actualmente permite gestionar:
 - reservas de espacios;
 - actividades y cupos;
 - noticias y avisos;
-- autenticación, roles y permisos.
+- autenticación, roles y permisos;
+- notificaciones por correo electrónico.
 
-El sistema utiliza PostgreSQL como base de datos y puede ejecutarse mediante Docker Compose.
+El sistema utiliza PostgreSQL y se ejecuta mediante Docker Compose en el entorno de desarrollo y demostración.
 
-## 3. Tecnologías
+---
+
+## 3. Tecnologías y arquitectura
 
 | Componente | Tecnología | Uso |
 |---|---|---|
 | Lenguaje | Python 3.14 | Lógica de aplicación |
 | Framework | Django 6.1.3 | Aplicación web, ORM, autenticación y pruebas |
-| Base de datos | PostgreSQL 18 | Persistencia |
+| Base de datos | PostgreSQL 18 | Persistencia e integridad |
 | Interfaz | Django Templates + Bootstrap 5.3.3 | Interfaz web responsiva |
+| Documentos | ReportLab | Generación de certificados PDF |
 | Contenedores | Docker + Docker Compose | Entorno reproducible |
-| Control de versiones | Git + GitHub | Historial y trazabilidad |
+| Versionamiento | Git + GitHub | Historial y trazabilidad |
 | Gestión | Jira + Scrum | Planificación y seguimiento |
-
-## 4. Arquitectura
 
 El proyecto utiliza una arquitectura web monolítica modular basada en aplicaciones Django.
 
 ```text
-Interfaz web
+Navegador
     ↓
 Django
-    ↓
-Aplicaciones
     ↓
 Django ORM
     ↓
@@ -60,123 +64,172 @@ actividades
 comunicaciones
 ```
 
-En Docker Compose:
+El entorno Docker utiliza un contenedor web y PostgreSQL con volumen persistente.
+
+El proceso web se ejecuta mediante un usuario sin privilegios root.
+
+Respaldo gráfico:
 
 ```text
-Navegador
-    ↓
-127.0.0.1:8000
-    ↓
-sut-web
-    ↓
-Django ORM
-    ↓
-sut-postgres
+docs/diagramas/01-arquitectura-sut.svg
 ```
 
-El contenedor web se ejecuta con un usuario sin privilegios de root.
+---
 
-Respaldo gráfico: `docs/diagramas/01-arquitectura-sut.svg`.
+## 4. Requisitos funcionales
 
-## 5. Requisitos funcionales
-
-### RF-01 — Gestión de vecinos
+### RF-01 · Gestión de vecinos
 
 El sistema permite:
 
-- registrar nuevos vecinos;
-- asociar un usuario con su perfil de vecino;
+- registrar usuarios;
+- asociar un perfil de vecino;
+- editar datos personales;
 - gestionar vecinos desde perfiles autorizados;
 - incorporar o retirar la condición de miembro de junta.
 
-Los privilegios no pueden asignarse mediante el formulario público de registro.
+Los privilegios administrativos no pueden asignarse desde el registro público.
 
-### RF-02 — Proyectos vecinales
+---
+
+### RF-02 · Proyectos vecinales
 
 Flujo:
 
-`Miembro → Postulación → Pendiente → Revisión → Aprobación/Rechazo`
+```text
+Miembro de junta
+        ↓
+Postulación
+        ↓
+Revisión
+        ↓
+Aprobación / Rechazo
+```
 
-Controles:
+Controles principales:
 
 - sólo miembros de junta pueden postular;
-- propietario y estado se asignan en servidor;
-- sólo personal autorizado resuelve;
-- una resolución no puede repetirse;
-- los estados válidos están restringidos en PostgreSQL.
+- propietario y estado se asignan desde el servidor;
+- cada usuario consulta únicamente los proyectos que le corresponden;
+- Directiva y personal autorizado pueden resolver;
+- se impide resolver dos veces;
+- los estados válidos están restringidos en PostgreSQL;
+- la resolución utiliza transacciones y `select_for_update()`.
 
-### RF-03 — Resolución por correo
+---
 
-La resolución de un proyecto puede notificarse al postulante mediante correo electrónico.
+### RF-03 · Resolución de proyectos por correo
+
+La resolución puede notificarse al postulante mediante correo electrónico.
 
 Se encuentra implementado:
 
-- correo de aprobación;
-- correo de rechazo;
+- correo de aprobación y rechazo;
 - destinatario asociado al postulante;
-- comportamiento ante usuario sin email;
-- tolerancia ante fallo SMTP.
+- correo HTML;
+- tratamiento de usuarios sin email;
+- tolerancia ante fallos SMTP.
 
-Una falla del servicio SMTP no revierte la resolución ya registrada.
+Un fallo del servicio de correo no revierte una resolución ya registrada.
 
-La integración con un servidor SMTP externo fue validada mediante un recorrido funcional controlado.
+La integración SMTP externa fue validada mediante recorrido funcional.
 
-### RF-04 — Certificados
+---
+
+### RF-04 · Certificados de residencia
 
 Flujo:
 
-`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
+```text
+Vecino
+   ↓
+Solicitud
+   ↓
+Revisión
+   ↓
+Aprobación / Rechazo
+   ↓
+Emisión
+   ↓
+PDF + correo
+```
 
-Controles:
+Controles principales:
 
 - la solicitud pertenece al vecino autenticado;
-- sólo existe una solicitud activa por vecino;
+- se controla la existencia de solicitudes activas;
 - sólo personal autorizado puede resolver;
-- se evita la doble resolución y doble emisión;
-- los estados válidos están restringidos en PostgreSQL;
-- el certificado emitido conserva un snapshot de los datos del vecino.
+- se impide la doble resolución y emisión;
+- los estados están restringidos en PostgreSQL;
+- la emisión utiliza transacción y `select_for_update()`;
+- el certificado conserva un snapshot de los datos del vecino.
 
-### RF-05 — Reservas
+El sistema además permite:
+
+- generar el certificado en PDF;
+- visualizarlo y descargarlo desde la cuenta correspondiente;
+- enviarlo como archivo adjunto por correo;
+- conservar el estado emitido aunque falle posteriormente SMTP.
+
+---
+
+### RF-05 · Reservas
 
 El sistema permite:
 
 - reservar espacios activos;
 - consultar reservas propias;
 - visualizar un calendario mensual;
-- rechazar fechas pasadas;
-- exigir hora de inicio menor a hora de término;
-- detectar horarios solapados;
+- administrar espacios;
+- validar fechas y horarios;
+- detectar solapamientos;
 - excluir reservas canceladas de la disponibilidad.
 
-La operación utiliza transacción y bloqueo del espacio para volver a comprobar su estado y los solapamientos antes de guardar.
+La creación utiliza transacciones y bloqueo del espacio para volver a validar disponibilidad antes de guardar.
 
-### RF-06 — Actividades
+---
 
-El sistema permite:
+### RF-06 · Actividades
 
-- consultar actividades disponibles;
-- inscribirse en actividades vigentes;
-- impedir inscripciones duplicadas;
-- controlar el cupo máximo.
+Para vecinos:
 
-La inscripción utiliza transacción y bloqueo de la actividad para proteger el control de cupos.
+- consultar actividades;
+- inscribirse;
+- consultar inscripciones;
+- impedir duplicados;
+- controlar cupos.
 
-### RF-07 — Comunicaciones
+La inscripción utiliza transacción y bloqueo de la actividad.
+
+Para Directiva y personal autorizado:
+
+- crear actividades;
+- editar actividades;
+- gestionar fechas y cupos;
+- consultar inscritos;
+- eliminar actividades sin inscripciones;
+- impedir eliminar actividades con inscritos.
+
+---
+
+### RF-07 · Comunicaciones
 
 El sistema permite:
 
 - publicar noticias;
 - publicar avisos;
-- consultar comunicaciones;
-- restringir la publicación a perfiles autorizados.
+- consultar comunicaciones públicamente;
+- visualizar avisos destacados;
+- crear, editar y eliminar publicaciones desde perfiles autorizados.
 
-El contenido se presenta utilizando el escape automático de Django Templates.
+El contenido se presenta mediante Django Templates con escape automático.
 
-### RF-08 — Autenticación y autorización
+---
 
-El sistema diferencia:
+### RF-08 · Autenticación y autorización
 
-- usuario autenticado;
+El sistema diferencia entre:
+
 - vecino;
 - miembro de junta;
 - Directiva;
@@ -185,26 +238,34 @@ El sistema diferencia:
 
 Los permisos funcionales se validan del lado del servidor mediante reglas centralizadas.
 
-## 6. Requisitos no funcionales
+La autenticación determina quién es el usuario y la autorización qué operaciones puede ejecutar.
 
-| ID | Requisito | Estado / respaldo |
+---
+
+## 5. Requisitos no funcionales
+
+| ID | Requisito | Respaldo |
 |---|---|---|
 | RNF-01 | Mantener configuración sensible fuera del repositorio | Variables de entorno, `.gitignore`, `.dockerignore` y `.env.example` |
-| RNF-02 | Controlar acceso según autenticación y autorización | Permisos centralizados y pruebas automáticas |
-| RNF-03 | Mantener separación modular por dominio | 7 aplicaciones Django |
+| RNF-02 | Controlar acceso según permisos | Autorización centralizada y pruebas |
+| RNF-03 | Mantener separación modular | 7 aplicaciones Django |
 | RNF-04 | Proporcionar persistencia relacional | PostgreSQL 18 + Django ORM |
-| RNF-05 | Mantener integridad de datos | Validaciones, transacciones y constraints PostgreSQL |
-| RNF-06 | Reducir condiciones de carrera en operaciones críticas | `transaction.atomic()` y `select_for_update()` |
+| RNF-05 | Mantener integridad de datos | Validaciones, transacciones y constraints |
+| RNF-06 | Reducir condiciones de carrera | `transaction.atomic()` y `select_for_update()` |
 | RNF-07 | Permitir reproducción del entorno | Dockerfile + Docker Compose |
 | RNF-08 | Proporcionar interfaz adaptable | Django Templates + Bootstrap |
-| RNF-09 | Mantener trazabilidad del desarrollo | Git, GitHub, Jira, pruebas y documentación |
-| RNF-10 | Ejecutar el proceso web sin privilegios root | Usuario `sut` en el contenedor web |
+| RNF-09 | Mantener trazabilidad | Git, GitHub, Jira, pruebas y documentación |
+| RNF-10 | Ejecutar el proceso sin privilegios root | Usuario no privilegiado en el contenedor |
+| RNF-11 | Mantener credenciales fuera del código | Configuración mediante `.env` |
+| RNF-12 | Mantener persistencia independiente del contenedor | Volumen PostgreSQL |
 
 No se declaran métricas productivas de carga, rendimiento o disponibilidad porque no fueron medidas formalmente.
 
-## 7. Integridad y seguridad
+---
 
-El sistema incorpora controles en distintas capas:
+## 6. Seguridad e integridad
+
+Los controles se aplican en distintas capas:
 
 ```text
 Formulario
@@ -215,61 +276,115 @@ Reglas de negocio
     ↓
 Transacción
     ↓
-Restricciones PostgreSQL
+PostgreSQL
 ```
 
 Entre los controles implementados se encuentran:
 
 - protección CSRF;
-- validación de permisos en servidor;
+- autorización del lado del servidor;
 - aislamiento de información por usuario;
-- estados válidos mediante constraints;
+- constraints de integridad;
 - prevención de operaciones duplicadas;
-- bloqueo de filas en operaciones sensibles;
+- transacciones atómicas;
+- `select_for_update()` en operaciones sensibles;
 - secretos fuera del código fuente;
-- escape de contenido en templates;
-- contenedor web ejecutado sin privilegios root.
+- `.env` excluido del repositorio;
+- escape automático de contenido;
+- protección de descargas privadas;
+- contenedor web sin privilegios root.
 
-La configuración permite habilitar medidas para un entorno HTTPS, como cookies seguras, redirección SSL y HSTS.
+Las operaciones transaccionales más relevantes corresponden a:
 
-Esto representa preparación configurable para despliegue seguro y no un despliegue productivo actualmente demostrado.
+- resolución de proyectos;
+- emisión de certificados;
+- creación de reservas;
+- inscripción en actividades.
 
-## 8. Pruebas
+La configuración permite habilitar medidas adicionales para HTTPS, como cookies seguras, redirección SSL y HSTS.
 
-La suite automática actual contiene:
+Estas opciones representan preparación configurable y no un despliegue productivo demostrado.
+
+---
+
+## 7. Pruebas y verificación
+
+La suite automatizada contiene:
+
+| Aplicación | Pruebas |
+|---|---:|
+| Usuarios | 20 |
+| Vecinos | 13 |
+| Proyectos | 19 |
+| Certificados | 29 |
+| Reservas | 13 |
+| Actividades | 16 |
+| Comunicaciones | 23 |
+| **Total** | **133** |
+
+Último resultado:
 
 ```text
-Usuarios          16
-Vecinos           13
-Proyectos         19
-Certificados      20
-Reservas          13
-Actividades        7
-Comunicaciones     9
-────────────────────
-Total             97
-```
-
-Último resultado verificado:
-
-```text
-Found 97 test(s).
-Ran 97 tests
+Found 133 test(s).
+Ran 133 tests
 OK
 ```
 
-También se realizaron recorridos End to End manuales para los flujos críticos de Proyectos y Certificados.
+Las pruebas cubren, entre otros aspectos:
 
-El detalle se mantiene en `docs/pruebas/`.
+- autenticación y autorización;
+- aislamiento por usuario;
+- restricciones por rol;
+- estados y operaciones duplicadas;
+- concurrencia;
+- reservas solapadas;
+- cupos de actividades;
+- proyectos;
+- certificados y PDF;
+- fallos simulados de SMTP;
+- CRUD administrativos.
 
-## 9. Ejecución
+También se realizaron recorridos End to End manuales sobre los flujos críticos de:
 
-Crear `.env` tomando `.env.example` como referencia.
+- certificados;
+- proyectos;
+- gestión de actividades.
+
+El comportamiento general fue validado en escritorio y dispositivo móvil.
+
+Último checkpoint técnico:
+
+```text
+Django check            OK
+Pruebas                 133/133
+Migraciones pendientes  ninguna
+PostgreSQL              healthy
+Aplicación Django       healthy
+E2E crítico             verificado
+```
+
+El detalle de pruebas se mantiene en:
+
+```text
+docs/pruebas/
+```
+
+---
+
+## 8. Ejecución
+
+Crear `.env` a partir de `.env.example`.
 
 Levantar el entorno:
 
 ```bash
 docker compose up -d --build
+```
+
+Verificar servicios:
+
+```bash
+docker compose ps
 ```
 
 Verificar Django:
@@ -284,29 +399,25 @@ Ejecutar pruebas:
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Verificar cambios pendientes de modelos:
+Verificar cambios pendientes en modelos:
 
 ```bash
 docker compose exec -T web python manage.py makemigrations --check --dry-run
 ```
 
-Último checkpoint:
+---
 
-```text
-Django check          OK
-Pruebas               97/97
-Migraciones nuevas    No changes detected
-Backend               Congelado
-```
-
-## 10. Límites actuales
+## 9. Límites de la versión v1.0
 
 No forman parte de la implementación demostrada:
 
-- integración con WhatsApp;
-- generación de certificado como archivo PDF;
+- integración directa con WhatsApp;
 - pruebas End to End automatizadas mediante navegador;
 - despliegue productivo en infraestructura externa;
 - pruebas formales de carga o rendimiento.
 
-Estas capacidades no se presentan como implementadas en la Entrega 2.2.
+La propuesta original contempla comunicaciones mediante aviso, correo y/o WhatsApp.
+
+La versión v1.0 utiliza avisos dentro del sistema y correo electrónico.
+
+La integración directa con WhatsApp queda fuera del alcance implementado.

@@ -1,4 +1,4 @@
-# Sistema Unidad Territorial — SUT
+# Sistema Unidad Territorial · SUT
 
 Sistema web desarrollado como proyecto Capstone de Ingeniería en Informática para apoyar la gestión administrativa y comunitaria de una junta de vecinos.
 
@@ -6,59 +6,89 @@ Sistema web desarrollado como proyecto Capstone de Ingeniería en Informática p
 
 Centralizar procesos habituales de una unidad territorial en una plataforma web simple, trazable y utilizable por vecinos y personal autorizado.
 
+El SUT permite gestionar vecinos, certificados, proyectos, reservas, actividades y comunicaciones mediante una aplicación web responsiva conectada a PostgreSQL.
+
+---
+
 ## Estado actual
 
-El SUT se encuentra funcionalmente cerrado para la Entrega 2.2.
+La versión **SUT v1.0** se encuentra funcionalmente cerrada.
 
-Estado técnico verificado:
+```text
+Django                 6.1.3
+PostgreSQL             18
+Aplicaciones Django    7
+Pruebas                133/133
+Migraciones            15
+E2E crítico            verificado
+Escritorio             verificado
+Dispositivo móvil      verificado
+SMTP                    verificado
+PDF certificados       verificado
+```
 
-- Django 6.1.3.
-- PostgreSQL 18.
-- Docker Compose.
-- 7 aplicaciones Django.
-- 97 pruebas automatizadas aprobadas.
-- 15 migraciones de aplicación.
-- 22 templates HTML.
-- configuración sensible mediante variables de entorno.
-- backend e integridad funcional congelados salvo corrección de errores.
+Se mantiene un **Feature Freeze**. Sólo se realizarán correcciones que afecten la entrega, demostración, defensa o integridad funcional.
+
+---
 
 ## Funcionalidades
 
 ### Vecinos
 
-- registro de usuarios y perfil de vecino;
-- gestión interna de vecinos;
+- registro de usuarios;
+- perfil de vecino;
+- edición de datos personales;
+- gestión administrativa;
 - incorporación y retiro como miembro de junta;
-- control de privilegios desde servidor.
+- control de permisos desde el servidor.
 
 ### Proyectos vecinales
 
-Flujo principal:
-
-`Miembro de junta → Postulación → Revisión → Aprobación/Rechazo → Notificación`
+```text
+Miembro de junta
+        ↓
+Postulación
+        ↓
+Revisión
+        ↓
+Aprobación / Rechazo
+        ↓
+Notificación por correo
+```
 
 Incluye:
 
 - postulación exclusiva para miembros;
 - revisión por Directiva o personal autorizado;
 - protección contra doble resolución;
-- restricciones de estado en PostgreSQL;
-- notificación de resolución por correo;
-- tolerancia a fallos del servicio SMTP sin revertir la decisión registrada.
+- restricciones de estado;
+- notificación HTML por correo;
+- tolerancia a fallos SMTP sin revertir la resolución.
 
 ### Certificados de residencia
 
-Flujo principal:
-
-`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
+```text
+Vecino
+   ↓
+Solicitud
+   ↓
+Revisión
+   ↓
+Aprobación / Rechazo
+   ↓
+Emisión
+   ↓
+PDF + correo
+```
 
 Incluye:
 
-- una solicitud activa por vecino;
-- revisión por personal autorizado;
-- protección contra doble resolución y doble emisión;
-- snapshot de los datos del vecino al emitir el certificado;
-- restricciones de integridad en base de datos.
+- control de solicitudes activas;
+- aprobación, rechazo y emisión;
+- protección contra doble resolución y emisión;
+- snapshot de datos del vecino;
+- generación y descarga privada del PDF;
+- envío del certificado como adjunto por correo.
 
 ### Reservas
 
@@ -66,41 +96,50 @@ Incluye:
 - calendario mensual;
 - validación de fechas y horarios;
 - detección de solapamientos;
-- espacios activos;
-- protección transaccional contra reservas concurrentes mediante bloqueo del espacio;
-- restricciones de estado y horario en PostgreSQL.
+- administración de espacios;
+- protección frente a reservas concurrentes.
 
 ### Actividades
 
-- publicación de actividades;
-- inscripción de vecinos;
+Para vecinos:
+
+- consulta de actividades;
+- inscripción;
 - control de cupos;
-- prevención de inscripciones duplicadas;
-- bloqueo transaccional durante la inscripción;
-- restricción de cupo mínimo en base de datos.
+- prevención de inscripciones duplicadas.
+
+Para Directiva y personal autorizado:
+
+- creación;
+- edición;
+- gestión de fechas y cupos;
+- consulta de inscritos;
+- eliminación cuando corresponde.
 
 ### Comunicaciones
 
-- publicación de noticias;
-- publicación de avisos;
+- noticias;
+- avisos;
 - consulta pública;
-- publicación restringida a usuarios autorizados;
-- escape de contenido mediante Django Templates.
+- creación, edición y eliminación por usuarios autorizados;
+- avisos destacados;
+- interfaz responsiva.
 
-## Roles y autorización
+---
+
+## Roles
 
 El sistema diferencia entre:
 
-- usuario autenticado;
 - vecino;
 - miembro de junta;
 - Directiva;
 - personal autorizado;
 - superusuario.
 
-Los permisos funcionales se validan del lado del servidor mediante reglas centralizadas.
+La autorización se valida del lado del servidor mediante reglas centralizadas.
 
-La autenticación y la autorización se tratan como responsabilidades independientes.
+---
 
 ## Arquitectura
 
@@ -116,7 +155,7 @@ Django ORM
 PostgreSQL
 ```
 
-Aplicaciones principales:
+Aplicaciones:
 
 ```text
 usuarios
@@ -128,37 +167,33 @@ actividades
 comunicaciones
 ```
 
-El entorno de desarrollo y demostración se ejecuta mediante Docker Compose:
+El entorno se ejecuta mediante Docker Compose y PostgreSQL utiliza un volumen persistente.
 
-```text
-Navegador
-    ↓
-127.0.0.1:8000
-    ↓
-sut-web
-    ↓
-PostgreSQL
-```
+---
 
-## Stack
+## Tecnologías
 
 - Python 3.14
 - Django 6.1.3
 - PostgreSQL 18
 - Django ORM
 - Django Templates
-- Bootstrap 5
+- Bootstrap 5.3.3
+- ReportLab
 - Docker
 - Docker Compose
+
+Gestión y trazabilidad:
+
 - Git
 - GitHub
 - Jira
 
-## Ejecución con Docker
+---
 
-Crear un archivo `.env` a partir de `.env.example` y completar la configuración requerida.
+## Ejecución
 
-Luego:
+Crear `.env` tomando `.env.example` como referencia.
 
 ```bash
 docker compose up -d --build
@@ -176,36 +211,38 @@ Aplicación:
 http://127.0.0.1:8000/
 ```
 
+---
+
 ## Pruebas
 
-Ejecutar la suite completa:
+Ejecutar la suite:
 
 ```bash
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Resultado del último checkpoint técnico:
+Último resultado:
 
 ```text
-Found 97 test(s).
-Ran 97 tests
+Found 133 test(s).
+Ran 133 tests
 OK
 ```
 
-Distribución actual:
-
 | Aplicación | Pruebas |
 |---|---:|
-| Usuarios | 16 |
+| Usuarios | 20 |
 | Vecinos | 13 |
 | Proyectos | 19 |
-| Certificados | 20 |
+| Certificados | 29 |
 | Reservas | 13 |
-| Actividades | 7 |
-| Comunicaciones | 9 |
-| **Total** | **97** |
+| Actividades | 16 |
+| Comunicaciones | 23 |
+| **Total** | **133** |
 
-También se ejecutaron manualmente recorridos End to End de los flujos críticos de Proyectos y Certificados.
+También se realizaron recorridos End to End sobre los flujos críticos y validaciones en escritorio y dispositivo móvil.
+
+---
 
 ## Calidad y seguridad
 
@@ -215,28 +252,32 @@ El proyecto incorpora:
 - autorización del lado del servidor;
 - aislamiento de información por usuario;
 - restricciones de integridad en PostgreSQL;
-- transacciones y bloqueos `select_for_update()` en operaciones sensibles;
-- escape de contenido en templates;
+- transacciones atómicas;
+- `select_for_update()` en operaciones sensibles;
+- escape automático mediante Django Templates;
 - secretos fuera del repositorio;
-- contenedor web ejecutado con usuario no root;
-- configuración de seguridad parametrizable para entornos HTTPS.
+- `.env` excluido de Git;
+- contenedor web sin privilegios root;
+- protección de descargas privadas.
 
-Durante el hardening se verificó además:
+Último checkpoint técnico:
 
 ```text
-Django system check     OK
-97/97 pruebas           OK
-makemigrations --check  sin cambios
-check --deploy          sin observaciones bajo perfil simulado
-Gitleaks                sin filtraciones detectadas
-pip-audit               sin vulnerabilidades conocidas detectadas
+Django check            OK
+133/133 pruebas         OK
+Migraciones pendientes  ninguna
+Docker Compose          OK
+PostgreSQL              healthy
+Aplicación Django       healthy
 ```
 
-El entorno Docker actual está orientado a desarrollo y demostración; no representa por sí solo un despliegue productivo.
+El entorno actual está orientado a desarrollo y demostración académica, no a despliegue productivo.
+
+---
 
 ## Documentación
 
-La documentación técnica se mantiene en:
+La documentación se mantiene en:
 
 ```text
 docs/
@@ -248,62 +289,36 @@ docs/
 └── pruebas/
 ```
 
-Incluye:
+Incluye arquitectura, especificaciones técnicas, trazabilidad, pruebas, evidencias y documentación de cierre.
 
-- arquitectura;
-- modelo de datos;
-- procesos principales;
-- especificaciones técnicas;
-- trazabilidad;
-- estrategia y plan de pruebas;
-- evidencias del desarrollo;
-- checkpoints y documentación de cierre.
+Los documentos históricos se conservan como registro de la evolución del proyecto y no representan necesariamente el estado técnico actual.
 
-Los documentos históricos se conservan como evidencia de la evolución del proyecto y no representan necesariamente el estado técnico actual.
+---
 
-## Metodología y trazabilidad
+## Alcance de v1.0
 
-El desarrollo se ha gestionado de forma incremental mediante Scrum, utilizando Jira para seguimiento y Git/GitHub para control de versiones.
+La versión v1.0 incluye:
 
-El criterio de trabajo mantiene la relación:
+- gestión de vecinos;
+- certificados de residencia;
+- proyectos vecinales;
+- reservas;
+- actividades;
+- noticias y avisos;
+- control de acceso por roles;
+- notificaciones por correo;
+- generación de certificados PDF;
+- interfaz web responsiva;
+- persistencia mediante PostgreSQL.
 
-```text
-Requisito
-    ↓
-Planificación
-    ↓
-Implementación
-    ↓
-Prueba
-    ↓
-Commit
-    ↓
-Evidencia
-```
+La propuesta contempla comunicación mediante aviso, correo y/o WhatsApp.
 
-Durante el proyecto se distingue explícitamente entre:
+La implementación actual utiliza:
 
 ```text
-Diseñado
-≠
-Implementado
-≠
-Probado
-≠
-Demostrado
+Avisos dentro del sistema
++
+Correo electrónico
 ```
 
-## Checkpoint técnico
-
-Último cierre funcional:
-
-```text
-Rama                 main
-Commit                ecfde54
-Pruebas               97/97
-Django check          OK
-Migraciones nuevas    no pendientes
-Backend               congelado
-```
-
-A partir de este punto, el trabajo se concentra en documentación, evidencias, experiencia de usuario, presentación y preparación de la demostración final.
+La integración directa con WhatsApp no forma parte de la versión v1.0.

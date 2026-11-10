@@ -1,284 +1,281 @@
-# Pruebas — Sistema Unidad Territorial
+# Pruebas · Sistema Unidad Territorial
 
 ## 1. Objetivo
 
-Verificar que las funcionalidades implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, restricciones de acceso e integridad esperada.
+Verificar que las funcionalidades implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, controles de acceso e integridad esperada.
 
-La estrategia considera tanto operaciones válidas como intentos inválidos, accesos no autorizados y situaciones de borde.
+Las pruebas consideran escenarios válidos, intentos no autorizados, operaciones duplicadas y casos límite.
+
+---
 
 ## 2. Estrategia
 
-El proyecto utiliza principalmente las herramientas de testing incluidas en Django:
+La verificación combina:
 
-- `TestCase`;
+- `TestCase` de Django;
 - Django Test Client;
-- PostgreSQL como base de datos del sistema;
+- PostgreSQL;
 - backend de correo en memoria para pruebas automatizadas;
-- Docker Compose para ejecutar la suite en un entorno reproducible.
+- Docker Compose;
+- recorridos End to End manuales.
 
-Las pruebas cubren principalmente:
+La suite cubre principalmente:
 
 - autenticación y autorización;
 - permisos por rol;
 - aislamiento de datos;
 - validaciones;
 - reglas de negocio;
-- transiciones de estado;
+- estados;
 - operaciones duplicadas;
 - restricciones de base de datos;
-- integración entre vistas, modelos y PostgreSQL;
-- comportamiento ante fallos controlados.
+- concurrencia;
+- fallos controlados de servicios externos.
+
+---
 
 ## 3. Niveles de prueba
 
 | Nivel | Estado |
 |---|---|
-| Unitarias aisladas | No existe una suite separada; las reglas se validan principalmente mediante `TestCase` |
-| Integración | Implementada sobre vistas, modelos, base de datos y correo |
-| Funcionales | Implementadas |
-| End to End manual | Ejecutados los flujos críticos de Proyectos y Certificados |
-| End to End automatizado con navegador | No implementado |
-| Carga / rendimiento | No ejecutado formalmente |
+| Automatizadas con Django | **Implementadas** |
+| Integración | **Implementada** |
+| Funcionales | **Implementadas** |
+| End to End manual | **Ejecutado en flujos críticos** |
+| End to End automatizado con navegador | **No implementado** |
+| Carga / rendimiento | **No ejecutado formalmente** |
 
-No se presentan como ejecutados niveles de prueba que no cuentan con evidencia verificable.
+No se presentan como ejecutadas pruebas que no cuentan con respaldo verificable.
+
+---
 
 ## 4. Suite automatizada
 
-La suite actual contiene:
-
 | Aplicación | Pruebas |
 |---|---:|
-| Usuarios | 16 |
+| Usuarios | 20 |
 | Vecinos | 13 |
 | Proyectos | 19 |
-| Certificados | 20 |
+| Certificados | 29 |
 | Reservas | 13 |
-| Actividades | 7 |
-| Comunicaciones | 9 |
-| **Total** | **97** |
+| Actividades | 16 |
+| Comunicaciones | 23 |
+| **Total** | **133** |
 
 Último resultado verificado:
 
-```text
-Found 97 test(s).
-Ran 97 tests
+```text id="ghy4mk"
+Found 133 test(s).
+Ran 133 tests
 OK
 ```
 
-La ejecución completa se realizó dentro del contenedor Django.
+La suite completa se ejecutó dentro del entorno Docker.
+
+---
 
 ## 5. Cobertura principal
 
-### Usuarios y permisos
-
-Se verifican:
-
-- acceso público y privado;
-- login y logout;
-- protección de vistas;
-- permisos por rol;
-- diferencia entre autenticación y autorización;
-- rechazo de usuarios `staff` sin rol funcional;
-- acceso de Directiva, personal autorizado y superusuario.
-
-### Vecinos
+### Usuarios y vecinos
 
 Se verifican:
 
 - registro;
-- creación de usuario y perfil;
-- validaciones;
+- login y logout;
+- creación y edición de perfiles;
 - gestión de vecinos;
-- control de membresía;
-- prevención de autoasignación de privilegios;
-- restricciones de acceso.
+- membresía;
+- permisos por rol;
+- aislamiento de información;
+- prevención de autoasignación de privilegios.
 
 ### Proyectos
 
-Flujo:
-
-`Miembro → Postulación → Pendiente → Revisión → Aprobación/Rechazo → Notificación`
-
 Se verifican:
 
-- permisos de postulación;
+- postulación exclusiva para miembros;
 - asociación automática con el vecino;
 - estado inicial;
 - aislamiento de proyectos;
 - aprobación y rechazo;
-- protección contra doble resolución;
-- estados válidos en PostgreSQL;
+- prevención de doble resolución;
+- estados válidos;
 - envío de correo;
-- ausencia de duplicación;
 - comportamiento ante fallo SMTP.
 
-El fallo SMTP se simula expresamente para comprobar que una caída del servicio externo no revierta una resolución ya guardada.
+Un fallo SMTP simulado permite comprobar que una resolución ya registrada no sea revertida.
 
 ### Certificados
 
-Flujo:
-
-`Vecino → Solicitud → Revisión → Aprobación/Rechazo → Emisión`
-
 Se verifican:
 
-- creación válida;
-- aislamiento de solicitudes;
+- creación de solicitudes;
+- aislamiento;
 - autorización;
-- una única solicitud activa;
+- control de solicitudes activas;
 - aprobación y rechazo;
-- prevención de doble resolución;
-- emisión;
-- prevención de doble emisión;
-- estados válidos en PostgreSQL;
-- conservación histórica de los datos utilizados al emitir el certificado.
+- prevención de doble resolución y emisión;
+- snapshot de datos;
+- generación de PDF;
+- acceso privado al documento;
+- envío del PDF por correo;
+- comportamiento ante fallos SMTP.
 
 ### Reservas
 
 Se verifican:
 
 - creación válida;
-- rechazo de fechas pasadas;
-- hora de inicio anterior a la hora de término;
-- restricción equivalente en PostgreSQL;
-- estados válidos;
+- fechas y horarios;
+- estados;
+- espacios activos;
 - detección de solapamientos;
-- aceptación de horarios contiguos;
-- bloqueo de espacios inactivos;
-- aislamiento de reservas;
-- calendario mensual;
-- exclusión de reservas canceladas;
-- manejo de parámetros de calendario inválidos.
+- horarios contiguos;
+- reservas propias;
+- calendario;
+- exclusión de reservas canceladas.
 
-La creación utiliza transacción, bloqueo del espacio y revalidación de su estado y de posibles solapamientos antes de guardar.
-
-No se ha ejecutado una prueba multihilo específica de concurrencia.
+La creación utiliza transacción y bloqueo del espacio antes de confirmar disponibilidad.
 
 ### Actividades
 
 Se verifican:
 
-- inscripción válida;
-- rechazo de duplicados;
-- restricción única en base de datos;
-- control de cupos;
-- rechazo de actividades pasadas;
-- validación de cupo mínimo.
+- inscripción;
+- prevención de duplicados;
+- cupos;
+- actividades vigentes;
+- restricciones de base de datos;
+- creación y edición administrativa;
+- gestión de cupos;
+- eliminación cuando corresponde;
+- protección de actividades con inscritos.
 
-La inscripción utiliza transacción y bloqueo de la actividad durante las comprobaciones de vigencia, duplicación y capacidad.
+La inscripción utiliza transacción y bloqueo de la actividad.
 
 ### Comunicaciones
 
 Se verifican:
 
-- publicación de noticias;
-- publicación de avisos;
-- permisos de publicación;
+- publicación de noticias y avisos;
+- permisos;
 - acceso público;
-- asociación del autor desde servidor;
-- escape de contenido potencialmente peligroso.
+- asignación del autor desde servidor;
+- creación, edición y eliminación;
+- escape de contenido mediante Django Templates.
 
-## 6. Casos positivos y negativos
+---
 
-La suite combina escenarios permitidos y prohibidos.
+## 6. End to End manual
 
-Ejemplos positivos:
+Se realizaron recorridos manuales sobre los flujos críticos.
 
-- un miembro puede postular un proyecto;
-- una Directiva puede resolverlo;
-- un vecino puede solicitar un certificado;
-- una reserva válida puede registrarse;
-- un vecino puede inscribirse mientras exista cupo.
+### Proyectos
 
-Ejemplos negativos:
+```text id="0q5qgj"
+Registro
+→ Membresía
+→ Postulación
+→ Revisión
+→ Resolución
+→ Correo
+```
 
-- un usuario anónimo no accede a zonas privadas;
-- un usuario sin rol no ejecuta acciones administrativas;
-- un proyecto resuelto no vuelve a resolverse;
-- una solicitud rechazada no puede emitirse;
-- una reserva solapada se rechaza;
-- una inscripción duplicada se rechaza;
-- un usuario no puede asignarse privilegios mediante formularios públicos.
+Se validó el envío real mediante servidor SMTP externo.
 
-Los casos negativos validan las reglas del sistema también frente a usos incorrectos o manipulaciones.
+### Certificados
 
-## 7. End to End manual
+```text id="q089z6"
+Solicitud
+→ Aprobación
+→ Emisión
+→ PDF
+→ Correo
+```
 
-Se ejecutaron recorridos completos de los dos flujos críticos inicialmente definidos en el Plan de Pruebas v0.1 y registrados como ejecutados en la versión v0.2.
+Se verificó además la persistencia del estado emitido y el acceso al documento.
 
-### Proyecto
+### Actividades
 
-Recorrido realizado:
+```text id="7knu25"
+Directiva
+→ Crear actividad
+→ Editar
+→ Gestionar cupos
+→ Eliminar cuando corresponde
+```
 
-`Registro → membresía → postulación → revisión → aprobación → notificación`
+El sistema también fue revisado manualmente en escritorio y dispositivo móvil.
 
-Se verificó el envío real de la resolución mediante un servidor SMTP externo.
+Estos recorridos fueron ejecutados de forma manual y no mediante automatización de navegador.
 
-### Certificado
+---
 
-Recorrido realizado:
+## 7. Ejecución
 
-`Solicitud → aprobación → emisión → visualización`
+Suite completa:
 
-Se comprobó además que una solicitud emitida no pudiera volver a emitirse desde el flujo normal.
-
-Estos recorridos fueron ejecutados manualmente y no mediante automatización de navegador.
-
-## 8. Ejecución
-
-Suite completa en Docker:
-
-```bash
+```bash id="hwgtcf"
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Comprobación de configuración:
+Verificación de Django:
 
-```bash
+```bash id="u2g9jy"
 docker compose exec -T web python manage.py check
 ```
 
-Verificación de cambios pendientes en modelos:
+Verificación de migraciones pendientes:
 
-```bash
+```bash id="h8cmvh"
 docker compose exec -T web python manage.py makemigrations --check --dry-run
 ```
 
 Último checkpoint:
 
-```text
-Django check          OK
-Pruebas               97/97
-Migraciones nuevas    No changes detected
+```text id="gmlksf"
+Django check            OK
+Pruebas                 133/133
+Migraciones pendientes  ninguna
 ```
 
-## 9. Plan de Pruebas
+---
 
-El código automatizado y el Plan de Pruebas cumplen funciones diferentes:
+## 8. Plan de Pruebas
 
-```text
+La suite automatizada y el Plan de Pruebas cumplen funciones distintas:
+
+```text id="u101yf"
 Suite automatizada
-→ evidencia técnica repetible
+→ verificación técnica repetible
 
 Plan de Pruebas
 → planificación y registro formal
 ```
 
-Las versiones se organizan de la siguiente forma:
+Versiones conservadas:
 
-- `historico/Plan_de_Pruebas_SUT_v0.1.xlsx`: evidencia histórica del checkpoint anterior;
-- `Plan_de_Pruebas_SUT_v0.2.xlsx`: plan vigente de la Entrega 2.2.
+- `historico/Plan_de_Pruebas_SUT_v0.1.xlsx`: versión histórica;
+- `Plan_de_Pruebas_SUT_v0.2.xlsx`: plan formal utilizado para la Entrega 2.2.
 
-La versión v0.2 contiene 28 casos representativos del trabajo realizado para la Entrega 2.2 y registra los recorridos End to End ejecutados.
+La versión v0.2 contiene **28 casos representativos**, todos registrados como ejecutados correctamente.
 
-La suite automatizada completa permanece como respaldo técnico de las 97 pruebas del sistema.
+```text id="bjv4cz"
+Casos    28
+OK       28
+NOK       0
+```
 
-## 10. Límites
+La suite automatizada de 133 pruebas constituye el respaldo técnico complementario del sistema.
 
-Actualmente no se dispone de:
+---
+
+## 9. Límites
+
+No se dispone actualmente de:
 
 - pruebas End to End automatizadas mediante navegador;
-- prueba multihilo específica para concurrencia;
+- prueba multihilo específica de concurrencia;
 - pruebas formales de carga;
 - pruebas formales de rendimiento;
 - pruebas de disponibilidad productiva.
