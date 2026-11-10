@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }} | SUT{% endblock %}
+
+{% block content %}
+
+
+<section
+    class="sut-activities-section"
+    aria-labelledby="titulo-formulario-actividad"
+>
+
+
+    <!-- ===================================================== -->
+    <!-- HERO                                                  -->
+    <!-- ===================================================== -->
+
+    <header
+        class="sut-activities-hero p-4 p-lg-5 mb-4"
+    >
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg-8">
+
+                <span class="sut-activities-kicker mb-3">
+                    Administración
+                </span>
+
+                <h1
+                    id="titulo-formulario-actividad"
+                    class="display-5 fw-bold mb-3"
+                >
+                    {{ titulo }}
+                </h1>
+
+                <p class="lead mb-0">
+                    Define la información que verán los vecinos
+                    antes de inscribirse en la actividad.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-4">
+
+                <div class="sut-activities-hero-actions">
+
+                    <a
+                        href="{% url 'actividades:gestion' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Volver a gestión
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENIDO                                             -->
+    <!-- ===================================================== -->
+
+    <div class="row g-4 align-items-start">
+
+
+        <!-- ================================================= -->
+        <!-- ORIENTACION                                       -->
+        <!-- ================================================= -->
+
+        <div class="col-12 col-lg-4">
+
+            <aside class="sut-activity-card">
+
+                <div class="sut-activity-card-body">
+
+                    <span class="sut-activity-label">
+                        Guía
+                    </span>
+
+                    <h2 class="h4 fw-bold mb-3">
+                        Antes de guardar
+                    </h2>
+
+                    <p class="sut-activity-description mb-4">
+                        Registra información clara para que los vecinos
+                        puedan identificar fácilmente la actividad.
+                    </p>
+
+
+                    <div class="sut-activity-details">
+
+
+                        <div>
+
+                            <span class="sut-activity-detail-label">
+                                01 · Nombre
+                            </span>
+
+                            <span class="sut-activity-detail-value">
+                                Usa un título corto y reconocible.
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="sut-activity-detail-label">
+                                02 · Fecha
+                            </span>
+
+                            <span class="sut-activity-detail-value">
+                                Debe corresponder a una fecha futura.
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="sut-activity-detail-label">
+                                03 · Cupos
+                            </span>
+
+                            <span class="sut-activity-detail-value">
+                                Define cuántos vecinos podrán inscribirse.
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="sut-activity-detail-label">
+                                04 · Descripción
+                            </span>
+
+                            <span class="sut-activity-detail-value">
+                                Explica brevemente en qué consiste.
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    {% if actividad %}
+
+                        <div
+                            class="
+                                sut-activity-message
+                                sut-activity-message-success
+                                mt-4
+                            "
+                        >
+
+                            <span
+                                class="sut-activity-message-mark"
+                                aria-hidden="true"
+                            >
+                                ✓
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Estás editando una actividad
+                                </strong>
+
+                                <p class="mb-0">
+                                    Los cambios reemplazarán
+                                    la información actual.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FORMULARIO                                        -->
+        <!-- ================================================= -->
+
+        <div class="col-12 col-lg-8">
+
+            <div class="sut-activities-shell p-4 p-lg-5">
+
+
+                <header
+                    class="sut-activities-list-header mb-4"
+                >
+
+                    <p class="text-primary mb-2">
+                        Datos de la actividad
+                    </p>
+
+                    <h2 class="h3 fw-bold mb-2">
+                        Información principal
+                    </h2>
+
+                    <p class="mb-0">
+                        Completa los campos obligatorios
+                        y revisa los datos antes de guardar.
+                    </p>
+
+                </header>
+
+
+                {% if form.non_field_errors %}
+
+                    <div
+                        class="alert alert-danger"
+                        role="alert"
+                    >
+
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <form
+                    method="post"
+                    novalidate
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- ===================================== -->
+                    <!-- NOMBRE                                -->
+                    <!-- ===================================== -->
+
+                    <div class="mb-4">
+
+                        <label
+                            for="{{ form.nombre.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.nombre.label }}
+                        </label>
+
+                        {{ form.nombre }}
+
+                        {% if form.nombre.errors %}
+
+                            <div
+                                class="text-danger small mt-2"
+                                role="alert"
+                            >
+
+                                {% for error in form.nombre.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- DESCRIPCION                           -->
+                    <!-- ===================================== -->
+
+                    <div class="mb-4">
+
+                        <label
+                            for="{{ form.descripcion.id_for_label }}"
+                            class="form-label fw-semibold"
+                        >
+                            {{ form.descripcion.label }}
+                        </label>
+
+                        {{ form.descripcion }}
+
+                        {% if form.descripcion.help_text %}
+
+                            <div class="form-text">
+                                {{ form.descripcion.help_text }}
+                            </div>
+
+                        {% endif %}
+
+                        {% if form.descripcion.errors %}
+
+                            <div
+                                class="text-danger small mt-2"
+                                role="alert"
+                            >
+
+                                {% for error in form.descripcion.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- FECHA + CUPO                          -->
+                    <!-- ===================================== -->
+
+                    <div class="row g-4">
+
+
+                        <div class="col-12 col-md-7">
+
+                            <label
+                                for="{{ form.fecha.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                {{ form.fecha.label }}
+                            </label>
+
+                            {{ form.fecha }}
+
+                            {% if form.fecha.help_text %}
+
+                                <div class="form-text">
+                                    {{ form.fecha.help_text }}
+                                </div>
+
+                            {% endif %}
+
+                            {% if form.fecha.errors %}
+
+                                <div
+                                    class="text-danger small mt-2"
+                                    role="alert"
+                                >
+
+                                    {% for error in form.fecha.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="col-12 col-md-5">
+
+                            <label
+                                for="{{ form.cupo_maximo.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                {{ form.cupo_maximo.label }}
+                            </label>
+
+                            {{ form.cupo_maximo }}
+
+                            {% if form.cupo_maximo.help_text %}
+
+                                <div class="form-text">
+                                    {{ form.cupo_maximo.help_text }}
+                                </div>
+
+                            {% endif %}
+
+                            {% if form.cupo_maximo.errors %}
+
+                                <div
+                                    class="text-danger small mt-2"
+                                    role="alert"
+                                >
+
+                                    {% for error in form.cupo_maximo.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ===================================== -->
+                    <!-- ACCIONES                              -->
+                    <!-- ===================================== -->
+
+                    <div class="sut-activity-action mt-5">
+
+                        <div
+                            class="d-grid d-sm-flex gap-2"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                {{ texto_boton }}
+                            </button>
+
+                            <a
+                                href="{% url 'actividades:gestion' %}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Cancelar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

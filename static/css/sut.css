@@ -1075,7 +1075,151 @@ a:hover {
 }
 
 /* ---------------------------------------------------------
-   11. Formularios
+   11. Alertas y mensajes del sistema
+   --------------------------------------------------------- */
+
+.alert {
+    position: relative;
+
+    overflow: hidden;
+
+    padding:
+        1rem
+        3.25rem
+        1rem
+        1.15rem;
+
+    background-color: var(--sut-surface);
+
+    border:
+        1px solid var(--sut-border);
+
+    border-left-width: 4px;
+
+    border-radius: var(--sut-radius-md);
+
+    color: var(--sut-text);
+
+    font-size: 0.94rem;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+
+    box-shadow:
+        0 4px 14px rgba(27, 55, 39, 0.055);
+}
+
+
+/* Éxito */
+
+.alert-success {
+    background:
+        linear-gradient(
+            135deg,
+            #e8f2eb 0%,
+            #f3f8f4 100%
+        );
+
+    border-color: #bfd7c6;
+
+    border-left-color: var(--sut-success);
+
+    color: #255c40;
+}
+
+
+/* Error */
+
+.alert-danger {
+    background:
+        linear-gradient(
+            135deg,
+            #fff0ee 0%,
+            #fff7f6 100%
+        );
+
+    border-color: #efc2bd;
+
+    border-left-color: var(--sut-danger);
+
+    color: #8a3028;
+}
+
+
+/* Advertencia */
+
+.alert-warning {
+    background:
+        linear-gradient(
+            135deg,
+            #fff4dc 0%,
+            #fff9ed 100%
+        );
+
+    border-color: #ead49c;
+
+    border-left-color: var(--sut-warning);
+
+    color: #765000;
+}
+
+
+/* Información */
+
+.alert-info {
+    background:
+        linear-gradient(
+            135deg,
+            #e7f0e9 0%,
+            #f4f8f5 100%
+        );
+
+    border-color: var(--sut-border-strong);
+
+    border-left-color: var(--sut-primary);
+
+    color: #40594a;
+}
+
+
+/* Botón cerrar */
+
+.alert .btn-close {
+    top: 50%;
+
+    right: 1rem;
+
+    transform: translateY(-50%);
+
+    opacity: 0.55;
+}
+
+
+.alert .btn-close:hover,
+.alert .btn-close:focus {
+    opacity: 0.9;
+}
+
+
+/* Móvil */
+
+@media (max-width: 767.98px) {
+
+    .alert {
+        padding:
+            0.9rem
+            3rem
+            0.9rem
+            1rem;
+
+        font-size: 0.9rem;
+    }
+
+}
+
+/* ---------------------------------------------------------
+   12. Formularios
    --------------------------------------------------------- */
 
 .form-control,
@@ -16651,29 +16795,86 @@ input:not([type="checkbox"]):not([type="radio"]):focus {
    --------------------------------------------------------- */
 
 .sut-aviso-actions {
-    display: flex;
+    display: grid;
 
-    justify-content: flex-end;
+    grid-template-columns: 1fr;
+
+    gap: 0.75rem;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     margin-top: auto;
 
     padding-top: 1.5rem;
+
+    box-sizing: border-box;
 }
 
 
-.sut-aviso-actions .btn {
-    min-width: 150px;
+/* Acción principal */
 
-    min-height: 46px;
+.sut-aviso-actions > .btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
 
-    padding-left: 1.4rem;
-    padding-right: 1.4rem;
+    min-height: 48px;
+
+    margin: 0;
+
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
 
     border-radius: var(--sut-radius-sm);
 
     font-size: 0.95rem;
 
     font-weight: 720;
+}
+
+
+/* Acciones administrativas */
+
+.sut-aviso-admin-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 0.65rem;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+.sut-aviso-admin-actions .btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    min-height: 46px;
+
+    margin: 0;
+
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+
+    border-radius: var(--sut-radius-sm);
+
+    font-size: 0.92rem;
+
+    font-weight: 720;
+
+    white-space: normal;
 }
 
 
@@ -16694,10 +16895,24 @@ input:not([type="checkbox"]):not([type="radio"]):focus {
         margin-top: 0.25rem;
     }
 
+
+    /*
+       El panel nunca puede superar el ancho
+       disponible de la pantalla.
+    */
+
+    .sut-aviso-panel {
+        max-width: 100vw;
+    }
+
 }
 
 
 @media (max-width: 767.98px) {
+
+    /* -----------------------------------------------------
+       Comunicaciones generales
+       ----------------------------------------------------- */
 
     .sut-comunicaciones-hero::before {
         width: 4px;
@@ -16737,71 +16952,155 @@ input:not([type="checkbox"]):not([type="radio"]):focus {
     }
 
 
+    /* -----------------------------------------------------
+       Panel lateral del aviso
+       ----------------------------------------------------- */
+
     .sut-aviso-panel {
-        width: 100%;
+        width: 100vw !important;
+        max-width: 100vw !important;
+
+        overflow-x: hidden;
 
         border-radius: 0;
+
+        box-sizing: border-box;
     }
 
 
+    /* -----------------------------------------------------
+       Cabecera
+       ----------------------------------------------------- */
+
     .sut-aviso-panel .offcanvas-header {
+        width: 100%;
+        min-width: 0;
+
         padding:
-            1.45rem
-            1.2rem
-            1.2rem;
+            1.35rem
+            1rem
+            1.15rem;
+
+        box-sizing: border-box;
+    }
+
+
+    .sut-aviso-panel .offcanvas-header > div {
+        min-width: 0;
+
+        padding-right: 0.65rem;
     }
 
 
     .sut-aviso-panel .offcanvas-header::after {
-        width: 74px;
-        height: 74px;
+        width: 68px;
+        height: 68px;
 
-        right: 2.8rem;
+        right: 3rem;
     }
 
 
     .sut-aviso-panel .offcanvas-title {
-        max-width: 12ch;
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
 
         font-size: clamp(
-            1.7rem,
-            8vw,
-            2.05rem
+            1.65rem,
+            7vw,
+            2rem
         );
 
-        line-height: 1.15;
+        line-height: 1.13;
     }
 
+
+    .sut-aviso-panel .btn-close {
+        flex:
+            0
+            0 auto;
+
+        margin-left: auto;
+    }
+
+
+    /* -----------------------------------------------------
+       Cuerpo
+       ----------------------------------------------------- */
 
     .sut-aviso-panel .offcanvas-body {
+        width: 100%;
+        min-width: 0;
+
+        overflow-x: hidden;
+
         padding:
-            1.35rem
-            1.2rem
-            1.5rem;
+            1.25rem
+            1rem
+            1.35rem;
+
+        box-sizing: border-box;
     }
 
+
+    .sut-aviso-body-top,
+    .sut-aviso-contenido,
+    .sut-aviso-meta,
+    .sut-aviso-actions {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        box-sizing: border-box;
+    }
+
+
+    /* -----------------------------------------------------
+       Contenido principal
+       ----------------------------------------------------- */
 
     .sut-aviso-contenido {
         padding:
-            1.1rem
             1.05rem
-            1.1rem
-            1.25rem;
+            1rem
+            1.05rem
+            1.15rem;
+
+        overflow-wrap: anywhere;
 
         font-size: 1rem;
     }
 
 
-    .sut-aviso-actions {
-        padding-top: 1.25rem;
-    }
+    /* -----------------------------------------------------
+       Acciones
+       ----------------------------------------------------- */
+
+.sut-aviso-actions {
+    gap: 0.65rem;
+
+    padding-top: 1.25rem;
+}
 
 
-    .sut-aviso-actions .btn {
-        width: 100%;
-    }
+.sut-aviso-admin-actions {
+    grid-template-columns: 1fr;
+
+    gap: 0.65rem;
+}
+
+
+.sut-aviso-actions > .btn,
+.sut-aviso-admin-actions .btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    margin: 0;
+}
 
 }
+
 
 /* =========================================================
    RESPONSIVE

@@ -580,6 +580,9 @@
 
                                     <div class="offcanvas-body">
 
+
+                                        <!-- CONTENIDO SUPERIOR -->
+
                                         <div class="sut-aviso-body-top">
 
                                             <span
@@ -591,12 +594,16 @@
                                         </div>
 
 
+                                        <!-- CONTENIDO DEL AVISO -->
+
                                         <div class="sut-aviso-contenido">
 
                                             {{ aviso.contenido }}
 
                                         </div>
 
+
+                                        <!-- FECHA -->
 
                                         <div class="sut-aviso-meta">
 
@@ -611,6 +618,8 @@
                                         </div>
 
 
+                                        <!-- ACCIONES -->
+
                                         <div class="sut-aviso-actions">
 
                                             <button
@@ -624,32 +633,36 @@
 
                                             {% if puede_publicar %}
 
-                                                <a
-                                                    href="{% url 'comunicaciones:editar_aviso' aviso.pk %}"
-                                                    class="btn btn-outline-primary"
-                                                >
-                                                    Editar aviso
-                                                </a>
+                                                <div class="sut-aviso-admin-actions">
 
-                                                <a
-                                                    href="{% url 'comunicaciones:eliminar_aviso' aviso.pk %}"
-                                                    class="btn btn-outline-danger"
-                                                >
-                                                    Eliminar
-                                                </a>
+                                                    <a
+                                                        href="{% url 'comunicaciones:editar_aviso' aviso.pk %}"
+                                                        class="btn btn-outline-primary"
+                                                    >
+                                                        Editar aviso
+                                                    </a>
+
+                                                    <a
+                                                        href="{% url 'comunicaciones:eliminar_aviso' aviso.pk %}"
+                                                        class="btn btn-outline-danger"
+                                                    >
+                                                        Eliminar
+                                                    </a>
+
+                                                </div>
 
                                             {% endif %}
 
                                         </div>
 
+
                                     </div>
 
                                 </div>
 
-                            {% endfor %}
+                                {% endfor %}
 
-                        </div>
-
+                                </div>
 
                     {% else %}
 

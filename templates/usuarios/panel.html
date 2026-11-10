@@ -88,6 +88,7 @@
 
 </header>
 
+
 <!-- ===================================================== -->
 <!-- 2. SERVICIOS DEL VECINO                               -->
 <!-- ===================================================== -->
@@ -281,11 +282,12 @@
 
 {% endif %}
 
+
 <!-- ===================================================== -->
-<!-- 4. GESTION ADMINISTRATIVA                             -->
+<!-- 3. GESTION ADMINISTRATIVA                             -->
 <!-- ===================================================== -->
 
-{% if puede_resolver_proyectos or puede_gestionar_certificados or puede_publicar_comunicaciones or puede_gestionar_vecinos %}
+{% if puede_resolver_proyectos or puede_gestionar_certificados or puede_publicar_comunicaciones or puede_gestionar_vecinos or puede_gestionar_actividades %}
 
 <section
     aria-labelledby="titulo-gestion"
@@ -316,6 +318,8 @@
 
         <div class="row g-3">
 
+
+            <!-- PROYECTOS -->
 
             {% if puede_resolver_proyectos %}
 
@@ -356,6 +360,8 @@
             {% endif %}
 
 
+            <!-- CERTIFICADOS -->
+
             {% if puede_gestionar_certificados %}
 
                 <div class="col-12 col-md-6">
@@ -395,6 +401,49 @@
             {% endif %}
 
 
+            <!-- ACTIVIDADES -->
+
+            {% if puede_gestionar_actividades %}
+
+                <div class="col-12 col-md-6">
+
+                    <article
+                        class="sut-panel-admin-card h-100 position-relative"
+                    >
+
+                        <div class="sut-panel-card-body">
+
+                            <span class="sut-panel-admin-label">
+                                Gestión
+                            </span>
+
+                            <h3 class="h5 fw-bold mb-2">
+                                Gestión de actividades
+                            </h3>
+
+                            <p class="mb-4">
+                                Crea, edita y administra actividades
+                                y sus cupos para la comunidad.
+                            </p>
+
+                            <a
+                                href="{% url 'actividades:gestion' %}"
+                                class="btn btn-outline-primary stretched-link"
+                            >
+                                Gestionar actividades
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- COMUNICACIONES -->
+
             {% if puede_publicar_comunicaciones %}
 
                 <div class="col-12 col-md-6">
@@ -433,6 +482,8 @@
 
             {% endif %}
 
+
+            <!-- VECINOS -->
 
             {% if puede_gestionar_vecinos %}
 

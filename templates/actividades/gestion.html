@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de actividades | SUT{% endblock %}
+
+{% block content %}
+
+
+<section
+    class="sut-activities-section"
+    aria-labelledby="titulo-gestion-actividades"
+>
+
+
+    <!-- ===================================================== -->
+    <!-- HERO                                                  -->
+    <!-- ===================================================== -->
+
+    <header
+        class="sut-activities-hero p-4 p-lg-5 mb-4"
+    >
+
+        <div class="row g-4 align-items-center">
+
+
+            <div class="col-12 col-lg-8">
+
+                <span class="sut-activities-kicker mb-3">
+                    Administración
+                </span>
+
+                <h1
+                    id="titulo-gestion-actividades"
+                    class="display-5 fw-bold mb-3"
+                >
+                    Gestión de actividades
+                </h1>
+
+                <p class="lead mb-0">
+                    Crea, modifica y administra las actividades
+                    disponibles para la comunidad.
+                </p>
+
+            </div>
+
+
+            <div class="col-12 col-lg-4">
+
+                <div class="sut-activities-hero-actions">
+
+                    <a
+                        href="{% url 'actividades:crear' %}"
+                        class="btn btn-primary"
+                    >
+                        Nueva actividad
+                    </a>
+
+                    <a
+                        href="{% url 'panel' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Volver al panel
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENEDOR PRINCIPAL                                  -->
+    <!-- ===================================================== -->
+
+    <div class="sut-activities-shell p-4 p-lg-5">
+
+
+        <!-- CABECERA DEL LISTADO -->
+
+        <header
+            class="sut-activities-list-header mb-4"
+        >
+
+            <div
+                class="d-flex flex-column flex-md-row
+                       justify-content-between
+                       align-items-md-center gap-3"
+            >
+
+                <div>
+
+                    <p class="text-primary mb-2">
+                        Control de actividades
+                    </p>
+
+                    <h2 class="h3 fw-bold mb-2">
+                        Actividades registradas
+                    </h2>
+
+                    <p class="mb-0">
+                        Revisa el estado, los cupos y las inscripciones
+                        antes de realizar cambios.
+                    </p>
+
+                </div>
+
+
+                <span class="sut-activities-count">
+                    {{ actividades|length }}
+                    actividad{{ actividades|length|pluralize:"es" }}
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================================================= -->
+        <!-- LISTADO                                           -->
+        <!-- ================================================= -->
+
+        {% if actividades %}
+
+            <div class="row g-4">
+
+
+                {% for actividad in actividades %}
+
+                    <div class="col-12">
+
+                        <article
+                            class="sut-activity-card h-100"
+                        >
+
+                            <div class="sut-activity-card-body">
+
+
+                                <!-- ESTADO -->
+
+                                <div
+                                    class="d-flex flex-wrap
+                                           justify-content-between
+                                           align-items-start
+                                           gap-3 mb-3"
+                                >
+
+                                    <span class="sut-activity-label">
+                                        Actividad vecinal
+                                    </span>
+
+
+                                    {% if actividad.fecha < ahora %}
+
+                                        <span
+                                            class="
+                                                sut-activity-status
+                                                sut-activity-status-full
+                                            "
+                                        >
+                                            Finalizada
+                                        </span>
+
+                                    {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                        <span
+                                            class="
+                                                sut-activity-status
+                                                sut-activity-status-full
+                                            "
+                                        >
+                                            Sin cupos
+                                        </span>
+
+                                    {% else %}
+
+                                        <span
+                                            class="
+                                                sut-activity-status
+                                                sut-activity-status-available
+                                            "
+                                        >
+                                            Disponible
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- INFORMACION -->
+
+                                <h3 class="h4 fw-bold mb-2">
+                                    {{ actividad.nombre }}
+                                </h3>
+
+
+                                {% if actividad.descripcion %}
+
+                                    <p
+                                        class="
+                                            sut-activity-description
+                                            mb-4
+                                        "
+                                    >
+                                        {{ actividad.descripcion }}
+                                    </p>
+
+                                {% else %}
+
+                                    <p
+                                        class="
+                                            sut-activity-description
+                                            mb-4
+                                        "
+                                    >
+                                        Esta actividad no tiene
+                                        una descripción registrada.
+                                    </p>
+
+                                {% endif %}
+
+
+                                <!-- DATOS -->
+
+                                <div class="sut-activity-details mb-4">
+
+
+                                    <div>
+
+                                        <span
+                                            class="sut-activity-detail-label"
+                                        >
+                                            Fecha y hora
+                                        </span>
+
+                                        <span
+                                            class="sut-activity-detail-value"
+                                        >
+                                            {{ actividad.fecha|date:"d/m/Y H:i" }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span
+                                            class="sut-activity-detail-label"
+                                        >
+                                            Inscripciones
+                                        </span>
+
+                                        <span
+                                            class="sut-activity-detail-value"
+                                        >
+                                            {{ actividad.cantidad_inscritos }}
+                                            de
+                                            {{ actividad.cupo_maximo }}
+                                            cupos
+                                        </span>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- OCUPACION -->
+
+                                {% if actividad.cantidad_inscritos >= actividad.cupo_maximo %}
+
+                                    <div
+                                        class="
+                                            sut-activity-message
+                                            sut-activity-message-full
+                                            mb-4
+                                        "
+                                    >
+
+                                        <span
+                                            class="sut-activity-message-mark"
+                                            aria-hidden="true"
+                                        >
+                                            !
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+                                                Cupo completo
+                                            </strong>
+
+                                            <p class="mb-0">
+                                                Esta actividad ya alcanzó
+                                                el máximo de vecinos inscritos.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                {% elif actividad.cantidad_inscritos > 0 %}
+
+                                    <div
+                                        class="
+                                            sut-activity-message
+                                            sut-activity-message-success
+                                            mb-4
+                                        "
+                                    >
+
+                                        <span
+                                            class="sut-activity-message-mark"
+                                            aria-hidden="true"
+                                        >
+                                            ✓
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+                                                Inscripciones activas
+                                            </strong>
+
+                                            <p class="mb-0">
+                                                Hay
+                                                {{ actividad.cantidad_inscritos }}
+                                                vecino{{ actividad.cantidad_inscritos|pluralize:"s" }}
+                                                inscrito{{ actividad.cantidad_inscritos|pluralize:"s" }}.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <!-- ACCIONES -->
+
+                                <div class="sut-activity-action mt-auto">
+
+                                    <div
+                                        class="d-flex flex-column
+                                               flex-sm-row gap-2"
+                                    >
+
+                                        <a
+                                            href="{% url 'actividades:editar' actividad.id %}"
+                                            class="btn btn-outline-primary"
+                                        >
+                                            Editar actividad
+                                        </a>
+
+
+                                        <a
+                                            href="{% url 'actividades:eliminar' actividad.id %}"
+                                            class="btn btn-outline-danger"
+                                        >
+                                            Eliminar
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+            <!-- ================================================= -->
+            <!-- ESTADO VACIO                                      -->
+            <!-- ================================================= -->
+
+            <div class="sut-activities-empty">
+
+                <span
+                    class="sut-activities-empty-mark"
+                    aria-hidden="true"
+                >
+                    SUT
+                </span>
+
+                <h2 class="h3 fw-bold mb-3">
+                    Aún no hay actividades
+                </h2>
+
+                <p class="mb-4">
+                    Cuando registres una actividad,
+                    aparecerá aquí para que puedas
+                    administrar su fecha, cupos e información.
+                </p>
+
+                <a
+                    href="{% url 'actividades:crear' %}"
+                    class="btn btn-primary"
+                >
+                    Crear primera actividad
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

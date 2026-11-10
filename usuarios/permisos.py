@@ -126,3 +126,18 @@ def puede_gestionar_vecinos(usuario):
         "directiva",
         "personal autorizado",
     )
+
+
+def puede_gestionar_actividades(usuario):
+
+    if not usuario.is_authenticated:
+        return False
+
+    if usuario.is_superuser:
+        return True
+
+    return tiene_rol(
+        usuario,
+        "directiva",
+        "personal autorizado",
+    )

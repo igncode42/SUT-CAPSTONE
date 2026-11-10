@@ -175,8 +175,10 @@
 
 
 <!-- ===================================================== -->
-<!-- 2. SERVICIOS                                          -->
+<!-- 2. SERVICIOS PARA VECINOS / ANONIMOS                  -->
 <!-- ===================================================== -->
+
+{% if not user.is_authenticated or user.vecino %}
 
 <section
     aria-labelledby="titulo-servicios"
@@ -184,8 +186,6 @@
 
     <div class="sut-surface sut-home-services-shell p-4 p-lg-5">
 
-
-        <!-- ENCABEZADO -->
 
         <header class="sut-home-services-header mb-4">
 
@@ -202,6 +202,7 @@
 
             <p class="mb-0">
                 Elige el servicio que necesitas.
+
                 {% if not user.is_authenticated %}
                     Los trámites requieren iniciar sesión,
                     pero las noticias y avisos son públicos.
@@ -405,6 +406,125 @@
     </div>
 
 </section>
+
+
+<!-- ===================================================== -->
+<!-- 3. ACCESO ADMINISTRATIVO                              -->
+<!-- ===================================================== -->
+
+{% elif user.is_authenticated %}
+
+<section
+    aria-labelledby="titulo-administracion"
+>
+
+    <div class="sut-surface sut-home-services-shell p-4 p-lg-5">
+
+        <header class="sut-home-services-header mb-4">
+
+            <p class="text-primary fw-semibold mb-2">
+                Administración
+            </p>
+
+            <h2
+                id="titulo-administracion"
+                class="h2 fw-bold mb-2"
+            >
+                Acceso administrativo
+            </h2>
+
+            <p class="mb-0">
+                Tu cuenta dispone de herramientas de gestión
+                según los permisos asignados.
+            </p>
+
+        </header>
+
+
+        <div class="row g-3">
+
+
+            <!-- PANEL -->
+
+            <div class="col-12 col-md-6">
+
+                <article
+                    class="sut-home-service-card h-100 position-relative"
+                >
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label">
+                            Gestión
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Mi panel
+                        </h3>
+
+                        <p class="small mb-4">
+                            Accede a las herramientas administrativas
+                            disponibles para tu cuenta.
+                        </p>
+
+                        <a
+                            href="{% url 'panel' %}"
+                            class="btn btn-primary btn-sm stretched-link"
+                        >
+                            Ir a mi panel
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- COMUNICACIONES -->
+
+            <div class="col-12 col-md-6">
+
+                <article
+                    class="sut-home-service-card sut-service-public h-100 position-relative"
+                >
+
+                    <div class="sut-home-service-card-body">
+
+                        <span class="sut-home-service-label sut-home-public-label">
+                            Comunidad
+                        </span>
+
+                        <h3 class="h5 fw-bold mb-2">
+                            Noticias y avisos
+                        </h3>
+
+                        <p class="small mb-4">
+                            Consulta las comunicaciones publicadas
+                            para la comunidad.
+                        </p>
+
+                        <a
+                            href="{% url 'comunicaciones:inicio' %}"
+                            class="btn btn-outline-primary btn-sm stretched-link"
+                        >
+                            Ver comunicaciones
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
 
 
 {% endblock %}
