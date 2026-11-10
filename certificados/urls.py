@@ -1,6 +1,7 @@
 ﻿from django.urls import path
 
 from .views import (
+    descargar_certificado,
     emitir_certificado,
     gestion_certificados,
     mis_solicitudes,
@@ -49,5 +50,10 @@ urlpatterns = [
         "<int:pk>/ver/",
         ver_certificado,
         name="ver",
+    ),
+    path(
+        "<int:pk>/descargar/",
+        descargar_certificado,
+        name="descargar",
     ),
 ]

@@ -247,6 +247,13 @@
                                         Ver certificado
                                     </a>
 
+                                    <a
+                                        href="{% url 'certificados:descargar' solicitud.pk %}"
+                                        class="btn btn-outline-primary"
+                                    >
+                                        Descargar PDF
+                                    </a>
+
                                 </div>
 
                             {% endif %}
@@ -268,7 +275,7 @@
 
 
         <!-- ================================================= -->
-        <!-- 4. ESTADO VACIO                                   -->
+        <!-- 4. ESTADO VACIO                                 -->
         <!-- ================================================= -->
 
         <section
