@@ -73,6 +73,56 @@ Respaldo gráfico:
 ```text
 docs/diagramas/01-arquitectura-sut.svg
 ```
+---
+
+### 3.1 Modelo de datos
+
+El SUT utiliza un modelo relacional implementado mediante Django ORM sobre PostgreSQL.
+
+#### Modelo entidad-relación
+
+El diagrama entidad-relación representa las entidades principales del sistema y sus relaciones.
+
+```text
+docs/diagramas/02-modelo-datos-sut.svg
+```
+
+#### Modelo lógico
+
+Las principales relaciones son:
+
+- un rol puede estar asociado a varios usuarios;
+- cada vecino se relaciona con una cuenta de usuario;
+- un vecino puede registrar varios proyectos y solicitudes de certificado;
+- cada solicitud emitida puede generar un único certificado;
+- un vecino puede realizar varias reservas y cada reserva corresponde a un espacio;
+- vecinos y actividades se relacionan mediante inscripciones;
+- un usuario autorizado puede publicar noticias y avisos.
+
+Las claves primarias son administradas por Django. Las relaciones se implementan mediante claves foráneas y relaciones uno a uno según corresponda.
+
+El modelo también incorpora restricciones para proteger la integridad de los datos, entre ellas estados válidos, solicitudes activas únicas, horarios válidos y prevención de inscripciones duplicadas.
+
+#### Modelo físico
+
+El modelo físico se encuentra implementado en PostgreSQL 18 mediante los modelos Django y sus migraciones.
+
+La versión actual contiene 15 migraciones distribuidas entre las aplicaciones del sistema. Estas definen las tablas, relaciones, claves y restricciones utilizadas por la base de datos.
+
+Django ORM actúa como capa de acceso a datos entre la aplicación y PostgreSQL.
+
+---
+### 3.2 Diagramas de respaldo
+
+La documentación gráfica del sistema se encuentra en `docs/diagramas/`:
+
+- `01-arquitectura-sut.svg`: arquitectura general del sistema.
+- `02-modelo-datos-sut.svg`: modelo entidad-relación.
+- `03-proceso-proyecto-vecinal.svg`: flujo simplificado de proyectos.
+- `04-proceso-reserva-espacio.svg`: flujo simplificado de reservas.
+- `05-proceso-actividad-cupos.svg`: flujo simplificado de actividades.
+- `06-secuencia-certificado.svg`: diagrama de secuencia UML para emisión y descarga de certificados.
+- `07-proceso-proyecto-vecinal-bpmn.svg`: modelado BPMN del proceso de gestión de proyectos vecinales.
 
 ---
 
@@ -180,7 +230,7 @@ El sistema permite:
 - reservar espacios activos;
 - consultar reservas propias;
 - visualizar un calendario mensual;
-- administrar espacios;
+- administrar espacios mediante Django Admin;
 - validar fechas y horarios;
 - detectar solapamientos;
 - excluir reservas canceladas de la disponibilidad.
