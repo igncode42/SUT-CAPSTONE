@@ -2,46 +2,47 @@
 
 ## Estado
 
-La versión v1.0 corresponde al cierre técnico del Sistema Unidad Territorial.
+La versión **v1.0** corresponde al cierre técnico del Sistema Unidad Territorial (SUT).
 
-El sistema se encuentra implementado y preparado para su validación final, consolidación de evidencias y presentación.
+El sistema se encuentra implementado, validado y respaldado mediante pruebas, documentación y evidencias de la Entrega 2.2.
 
 ## Diseñado y documentado
 
-- Arquitectura y modelo de datos.
-- Requisitos funcionales y no funcionales.
-- Roles, permisos y reglas de negocio.
-- Flujos principales, UML y BPMN.
-- Plan de pruebas y documentación técnica.
+- arquitectura y modelo de datos;
+- requisitos funcionales y no funcionales;
+- roles, permisos y reglas de negocio;
+- flujos principales, UML y BPMN;
+- plan de pruebas y documentación técnica.
 
 ## Implementado
 
-- Autenticación y gestión de usuarios y vecinos.
-- Proyectos vecinales.
-- Certificados de residencia con PDF y correo.
-- Reservas de espacios.
-- Actividades e inscripciones.
-- Noticias y avisos.
-- Autorización por roles.
+- autenticación, usuarios y vecinos;
+- proyectos vecinales;
+- certificados con PDF y correo;
+- reservas de espacios;
+- actividades e inscripciones;
+- noticias y avisos;
+- autorización por roles;
 - PostgreSQL y Docker Compose.
 
 ## Validado
 
-- 133 pruebas automatizadas.
-- Recorridos funcionales y End to End.
-- Permisos, reglas de negocio e integridad de datos.
-- Django check y migraciones.
-- Controles técnicos incluidos en el plan de pruebas.
+- **133 pruebas automatizadas aprobadas**;
+- recorridos End to End manuales de los principales flujos;
+- permisos, reglas de negocio e integridad de datos;
+- Django check y ausencia de migraciones pendientes;
+- controles de seguridad y calidad;
+- funcionamiento en escritorio y móvil.
 
-Antes del cierre definitivo se realizará un último checkpoint y se conservarán las evidencias correspondientes.
+El cierre se encuentra respaldado por las evidencias conservadas en `docs/evidencias/fase-2.2/`.
 
 ## Fuera del alcance
 
 - integración directa con WhatsApp;
-- E2E automatizado mediante navegador;
-- despliegue productivo externo;
+- End to End automatizado mediante navegador;
+- despliegue productivo en infraestructura externa;
 - pruebas formales de carga o rendimiento.
 
 ## Cierre
 
-SUT v1.0 cubre las principales funcionalidades definidas para el proyecto y cuenta con respaldo técnico, pruebas y documentación.
+SUT v1.0 cubre las principales funcionalidades definidas para el proyecto y cuenta con respaldo técnico, pruebas, evidencias y documentación coherente con su estado implementado.

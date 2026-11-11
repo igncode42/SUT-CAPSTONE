@@ -4,13 +4,13 @@ Sistema web desarrollado como proyecto Capstone de Ingeniería en Informática p
 
 ## Objetivo
 
-Centralizar procesos habituales de una unidad territorial en una plataforma web simple, trazable y utilizable por vecinos y personal autorizado.
+Centralizar procesos habituales de una unidad territorial en una plataforma web responsiva, trazable y respaldada por PostgreSQL.
 
-El SUT permite gestionar vecinos, certificados, proyectos, reservas, actividades y comunicaciones mediante una aplicación web responsiva conectada a PostgreSQL.
+SUT permite gestionar vecinos, proyectos, certificados, reservas, actividades y comunicaciones mediante distintos niveles de autorización.
 
 ---
 
-## Estado actual
+## Estado
 
 La versión **SUT v1.0** se encuentra funcionalmente cerrada.
 
@@ -20,14 +20,13 @@ PostgreSQL             18
 Aplicaciones Django    7
 Pruebas                133/133
 Migraciones            15
-E2E crítico            verificado
-Escritorio             verificado
-Dispositivo móvil      verificado
+E2E manual             verificado
 SMTP                    verificado
 PDF certificados       verificado
+Responsive              verificado
 ```
 
-Se mantiene un **Feature Freeze**. Sólo se realizarán correcciones que afecten la entrega, demostración, defensa o integridad funcional.
+El proyecto se encuentra en **Feature Freeze**. Sólo se consideran correcciones que afecten entrega, demostración, defensa o integridad funcional.
 
 ---
 
@@ -35,35 +34,27 @@ Se mantiene un **Feature Freeze**. Sólo se realizarán correcciones que afecten
 
 ### Vecinos
 
-- registro de usuarios;
-- perfil de vecino;
-- edición de datos personales;
+- registro y perfil;
+- edición de datos;
 - gestión administrativa;
-- incorporación y retiro como miembro de junta;
-- control de permisos desde el servidor.
+- membresía de junta;
+- control de permisos desde servidor.
 
 ### Proyectos vecinales
 
 ```text
 Miembro de junta
-        ↓
+    ↓
 Postulación
-        ↓
+    ↓
 Revisión
-        ↓
+    ↓
 Aprobación / Rechazo
-        ↓
-Notificación por correo
+    ↓
+Correo
 ```
 
-Incluye:
-
-- postulación exclusiva para miembros;
-- revisión por Directiva o personal autorizado;
-- protección contra doble resolución;
-- restricciones de estado;
-- notificación HTML por correo;
-- tolerancia a fallos SMTP sin revertir la resolución.
+Incluye autorización por rol, protección contra doble resolución, estados controlados y tolerancia ante fallos SMTP.
 
 ### Certificados de residencia
 
@@ -74,56 +65,37 @@ Solicitud
    ↓
 Revisión
    ↓
-Aprobación / Rechazo
+Aprobación
    ↓
 Emisión
    ↓
 PDF + correo
 ```
 
-Incluye:
-
-- control de solicitudes activas;
-- aprobación, rechazo y emisión;
-- protección contra doble resolución y emisión;
-- snapshot de datos del vecino;
-- generación y descarga privada del PDF;
-- envío del certificado como adjunto por correo.
+Incluye control de solicitudes activas, snapshot de datos, prevención de doble emisión y acceso privado al documento.
 
 ### Reservas
 
 - reserva de espacios;
 - calendario mensual;
 - validación de fechas y horarios;
-- detección de solapamientos;
-- administración de espacios;
-- protección frente a reservas concurrentes.
+- control de solapamientos;
+- administración de espacios.
 
 ### Actividades
 
-Para vecinos:
-
-- consulta de actividades;
-- inscripción;
-- control de cupos;
-- prevención de inscripciones duplicadas.
-
-Para Directiva y personal autorizado:
-
-- creación;
-- edición;
-- gestión de fechas y cupos;
+- consulta e inscripción;
+- control de cupos y duplicados;
+- creación y edición administrativa;
 - consulta de inscritos;
 - eliminación cuando corresponde.
 
 ### Comunicaciones
 
-- noticias;
-- avisos;
+- noticias y avisos;
 - consulta pública;
-- creación, edición y eliminación por usuarios autorizados;
-- avisos destacados;
-- interfaz responsiva.
+- gestión por usuarios autorizados;
+- visualización responsiva.
 
 ---
 
@@ -137,13 +109,13 @@ El sistema diferencia entre:
 - personal autorizado;
 - superusuario.
 
-La autorización se valida del lado del servidor mediante reglas centralizadas.
+La autorización se valida en el servidor mediante reglas centralizadas.
 
 ---
 
 ## Arquitectura
 
-El SUT utiliza una arquitectura web monolítica modular basada en Django.
+SUT utiliza una arquitectura web monolítica modular basada en Django.
 
 ```text
 Navegador
@@ -180,13 +152,8 @@ El entorno se ejecuta mediante Docker Compose y PostgreSQL utiliza un volumen pe
 - Django Templates
 - Bootstrap 5.3.3
 - ReportLab
-- Docker
-- Docker Compose
-
-Gestión y trazabilidad:
-
-- Git
-- GitHub
+- Docker y Docker Compose
+- Git / GitHub
 - Jira
 
 ---
@@ -205,7 +172,7 @@ Verificar servicios:
 docker compose ps
 ```
 
-Aplicación:
+Aplicación local:
 
 ```text
 http://127.0.0.1:8000/
@@ -221,7 +188,7 @@ Ejecutar la suite:
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
-Último resultado:
+Último resultado verificado:
 
 ```text
 Found 133 test(s).
@@ -229,18 +196,9 @@ Ran 133 tests
 OK
 ```
 
-| Aplicación | Pruebas |
-|---|---:|
-| Usuarios | 20 |
-| Vecinos | 13 |
-| Proyectos | 19 |
-| Certificados | 29 |
-| Reservas | 13 |
-| Actividades | 16 |
-| Comunicaciones | 23 |
-| **Total** | **133** |
+Los recorridos End to End manuales cubren los principales flujos de proyectos, certificados, reservas, actividades y comunicaciones.
 
-También se realizaron recorridos End to End sobre los flujos críticos y validaciones en escritorio y dispositivo móvil.
+La estrategia completa y el Plan de Pruebas se encuentran en `docs/pruebas/`.
 
 ---
 
@@ -250,34 +208,31 @@ El proyecto incorpora:
 
 - protección CSRF;
 - autorización del lado del servidor;
-- aislamiento de información por usuario;
-- restricciones de integridad en PostgreSQL;
+- aislamiento de información;
+- restricciones de integridad;
 - transacciones atómicas;
 - `select_for_update()` en operaciones sensibles;
-- escape automático mediante Django Templates;
 - secretos fuera del repositorio;
 - `.env` excluido de Git;
-- contenedor web sin privilegios root;
-- protección de descargas privadas.
+- descargas privadas protegidas;
+- contenedor web sin privilegios root.
 
-Último checkpoint técnico:
+Verificaciones finales:
 
 ```text
 Django check            OK
-133/133 pruebas         OK
+Pruebas                 133/133
 Migraciones pendientes  ninguna
-Docker Compose          OK
-PostgreSQL              healthy
-Aplicación Django       healthy
+Gitleaks                 sin secretos detectados
+pip-audit                sin vulnerabilidades conocidas
+check --deploy           sin incidencias en perfil seguro simulado
 ```
 
-El entorno actual está orientado a desarrollo y demostración académica, no a despliegue productivo.
+El entorno actual está destinado a desarrollo y demostración académica, no a despliegue productivo.
 
 ---
 
 ## Documentación
-
-La documentación se mantiene en:
 
 ```text
 docs/
@@ -289,36 +244,21 @@ docs/
 └── pruebas/
 ```
 
-Incluye arquitectura, especificaciones técnicas, trazabilidad, pruebas, evidencias y documentación de cierre.
+La documentación incluye arquitectura, modelo de datos, UML/BPMN, especificaciones técnicas, trazabilidad, pruebas, evidencias y cierre del proyecto.
 
-Los documentos históricos se conservan como registro de la evolución del proyecto y no representan necesariamente el estado técnico actual.
+Las versiones históricas se conservan como registro de evolución y no representan necesariamente el estado técnico actual.
 
 ---
 
 ## Alcance de v1.0
 
-La versión v1.0 incluye:
+La versión v1.0 implementa los procesos principales definidos para el proyecto.
 
-- gestión de vecinos;
-- certificados de residencia;
-- proyectos vecinales;
-- reservas;
-- actividades;
-- noticias y avisos;
-- control de acceso por roles;
-- notificaciones por correo;
-- generación de certificados PDF;
-- interfaz web responsiva;
-- persistencia mediante PostgreSQL.
+Quedan fuera del alcance demostrado:
 
-La propuesta contempla comunicación mediante aviso, correo y/o WhatsApp.
+- integración directa con WhatsApp;
+- pruebas End to End automatizadas mediante navegador;
+- despliegue productivo en infraestructura externa;
+- pruebas formales de carga o rendimiento.
 
-La implementación actual utiliza:
-
-```text
-Avisos dentro del sistema
-+
-Correo electrónico
-```
-
-La integración directa con WhatsApp no forma parte de la versión v1.0.
+La versión actual utiliza avisos dentro del sistema y correo electrónico para sus comunicaciones implementadas.

@@ -2,9 +2,9 @@
 
 ## 1. Objetivo
 
-Verificar que las funcionalidades implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, controles de acceso e integridad esperada.
+Verificar que las funcionalidades implementadas del Sistema Unidad Territorial (SUT) cumplan sus reglas de negocio, controles de acceso e integridad.
 
-Las pruebas consideran escenarios válidos, intentos no autorizados, operaciones duplicadas y casos límite.
+Las pruebas consideran escenarios válidos, accesos no autorizados, operaciones duplicadas, casos límite y fallos controlados.
 
 ---
 
@@ -12,24 +12,21 @@ Las pruebas consideran escenarios válidos, intentos no autorizados, operaciones
 
 La verificación combina:
 
-- `TestCase` de Django;
-- Django Test Client;
+- Django `TestCase` y Test Client;
 - PostgreSQL;
 - backend de correo en memoria para pruebas automatizadas;
 - Docker Compose;
-- recorridos End to End manuales.
+- recorridos manuales End to End.
 
 La suite cubre principalmente:
 
 - autenticación y autorización;
 - permisos por rol;
-- aislamiento de datos;
-- validaciones;
-- reglas de negocio;
-- estados;
-- operaciones duplicadas;
+- aislamiento de información;
+- validaciones y reglas de negocio;
+- estados y operaciones duplicadas;
 - restricciones de base de datos;
-- concurrencia;
+- operaciones protegidas mediante transacciones y bloqueos;
 - fallos controlados de servicios externos.
 
 ---
@@ -38,12 +35,15 @@ La suite cubre principalmente:
 
 | Nivel | Estado |
 |---|---|
-| Automatizadas con Django | **Implementadas** |
-| Integración | **Implementada** |
+| Unitarias / de componente | **Incluidas en la suite automatizada** |
 | Funcionales | **Implementadas** |
+| Integración | **Implementada** |
+| Aceptación | **Verificada mediante criterios del plan y recorridos manuales** |
 | End to End manual | **Ejecutado en flujos críticos** |
 | End to End automatizado con navegador | **No implementado** |
 | Carga / rendimiento | **No ejecutado formalmente** |
+
+No se realizó una prueba formal de aceptación con cliente. Los criterios de aceptación se verificaron mediante el Plan de Pruebas y recorridos manuales del sistema.
 
 No se presentan como ejecutadas pruebas que no cuentan con respaldo verificable.
 
@@ -64,7 +64,7 @@ No se presentan como ejecutadas pruebas que no cuentan con respaldo verificable.
 
 Último resultado verificado:
 
-```text id="ghy4mk"
+```text id="2hqpxh"
 Found 133 test(s).
 Ran 133 tests
 OK
@@ -72,120 +72,63 @@ OK
 
 La suite completa se ejecutó dentro del entorno Docker.
 
+Respaldo: `docs/evidencias/fase-2.2/27-pruebas-133-ok.png`.
+
 ---
 
 ## 5. Cobertura principal
 
 ### Usuarios y vecinos
 
-Se verifican:
-
-- registro;
-- login y logout;
-- creación y edición de perfiles;
-- gestión de vecinos;
-- membresía;
-- permisos por rol;
-- aislamiento de información;
-- prevención de autoasignación de privilegios.
+Se verifican registro, autenticación, perfiles, gestión de vecinos, membresía, permisos por rol, aislamiento de información y prevención de autoasignación de privilegios.
 
 ### Proyectos
 
-Se verifican:
+Se verifican postulación por miembros, estados, aislamiento, aprobación y rechazo, prevención de doble resolución, notificación por correo y comportamiento ante fallo SMTP.
 
-- postulación exclusiva para miembros;
-- asociación automática con el vecino;
-- estado inicial;
-- aislamiento de proyectos;
-- aprobación y rechazo;
-- prevención de doble resolución;
-- estados válidos;
-- envío de correo;
-- comportamiento ante fallo SMTP.
-
-Un fallo SMTP simulado permite comprobar que una resolución ya registrada no sea revertida.
+Un fallo SMTP simulado comprueba que una resolución ya registrada no sea revertida.
 
 ### Certificados
 
-Se verifican:
-
-- creación de solicitudes;
-- aislamiento;
-- autorización;
-- control de solicitudes activas;
-- aprobación y rechazo;
-- prevención de doble resolución y emisión;
-- snapshot de datos;
-- generación de PDF;
-- acceso privado al documento;
-- envío del PDF por correo;
-- comportamiento ante fallos SMTP.
+Se verifican solicitudes, autorización, aislamiento, solicitudes activas, resolución, prevención de doble emisión, snapshot de datos, generación y acceso privado al PDF, correo y fallos SMTP.
 
 ### Reservas
 
-Se verifican:
-
-- creación válida;
-- fechas y horarios;
-- estados;
-- espacios activos;
-- detección de solapamientos;
-- horarios contiguos;
-- reservas propias;
-- calendario;
-- exclusión de reservas canceladas.
+Se verifican fechas y horarios, espacios activos, estados, solapamientos, horarios contiguos, reservas propias y calendario.
 
 La creación utiliza transacción y bloqueo del espacio antes de confirmar disponibilidad.
 
 ### Actividades
 
-Se verifican:
-
-- inscripción;
-- prevención de duplicados;
-- cupos;
-- actividades vigentes;
-- restricciones de base de datos;
-- creación y edición administrativa;
-- gestión de cupos;
-- eliminación cuando corresponde;
-- protección de actividades con inscritos.
+Se verifican inscripción, duplicados, cupos, vigencia, gestión administrativa y protección de actividades con inscritos.
 
 La inscripción utiliza transacción y bloqueo de la actividad.
 
 ### Comunicaciones
 
-Se verifican:
-
-- publicación de noticias y avisos;
-- permisos;
-- acceso público;
-- asignación del autor desde servidor;
-- creación, edición y eliminación;
-- escape de contenido mediante Django Templates.
+Se verifican publicación de noticias y avisos, permisos, acceso público, asignación de autor y operaciones de creación, edición y eliminación.
 
 ---
 
-## 6. End to End manual
+## 6. Recorridos End to End manuales
 
-Se realizaron recorridos manuales sobre los flujos críticos.
+Se ejecutaron recorridos completos sobre los principales flujos del sistema.
 
 ### Proyectos
 
-```text id="0q5qgj"
-Registro
-→ Membresía
-→ Postulación
+```text id="dww3x1"
+Postulación
 → Revisión
 → Resolución
+→ Actualización de estado
 → Correo
 ```
 
-Se validó el envío real mediante servidor SMTP externo.
+Respaldo: evidencia 29.
 
 ### Certificados
 
-```text id="q089z6"
+```text id="nzmd2u"
 Solicitud
 → Aprobación
 → Emisión
@@ -193,47 +136,69 @@ Solicitud
 → Correo
 ```
 
-Se verificó además la persistencia del estado emitido y el acceso al documento.
+Se verificó además el estado emitido y el acceso al documento.
+
+Respaldo: evidencia 30.
+
+### Reservas
+
+```text id="beyifh"
+Crear reserva
+→ Confirmación
+→ Mis reservas
+→ Calendario
+```
+
+Respaldo: evidencia 31.
 
 ### Actividades
 
-```text id="7knu25"
-Directiva
-→ Crear actividad
-→ Editar
-→ Gestionar cupos
-→ Eliminar cuando corresponde
+```text id="60n98x"
+Crear actividad
+→ Inscripción
+→ Actualización de cupos
+→ Consulta
 ```
 
-El sistema también fue revisado manualmente en escritorio y dispositivo móvil.
+Respaldo: evidencia 32.
 
-Estos recorridos fueron ejecutados de forma manual y no mediante automatización de navegador.
+### Comunicaciones
+
+```text id="oq9vtg"
+Publicación
+→ Acceso público
+→ Visualización responsive
+```
+
+Respaldo: evidencia 33.
+
+Los recorridos fueron ejecutados manualmente y no mediante automatización de navegador.
 
 ---
 
-## 7. Ejecución
+## 7. Ejecución y checkpoint
 
 Suite completa:
 
-```bash id="hwgtcf"
+```bash id="igduvw"
 docker compose exec -T web python manage.py test --verbosity 1
 ```
 
 Verificación de Django:
 
-```bash id="u2g9jy"
+```bash id="gn0wuf"
 docker compose exec -T web python manage.py check
 ```
 
-Verificación de migraciones pendientes:
+Migraciones pendientes:
 
-```bash id="h8cmvh"
+```bash id="82jnso"
 docker compose exec -T web python manage.py makemigrations --check --dry-run
 ```
 
 Último checkpoint:
 
-```text id="gmlksf"
+```text id="p7drrv"
 Django check            OK
 Pruebas                 133/133
 Migraciones pendientes  ninguna
@@ -243,9 +208,9 @@ Migraciones pendientes  ninguna
 
 ## 8. Plan de Pruebas
 
-La suite automatizada y el Plan de Pruebas cumplen funciones distintas:
+La suite automatizada y el Plan de Pruebas tienen funciones complementarias:
 
-```text id="u101yf"
+```text id="2pzb6o"
 Suite automatizada
 → verificación técnica repetible
 
@@ -256,28 +221,27 @@ Plan de Pruebas
 Versiones conservadas:
 
 - `historico/Plan_de_Pruebas_SUT_v0.1.xlsx`: versión histórica;
-- `Plan_de_Pruebas_SUT_v0.2.xlsx`: plan formal utilizado para la Entrega 2.2.
+- `Plan_de_Pruebas_SUT_v0.2.xlsx`: versión utilizada para la Entrega 2.2.
 
-La versión v0.2 contiene **28 casos representativos**, todos registrados como ejecutados correctamente.
+Resultado del Plan v0.2:
 
-```text id="bjv4cz"
-Casos    28
-OK       28
-NOK       0
+```text id="4poc00"
+Casos representativos    28
+OK                       28
+NOK                       0
+No ejecutados             0
+Avance                  100 %
 ```
 
-La suite automatizada de 133 pruebas constituye el respaldo técnico complementario del sistema.
+La suite de 133 pruebas constituye el respaldo técnico complementario.
 
 ---
 
 ## 9. Límites
 
-No se dispone actualmente de:
+No forman parte del alcance demostrado:
 
 - pruebas End to End automatizadas mediante navegador;
 - prueba multihilo específica de concurrencia;
-- pruebas formales de carga;
-- pruebas formales de rendimiento;
+- pruebas formales de carga o rendimiento;
 - pruebas de disponibilidad productiva.
-
-Estas capacidades no se presentan como ejecutadas ni demostradas.

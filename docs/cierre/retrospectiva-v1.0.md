@@ -8,14 +8,14 @@ Revisar el desarrollo del SUT, identificando las principales dificultades, decis
 
 | Aspecto | Situación | Acción realizada | Aprendizaje |
 |---|---|---|---|
-| Alcance | El sistema incluía varias funcionalidades relacionadas entre sí. | Se priorizaron las funcionalidades principales y se avanzó de forma incremental. | Definir y priorizar el alcance desde el inicio facilita mantener el trabajo controlado. |
-| Integración | Los cambios en un módulo podían afectar otras partes del sistema. | Se realizaron pruebas progresivas antes de continuar con nuevos cambios. | Validar cada incremento permite detectar problemas antes de que se acumulen. |
-| Tiempo | Desarrollo, pruebas y documentación debían avanzar dentro del mismo periodo académico. | Se reorganizaron tareas y se priorizó lo necesario para cada entrega. | Documentar durante el desarrollo reduce trabajo pendiente al cierre. |
-| Seguridad e integridad | Algunas operaciones requerían evitar accesos indebidos, duplicados y problemas de concurrencia. | Se incorporaron permisos, validaciones, restricciones, transacciones y bloqueos. | La seguridad y la integridad deben considerarse desde el diseño. |
-| Seguimiento | Era necesario mantener coherencia entre planificación, código, pruebas y documentación. | Se utilizaron Jira, Git/GitHub y documentación técnica para registrar el avance. | Mantener trazabilidad facilita comprobar el estado real del sistema y preparar su cierre. |
+| Alcance | El proyecto incluía varias funcionalidades relacionadas. | Se priorizaron los módulos principales y se avanzó de forma incremental. | Definir y priorizar el alcance facilita mantener el proyecto controlado. |
+| Integración | Los cambios en un módulo podían afectar otras partes del sistema. | Se validaron los cambios progresivamente antes de continuar. | Probar cada incremento permite detectar problemas antes de que se acumulen. |
+| Tiempo | Desarrollo, pruebas y documentación debían avanzar dentro del mismo periodo académico. | Se reorganizaron tareas según las prioridades de cada entrega. | Mantener la documentación al día reduce trabajo y riesgo durante el cierre. |
+| Seguridad e integridad | Algunas operaciones requerían controlar accesos, duplicados y consistencia de datos. | Se incorporaron permisos, validaciones, restricciones, transacciones y bloqueos. | La seguridad y la integridad deben considerarse desde el diseño. |
+| Seguimiento | Era necesario mantener alineados planificación, código, pruebas y documentación. | Se utilizaron Jira, Git/GitHub, pruebas y documentación técnica para registrar el avance. | La trazabilidad facilita conocer el estado real del proyecto y respaldar su cierre. |
 
 ## Conclusión
 
-La principal lección fue la importancia de avanzar de forma incremental y validar continuamente lo implementado.
+El desarrollo del SUT reforzó la importancia de avanzar de forma incremental, validar continuamente lo implementado y mantener alineados código, pruebas y documentación.
 
-En futuros proyectos priorizaría antes el alcance, mantendría la documentación actualizada durante el desarrollo y conservaría las pruebas como parte permanente del proceso.
+En futuros proyectos priorizaría el alcance desde etapas más tempranas y mantendría la documentación y las pruebas como parte permanente del desarrollo.
