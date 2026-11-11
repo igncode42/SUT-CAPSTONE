@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
 <section
     class="sut-reservation-create-section"
     aria-labelledby="titulo-nueva-reserva"
@@ -13,9 +12,6 @@
     <div class="row g-4 align-items-start justify-content-center">
 
 
-        <!-- ================================================= -->
-        <!-- ORIENTACION                                       -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-4">
 
@@ -39,16 +35,13 @@
                     la fecha y el horario que necesitas.
                 </p>
 
-
                 <div class="sut-reservation-create-guide">
 
                     <p class="fw-semibold mb-3">
                         Reservar es simple
                     </p>
 
-
                     <div class="d-grid gap-3">
-
 
                         <div class="d-flex gap-3">
 
@@ -70,7 +63,6 @@
 
                         </div>
 
-
                         <div class="d-flex gap-3">
 
                             <strong class="sut-reservation-create-step">
@@ -90,7 +82,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="d-flex gap-3">
 
@@ -112,11 +103,9 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
-
 
                 <div class="sut-reservation-calendar-help mt-4">
 
@@ -138,16 +127,12 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- FORMULARIO                                        -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-8">
 
             <div
                 class="sut-surface sut-reservation-create-card p-4 p-md-5"
             >
-
 
                 <header class="sut-reservation-create-header mb-4">
 
@@ -165,7 +150,6 @@
 
                 </header>
 
-
                 <div class="sut-reservation-create-info mb-4">
 
                     <div class="sut-reservation-create-info-mark">
@@ -178,7 +162,6 @@
                     </p>
 
                 </div>
-
 
                 {% if form.non_field_errors %}
 
@@ -203,7 +186,6 @@
 
                 {% endif %}
 
-
                 <form
                     method="post"
                     novalidate
@@ -212,14 +194,11 @@
 
                     {% csrf_token %}
 
-
                     {% for hidden_field in form.hidden_fields %}
                         {{ hidden_field }}
                     {% endfor %}
 
-
                     <div class="row g-4">
-
 
                         {% for field in form.visible_fields %}
 
@@ -254,9 +233,7 @@
 
                                     </label>
 
-
                                     {{ field }}
-
 
                                     {% if field.help_text %}
 
@@ -265,7 +242,6 @@
                                         </div>
 
                                     {% endif %}
-
 
                                     {% if field.errors %}
 
@@ -288,9 +264,7 @@
 
                         {% endfor %}
 
-
                     </div>
-
 
                     <div class="sut-reservation-create-required mt-4">
 
@@ -304,7 +278,6 @@
                         Los campos marcados son obligatorios.
 
                     </div>
-
 
                     <div class="sut-reservation-create-actions mt-4">
 
@@ -333,15 +306,12 @@
 
                 </form>
 
-
             </div>
 
         </div>
 
-
     </div>
 
 </section>
-
 
 {% endblock %}

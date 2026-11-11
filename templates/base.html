@@ -24,13 +24,7 @@
     >
 </head>
 
-
 <body class="min-vh-100 d-flex flex-column">
-
-
-<!-- ===================================================== -->
-<!-- ACCESIBILIDAD                                         -->
-<!-- ===================================================== -->
 
 <a
     href="#contenido-principal"
@@ -38,11 +32,6 @@
 >
     Saltar al contenido principal
 </a>
-
-
-<!-- ===================================================== -->
-<!-- NAVEGACION PRINCIPAL                                  -->
-<!-- ===================================================== -->
 
 <nav
     class="navbar navbar-expand-md navbar-dark sut-navbar"
@@ -52,7 +41,6 @@
     <div class="container sut-navbar-inner">
 
 
-        <!-- MARCA -->
 
         <a
             class="navbar-brand sut-brand fw-bold"
@@ -74,7 +62,6 @@
         </a>
 
 
-        <!-- BOTON MOVIL -->
 
         <button
             class="navbar-toggler"
@@ -89,7 +76,6 @@
         </button>
 
 
-        <!-- CONTENIDO NAVBAR -->
 
         <div
             class="collapse navbar-collapse"
@@ -100,11 +86,9 @@
                 class="ms-auto d-flex flex-column flex-md-row gap-2 align-items-md-center pt-3 pt-md-0"
             >
 
-
                 {% if user.is_authenticated %}
 
 
-                    <!-- MI PANEL -->
 
                     <a
                         class="btn btn-outline-light btn-sm"
@@ -114,7 +98,6 @@
                     </a>
 
 
-                    <!-- PERFIL DEL VECINO -->
 
                     {% if user.vecino %}
 
@@ -124,7 +107,6 @@
                         >
                             Mi perfil
                         </a>
-
 
                         <a
                             class="btn btn-outline-light btn-sm sut-navbar-user"
@@ -137,11 +119,9 @@
                             </strong>
                         </a>
 
-
                     {% else %}
 
 
-                        <!-- CUENTA SIN PERFIL VECINAL -->
 
                         <span
                             class="btn btn-outline-light btn-sm disabled"
@@ -153,11 +133,9 @@
                             </strong>
                         </span>
 
-
                     {% endif %}
 
 
-                    <!-- CERRAR SESION -->
 
                     <form
                         method="post"
@@ -176,11 +154,9 @@
 
                     </form>
 
-
                 {% else %}
 
 
-                    <!-- USUARIO NO AUTENTICADO -->
 
                     <a
                         class="btn btn-light btn-sm"
@@ -189,7 +165,6 @@
                         Crear cuenta
                     </a>
 
-
                     <a
                         class="btn btn-outline-light btn-sm"
                         href="{% url 'login' %}"
@@ -197,9 +172,7 @@
                         Iniciar sesión
                     </a>
 
-
                 {% endif %}
-
 
             </div>
 
@@ -208,11 +181,6 @@
     </div>
 
 </nav>
-
-
-<!-- ===================================================== -->
-<!-- MENSAJES DJANGO                                       -->
-<!-- ===================================================== -->
 
 {% if messages %}
 
@@ -241,7 +209,6 @@
 
                 {{ message }}
 
-
                 <button
                     type="button"
                     class="btn-close"
@@ -257,11 +224,6 @@
 
 {% endif %}
 
-
-<!-- ===================================================== -->
-<!-- CONTENIDO PRINCIPAL                                   -->
-<!-- ===================================================== -->
-
 <main
     id="contenido-principal"
     class="container py-4 py-md-5 flex-grow-1"
@@ -272,15 +234,9 @@
 
 </main>
 
-
-<!-- ===================================================== -->
-<!-- JAVASCRIPT                                            -->
-<!-- ===================================================== -->
-
 <script
     src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
 ></script>
-
 
 </body>
 

@@ -4,23 +4,18 @@
 
 {% block content %}
 
-
 <section
     class="sut-activities-section"
     aria-labelledby="titulo-formulario-actividad"
 >
 
 
-    <!-- ===================================================== -->
-    <!-- HERO                                                  -->
-    <!-- ===================================================== -->
 
     <header
         class="sut-activities-hero p-4 p-lg-5 mb-4"
     >
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg-8">
 
@@ -42,7 +37,6 @@
 
             </div>
 
-
             <div class="col-12 col-lg-4">
 
                 <div class="sut-activities-hero-actions">
@@ -58,22 +52,15 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ===================================================== -->
-    <!-- CONTENIDO                                             -->
-    <!-- ===================================================== -->
 
     <div class="row g-4 align-items-start">
 
 
-        <!-- ================================================= -->
-        <!-- ORIENTACION                                       -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-4">
 
@@ -94,9 +81,7 @@
                         puedan identificar fácilmente la actividad.
                     </p>
 
-
                     <div class="sut-activity-details">
-
 
                         <div>
 
@@ -110,7 +95,6 @@
 
                         </div>
 
-
                         <div>
 
                             <span class="sut-activity-detail-label">
@@ -122,7 +106,6 @@
                             </span>
 
                         </div>
-
 
                         <div>
 
@@ -136,7 +119,6 @@
 
                         </div>
 
-
                         <div>
 
                             <span class="sut-activity-detail-label">
@@ -149,9 +131,7 @@
 
                         </div>
 
-
                     </div>
-
 
                     {% if actividad %}
 
@@ -187,7 +167,6 @@
 
                     {% endif %}
 
-
                 </div>
 
             </aside>
@@ -195,14 +174,10 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- FORMULARIO                                        -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-8">
 
             <div class="sut-activities-shell p-4 p-lg-5">
-
 
                 <header
                     class="sut-activities-list-header mb-4"
@@ -223,7 +198,6 @@
 
                 </header>
 
-
                 {% if form.non_field_errors %}
 
                     <div
@@ -239,7 +213,6 @@
 
                 {% endif %}
 
-
                 <form
                     method="post"
                     novalidate
@@ -248,9 +221,6 @@
                     {% csrf_token %}
 
 
-                    <!-- ===================================== -->
-                    <!-- NOMBRE                                -->
-                    <!-- ===================================== -->
 
                     <div class="mb-4">
 
@@ -281,9 +251,6 @@
                     </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- DESCRIPCION                           -->
-                    <!-- ===================================== -->
 
                     <div class="mb-4">
 
@@ -322,12 +289,8 @@
                     </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- FECHA + CUPO                          -->
-                    <!-- ===================================== -->
 
                     <div class="row g-4">
-
 
                         <div class="col-12 col-md-7">
 
@@ -365,7 +328,6 @@
 
                         </div>
 
-
                         <div class="col-12 col-md-5">
 
                             <label
@@ -402,13 +364,9 @@
 
                         </div>
 
-
                     </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- ACCIONES                              -->
-                    <!-- ===================================== -->
 
                     <div class="sut-activity-action mt-5">
 
@@ -434,19 +392,14 @@
 
                     </div>
 
-
                 </form>
-
 
             </div>
 
         </div>
 
-
     </div>
 
-
 </section>
-
 
 {% endblock %}

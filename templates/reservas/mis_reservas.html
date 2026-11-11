@@ -4,23 +4,18 @@
 
 {% block content %}
 
-
 <section
     class="sut-reservations-section"
     aria-labelledby="titulo-reservas"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header
         class="sut-surface sut-reservations-hero p-4 p-lg-5 mb-4"
     >
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -41,7 +36,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-auto">
 
@@ -72,15 +66,11 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ================================================= -->
-    <!-- 2. ORIENTACION                                    -->
-    <!-- ================================================= -->
 
     <div class="sut-reservation-info mb-4">
 
@@ -103,19 +93,14 @@
 
     </div>
 
-
     {% if reservas %}
 
 
-        <!-- ================================================= -->
-        <!-- 3. RESERVAS                                      -->
-        <!-- ================================================= -->
 
         <section
             class="sut-reservations-shell p-4 p-lg-5"
             aria-labelledby="titulo-listado-reservas"
         >
-
 
             <header class="sut-reservations-list-header mb-4">
 
@@ -142,7 +127,6 @@
 
                     </div>
 
-
                     <span class="sut-reservations-count">
 
                         {{ reservas|length }}
@@ -160,9 +144,6 @@
             </header>
 
 
-            <!-- ============================================= -->
-            <!-- ESCRITORIO / TABLET                           -->
-            <!-- ============================================= -->
 
             <div class="d-none d-md-block">
 
@@ -196,7 +177,6 @@
 
                             </thead>
 
-
                             <tbody>
 
                                 {% for reserva in reservas %}
@@ -211,11 +191,9 @@
 
                                         </td>
 
-
                                         <td>
                                             {{ reserva.fecha }}
                                         </td>
-
 
                                         <td>
 
@@ -226,7 +204,6 @@
                                             </span>
 
                                         </td>
-
 
                                         <td>
 
@@ -251,9 +228,6 @@
             </div>
 
 
-            <!-- ============================================= -->
-            <!-- MOVIL                                         -->
-            <!-- ============================================= -->
 
             <div class="d-md-none">
 
@@ -264,7 +238,6 @@
                         <article class="sut-reservation-card">
 
                             <div class="sut-reservation-card-body">
-
 
                                 <div
                                     class="d-flex justify-content-between align-items-start gap-3 mb-4"
@@ -282,16 +255,13 @@
 
                                     </div>
 
-
                                     <span class="sut-reservation-status flex-shrink-0">
                                         {{ reserva.get_estado_display }}
                                     </span>
 
                                 </div>
 
-
                                 <dl class="sut-reservation-details mb-0">
-
 
                                     <div>
 
@@ -304,7 +274,6 @@
                                         </dd>
 
                                     </div>
-
 
                                     <div>
 
@@ -320,9 +289,7 @@
 
                                     </div>
 
-
                                 </dl>
-
 
                             </div>
 
@@ -334,16 +301,11 @@
 
             </div>
 
-
         </section>
-
 
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- 4. ESTADO VACIO                                   -->
-        <!-- ================================================= -->
 
         <section
             class="sut-reservations-empty"
@@ -371,7 +333,6 @@
                 un horario disponible.
             </p>
 
-
             <div class="sut-reservations-empty-actions">
 
                 <a
@@ -392,11 +353,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}

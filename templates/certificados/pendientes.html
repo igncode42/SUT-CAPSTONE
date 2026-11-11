@@ -4,21 +4,16 @@
 
 {% block content %}
 
-
 <section
     class="sut-certificate-review-section"
     aria-labelledby="titulo-solicitudes-pendientes"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header class="sut-certificate-review-hero p-4 p-lg-5 mb-4">
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -39,7 +34,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-auto">
 
@@ -63,18 +57,13 @@
 
             </div>
 
-
         </div>
 
     </header>
 
-
     {% if solicitudes %}
 
 
-        <!-- ================================================= -->
-        <!-- 2. ORIENTACION                                   -->
-        <!-- ================================================= -->
 
         <div
             class="sut-certificate-review-info mb-4"
@@ -105,15 +94,11 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- 3. LISTADO                                       -->
-        <!-- ================================================= -->
 
         <section
             class="sut-certificate-review-shell p-3 p-md-4"
             aria-labelledby="titulo-listado-solicitudes"
         >
-
 
             <header class="sut-certificate-review-list-header mb-4">
 
@@ -139,7 +124,6 @@
 
                     </div>
 
-
                     <span class="sut-certificate-review-count">
 
                         {{ solicitudes|length }}
@@ -156,7 +140,6 @@
 
             </header>
 
-
             <div class="d-grid gap-3">
 
                 {% for solicitud in solicitudes %}
@@ -166,7 +149,6 @@
                         <div class="sut-certificate-review-card-body">
 
 
-                            <!-- CABECERA -->
 
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
 
@@ -182,7 +164,6 @@
 
                                 </div>
 
-
                                 <span class="sut-certificate-review-status flex-shrink-0">
                                     Pendiente
                                 </span>
@@ -190,7 +171,6 @@
                             </div>
 
 
-                            <!-- VECINO -->
 
                             <div class="sut-certificate-review-owner mb-3">
 
@@ -205,7 +185,6 @@
                             </div>
 
 
-                            <!-- ORIENTACION -->
 
                             <div class="sut-certificate-review-decision mb-4">
 
@@ -224,10 +203,8 @@
                             </div>
 
 
-                            <!-- ACCIONES -->
 
                             <div class="sut-certificate-review-actions">
-
 
                                 <form
                                     method="post"
@@ -245,7 +222,6 @@
 
                                 </form>
 
-
                                 <form
                                     method="post"
                                     action="{% url 'certificados:resolver' solicitud.pk 'rechazar' %}"
@@ -262,9 +238,7 @@
 
                                 </form>
 
-
                             </div>
-
 
                         </div>
 
@@ -274,16 +248,11 @@
 
             </div>
 
-
         </section>
-
 
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- 4. ESTADO VACIO                                  -->
-        <!-- ================================================= -->
 
         <section class="sut-certificate-review-empty">
 
@@ -313,11 +282,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}

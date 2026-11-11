@@ -4,23 +4,18 @@
 
 {% block content %}
 
-
 <section
     class="sut-certificates-section"
     aria-labelledby="titulo-certificados"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header
         class="sut-surface sut-certificates-hero p-4 p-lg-5 mb-4"
     >
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -41,7 +36,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-auto">
 
@@ -64,7 +58,6 @@
 
                     </form>
 
-
                     <a
                         href="{% url 'panel' %}"
                         class="btn btn-outline-secondary"
@@ -76,15 +69,11 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ================================================= -->
-    <!-- 2. INFORMACION DEL PROCESO                        -->
-    <!-- ================================================= -->
 
     <div
         class="sut-certificate-info mb-4"
@@ -112,9 +101,6 @@
     </div>
 
 
-    <!-- ================================================= -->
-    <!-- 3. SOLICITUDES                                    -->
-    <!-- ================================================= -->
 
     {% if solicitudes %}
 
@@ -122,7 +108,6 @@
             class="sut-certificates-shell p-4 p-lg-5"
             aria-labelledby="titulo-listado-certificados"
         >
-
 
             <header class="sut-certificates-list-header mb-4">
 
@@ -149,7 +134,6 @@
 
                     </div>
 
-
                     <span class="sut-certificates-count">
 
                         {{ solicitudes|length }}
@@ -166,7 +150,6 @@
 
             </header>
 
-
             <div class="d-grid gap-3">
 
                 {% for solicitud in solicitudes %}
@@ -175,11 +158,9 @@
 
                         <div class="sut-certificate-card-body">
 
-
                             <div
                                 class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3"
                             >
-
 
                                 <div>
 
@@ -196,7 +177,6 @@
                                     </p>
 
                                 </div>
-
 
                                 <div class="flex-shrink-0">
 
@@ -232,9 +212,7 @@
 
                                 </div>
 
-
                             </div>
-
 
                             {% if solicitud.estado == "EMITIDA" %}
 
@@ -258,7 +236,6 @@
 
                             {% endif %}
 
-
                         </div>
 
                     </article>
@@ -267,16 +244,11 @@
 
             </div>
 
-
         </section>
-
 
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- 4. ESTADO VACIO                                 -->
-        <!-- ================================================= -->
 
         <section
             class="sut-certificates-empty"
@@ -304,7 +276,6 @@
                 una vez que sea emitido.
             </p>
 
-
             <form
                 method="post"
                 action="{% url 'certificados:solicitar' %}"
@@ -323,11 +294,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}

@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
 <section
     class="sut-login-section"
     aria-labelledby="titulo-login"
@@ -13,9 +12,6 @@
     <div class="row g-4 align-items-stretch justify-content-center">
 
 
-        <!-- ================================================= -->
-        <!-- ORIENTACION                                       -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-6">
 
@@ -38,7 +34,6 @@
                     Ingresa a tu cuenta para gestionar
                     tus trámites y servicios comunitarios.
                 </p>
-
 
                 <div class="sut-login-info">
 
@@ -65,16 +60,12 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- FORMULARIO                                        -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-md-8 col-lg-5">
 
             <div
                 class="sut-surface sut-login-card p-4 p-md-5 h-100 d-flex flex-column justify-content-center"
             >
-
 
                 <header class="mb-4">
 
@@ -91,7 +82,6 @@
                     </p>
 
                 </header>
-
 
                 {% if form.non_field_errors or form.errors %}
 
@@ -112,7 +102,6 @@
 
                 {% endif %}
 
-
                 <form
                     method="post"
                     novalidate
@@ -122,7 +111,6 @@
                     {% csrf_token %}
 
 
-                    <!-- USUARIO -->
 
                     <div class="mb-3">
 
@@ -150,7 +138,6 @@
                     </div>
 
 
-                    <!-- CONTRASEÑA -->
 
                     <div class="mb-4">
 
@@ -177,7 +164,6 @@
 
                     </div>
 
-
                     {% if next %}
 
                         <input
@@ -188,7 +174,6 @@
 
                     {% endif %}
 
-
                     <button
                         type="submit"
                         class="btn btn-primary sut-login-submit w-100"
@@ -197,7 +182,6 @@
                     </button>
 
                 </form>
-
 
                 <div class="sut-login-register mt-4">
 
@@ -214,7 +198,6 @@
 
                 </div>
 
-
                 <div class="text-center mt-4">
 
                     <a
@@ -226,15 +209,12 @@
 
                 </div>
 
-
             </div>
 
         </div>
 
-
     </div>
 
 </section>
-
 
 {% endblock %}

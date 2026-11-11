@@ -4,11 +4,6 @@
 
 {% block content %}
 
-
-<!-- ===================================================== -->
-<!-- 1. CABECERA DEL PANEL                                 -->
-<!-- ===================================================== -->
-
 <header
     class="sut-surface sut-panel-hero p-4 p-lg-5 mb-5"
 >
@@ -16,7 +11,6 @@
     <div class="row g-4 align-items-center">
 
 
-        <!-- CONTENIDO PRINCIPAL -->
 
         <div
             class="
@@ -43,7 +37,6 @@
         </div>
 
 
-        <!-- MIEMBRO DE JUNTA -->
 
         {% if es_miembro_junta %}
 
@@ -83,15 +76,9 @@
 
         {% endif %}
 
-
     </div>
 
 </header>
-
-
-<!-- ===================================================== -->
-<!-- 2. SERVICIOS DEL VECINO                               -->
-<!-- ===================================================== -->
 
 {% if es_vecino %}
 
@@ -101,7 +88,6 @@
 >
 
     <div class="sut-panel-shell p-4 p-lg-5">
-
 
         <header class="sut-panel-section-header mb-4">
 
@@ -122,11 +108,9 @@
 
         </header>
 
-
         <div class="row g-3">
 
 
-            <!-- CERTIFICADOS -->
 
             <div class="col-12 col-md-6 col-xl-3">
 
@@ -163,7 +147,6 @@
             </div>
 
 
-            <!-- RESERVAS -->
 
             <div class="col-12 col-md-6 col-xl-3">
 
@@ -200,7 +183,6 @@
             </div>
 
 
-            <!-- ACTIVIDADES -->
 
             <div class="col-12 col-md-6 col-xl-3">
 
@@ -237,7 +219,6 @@
             </div>
 
 
-            <!-- COMUNICACIONES -->
 
             <div class="col-12 col-md-6 col-xl-3">
 
@@ -273,7 +254,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -282,11 +262,6 @@
 
 {% endif %}
 
-
-<!-- ===================================================== -->
-<!-- 3. GESTION ADMINISTRATIVA                             -->
-<!-- ===================================================== -->
-
 {% if puede_resolver_proyectos or puede_gestionar_certificados or puede_publicar_comunicaciones or puede_gestionar_vecinos or puede_gestionar_actividades %}
 
 <section
@@ -294,7 +269,6 @@
 >
 
     <div class="sut-panel-management-shell p-4 p-lg-5">
-
 
         <header class="sut-panel-management-header mb-4">
 
@@ -315,11 +289,9 @@
 
         </header>
 
-
         <div class="row g-3">
 
 
-            <!-- PROYECTOS -->
 
             {% if puede_resolver_proyectos %}
 
@@ -360,7 +332,6 @@
             {% endif %}
 
 
-            <!-- CERTIFICADOS -->
 
             {% if puede_gestionar_certificados %}
 
@@ -401,7 +372,6 @@
             {% endif %}
 
 
-            <!-- ACTIVIDADES -->
 
             {% if puede_gestionar_actividades %}
 
@@ -442,7 +412,6 @@
             {% endif %}
 
 
-            <!-- COMUNICACIONES -->
 
             {% if puede_publicar_comunicaciones %}
 
@@ -483,7 +452,6 @@
             {% endif %}
 
 
-            <!-- VECINOS -->
 
             {% if puede_gestionar_vecinos %}
 
@@ -523,7 +491,6 @@
 
             {% endif %}
 
-
         </div>
 
     </div>
@@ -531,6 +498,5 @@
 </section>
 
 {% endif %}
-
 
 {% endblock %}

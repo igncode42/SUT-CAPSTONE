@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
 <section
     class="sut-project-create-section"
     aria-labelledby="titulo-postular-proyecto"
@@ -13,9 +12,6 @@
     <div class="row g-4 align-items-stretch">
 
 
-        <!-- ================================================= -->
-        <!-- 1. ORIENTACION                                    -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-5">
 
@@ -37,13 +33,11 @@
                     y resuelta por la directiva.
                 </p>
 
-
                 <div class="sut-project-create-guide mb-4">
 
                     <p class="fw-semibold mb-3">
                         ¿Cómo funciona?
                     </p>
-
 
                     <div class="d-flex gap-3 mb-3">
 
@@ -66,7 +60,6 @@
 
                     </div>
 
-
                     <div class="d-flex gap-3 mb-3">
 
                         <span class="sut-project-create-step">
@@ -87,7 +80,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="d-flex gap-3">
 
@@ -112,7 +104,6 @@
 
                 </div>
 
-
                 <div class="sut-project-create-help">
 
                     <p class="small mb-2">
@@ -133,14 +124,10 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- 2. FORMULARIO                                     -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-7">
 
             <div class="sut-project-create-card p-4 p-md-5 h-100">
-
 
                 <header class="sut-project-create-header mb-4">
 
@@ -158,7 +145,6 @@
                     </p>
 
                 </header>
-
 
                 <div
                     class="sut-project-create-info mb-4"
@@ -178,7 +164,6 @@
                     </p>
 
                 </div>
-
 
                 {% if form.non_field_errors %}
 
@@ -203,7 +188,6 @@
 
                 {% endif %}
 
-
                 <form
                     method="post"
                     novalidate
@@ -213,7 +197,6 @@
                     {% csrf_token %}
 
 
-                    <!-- TITULO -->
 
                     <div class="sut-project-create-field mb-4">
 
@@ -237,9 +220,7 @@
 
                         </label>
 
-
                         {{ form.titulo }}
-
 
                         {% if form.titulo.help_text %}
 
@@ -248,7 +229,6 @@
                             </div>
 
                         {% endif %}
-
 
                         {% for error in form.titulo.errors %}
 
@@ -264,7 +244,6 @@
                     </div>
 
 
-                    <!-- DESCRIPCION -->
 
                     <div class="sut-project-create-field mb-4">
 
@@ -288,9 +267,7 @@
 
                         </label>
 
-
                         {{ form.descripcion }}
-
 
                         {% if form.descripcion.help_text %}
 
@@ -299,7 +276,6 @@
                             </div>
 
                         {% endif %}
-
 
                         {% for error in form.descripcion.errors %}
 
@@ -315,7 +291,6 @@
                     </div>
 
 
-                    <!-- CAMPOS OBLIGATORIOS -->
 
                     <div class="sut-project-create-required mb-4">
 
@@ -328,7 +303,6 @@
                     </div>
 
 
-                    <!-- ACCIONES -->
 
                     <div class="sut-project-create-actions">
 
@@ -339,14 +313,12 @@
                             Enviar postulación
                         </button>
 
-
                         <a
                             href="{% url 'proyectos:mis_proyectos' %}"
                             class="btn btn-outline-primary"
                         >
                             Mis proyectos
                         </a>
-
 
                         <a
                             href="{% url 'panel_miembro' %}"
@@ -359,15 +331,12 @@
 
                 </form>
 
-
             </div>
 
         </div>
 
-
     </div>
 
 </section>
-
 
 {% endblock %}

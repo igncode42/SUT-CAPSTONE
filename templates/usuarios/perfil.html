@@ -4,21 +4,16 @@
 
 {% block content %}
 
-
 <section
     class="sut-profile-section"
     aria-labelledby="titulo-perfil"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header class="sut-profile-hero p-4 p-lg-5 mb-4">
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -40,7 +35,6 @@
 
             </div>
 
-
             <div class="col-12 col-lg-auto">
 
                 <a
@@ -52,15 +46,11 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ================================================= -->
-    <!-- 2. CONTENIDO                                     -->
-    <!-- ================================================= -->
 
     <form
         method="post"
@@ -70,20 +60,15 @@
 
         {% csrf_token %}
 
-
         <div class="row g-4 align-items-start">
 
 
-            <!-- ============================================= -->
-            <!-- DATOS EDITABLES                               -->
-            <!-- ============================================= -->
 
             <div class="col-12 col-lg-8">
 
                 <div class="d-grid gap-4">
 
 
-                    <!-- DATOS DE CUENTA -->
 
                     <section class="sut-profile-card p-4 p-md-5">
 
@@ -104,7 +89,6 @@
 
                         </header>
 
-
                         <div class="sut-profile-readonly mb-4">
 
                             <span class="sut-profile-field-label">
@@ -121,7 +105,6 @@
 
                         </div>
 
-
                         <div class="sut-profile-field">
 
                             <label
@@ -133,7 +116,6 @@
 
                             {{ usuario_form.email }}
 
-
                             {% if usuario_form.email.help_text %}
 
                                 <div class="form-text">
@@ -141,7 +123,6 @@
                                 </div>
 
                             {% endif %}
-
 
                             {% for error in usuario_form.email.errors %}
 
@@ -159,7 +140,6 @@
                     </section>
 
 
-                    <!-- DATOS PERSONALES -->
 
                     <section class="sut-profile-card p-4 p-md-5">
 
@@ -180,11 +160,9 @@
 
                         </header>
 
-
                         <div class="row g-4">
 
 
-                            <!-- NOMBRE -->
 
                             <div class="col-12 col-md-6">
 
@@ -198,7 +176,6 @@
                                     </label>
 
                                     {{ vecino_form.nombre }}
-
 
                                     {% for error in vecino_form.nombre.errors %}
 
@@ -216,7 +193,6 @@
                             </div>
 
 
-                            <!-- APELLIDO -->
 
                             <div class="col-12 col-md-6">
 
@@ -230,7 +206,6 @@
                                     </label>
 
                                     {{ vecino_form.apellido }}
-
 
                                     {% for error in vecino_form.apellido.errors %}
 
@@ -248,7 +223,6 @@
                             </div>
 
 
-                            <!-- DIRECCION -->
 
                             <div class="col-12">
 
@@ -262,7 +236,6 @@
                                     </label>
 
                                     {{ vecino_form.direccion }}
-
 
                                     {% for error in vecino_form.direccion.errors %}
 
@@ -280,7 +253,6 @@
                             </div>
 
 
-                            <!-- IDENTIFICACION -->
 
                             <div class="col-12">
 
@@ -303,13 +275,11 @@
 
                             </div>
 
-
                         </div>
 
                     </section>
 
 
-                    <!-- ACCIONES -->
 
                     <div class="sut-profile-actions">
 
@@ -329,22 +299,17 @@
 
                     </div>
 
-
                 </div>
 
             </div>
 
 
-            <!-- ============================================= -->
-            <!-- RESUMEN / SEGURIDAD                           -->
-            <!-- ============================================= -->
 
             <div class="col-12 col-lg-4">
 
                 <div class="d-grid gap-4">
 
 
-                    <!-- RESUMEN -->
 
                     <aside class="sut-profile-summary p-4">
 
@@ -365,13 +330,11 @@
                             @{{ user.username }}
                         </p>
 
-
                         <div class="sut-profile-summary-row">
 
                             <span>
                                 Participación
                             </span>
-
 
                             {% if vecino.miembro_junta %}
 
@@ -389,7 +352,6 @@
 
                         </div>
 
-
                         <div class="sut-profile-summary-row">
 
                             <span>
@@ -405,7 +367,6 @@
                     </aside>
 
 
-                    <!-- SEGURIDAD -->
 
                     <aside class="sut-profile-security p-4">
 
@@ -431,18 +392,14 @@
 
                     </aside>
 
-
                 </div>
 
             </div>
-
 
         </div>
 
     </form>
 
-
 </section>
-
 
 {% endblock %}

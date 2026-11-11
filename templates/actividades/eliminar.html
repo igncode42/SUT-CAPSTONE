@@ -4,23 +4,18 @@
 
 {% block content %}
 
-
 <section
     class="sut-activities-section"
     aria-labelledby="titulo-eliminar-actividad"
 >
 
 
-    <!-- ===================================================== -->
-    <!-- HERO                                                  -->
-    <!-- ===================================================== -->
 
     <header
         class="sut-activities-hero p-4 p-lg-5 mb-4"
     >
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg-8">
 
@@ -42,7 +37,6 @@
 
             </div>
 
-
             <div class="col-12 col-lg-4">
 
                 <div class="sut-activities-hero-actions">
@@ -58,29 +52,21 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ===================================================== -->
-    <!-- CONTENIDO                                             -->
-    <!-- ===================================================== -->
 
     <div class="row justify-content-center">
 
         <div class="col-12 col-lg-9 col-xl-8">
-
 
             <article class="sut-activity-card">
 
                 <div class="sut-activity-card-body">
 
 
-                    <!-- ===================================== -->
-                    <!-- IDENTIFICACION                        -->
-                    <!-- ===================================== -->
 
                     <div
                         class="d-flex flex-column
@@ -115,7 +101,6 @@
 
                         </div>
 
-
                         {% if cantidad_inscritos > 0 %}
 
                             <span
@@ -143,12 +128,8 @@
                     </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- DATOS                                 -->
-                    <!-- ===================================== -->
 
                     <div class="sut-activity-details mb-4">
-
 
                         <div>
 
@@ -166,7 +147,6 @@
 
                         </div>
 
-
                         <div>
 
                             <span
@@ -183,13 +163,9 @@
 
                         </div>
 
-
                     </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- CASO: TIENE INSCRITOS                 -->
-                    <!-- ===================================== -->
 
                     {% if cantidad_inscritos > 0 %}
 
@@ -217,7 +193,6 @@
 
                         </div>
 
-
                         <div class="sut-activity-action">
 
                             <a
@@ -230,9 +205,6 @@
                         </div>
 
 
-                    <!-- ===================================== -->
-                    <!-- CASO: SE PUEDE ELIMINAR               -->
-                    <!-- ===================================== -->
 
                     {% else %}
 
@@ -255,7 +227,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="sut-activity-action">
 
@@ -293,18 +264,14 @@
 
                     {% endif %}
 
-
                 </div>
 
             </article>
-
 
         </div>
 
     </div>
 
-
 </section>
-
 
 {% endblock %}

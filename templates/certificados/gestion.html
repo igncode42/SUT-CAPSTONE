@@ -4,21 +4,16 @@
 
 {% block content %}
 
-
 <section
     class="sut-certificate-management-section"
     aria-labelledby="titulo-gestion-certificados"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header class="sut-certificate-management-hero p-4 p-lg-5 mb-4">
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -39,7 +34,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-auto">
 
@@ -63,24 +57,18 @@
 
             </div>
 
-
         </div>
 
     </header>
 
-
     {% if solicitudes %}
 
 
-        <!-- ================================================= -->
-        <!-- 2. LISTADO                                       -->
-        <!-- ================================================= -->
 
         <section
             class="sut-certificate-management-shell p-3 p-md-4"
             aria-labelledby="titulo-listado-certificados"
         >
-
 
             <header class="sut-certificate-management-list-header mb-4">
 
@@ -106,7 +94,6 @@
 
                     </div>
 
-
                     <span class="sut-certificate-management-count">
 
                         {{ solicitudes|length }}
@@ -123,7 +110,6 @@
 
             </header>
 
-
             <div class="d-grid gap-3">
 
                 {% for solicitud in solicitudes %}
@@ -133,7 +119,6 @@
                         <div class="sut-certificate-management-card-body">
 
 
-                            <!-- CABECERA -->
 
                             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
 
@@ -148,7 +133,6 @@
                                         <h3 class="h4 fw-bold mb-0">
                                             Solicitud #{{ solicitud.pk }}
                                         </h3>
-
 
                                         {% with estado=solicitud.get_estado_display %}
 
@@ -184,7 +168,6 @@
 
                                 </div>
 
-
                                 {% if solicitud.estado == "APROBADA" %}
 
                                     <div class="flex-shrink-0">
@@ -213,7 +196,6 @@
                             </div>
 
 
-                            <!-- VECINO -->
 
                             <div class="sut-certificate-management-owner mb-3">
 
@@ -228,7 +210,6 @@
                             </div>
 
 
-                            <!-- ESTADO EXPLICADO -->
 
                             {% if solicitud.estado == "APROBADA" %}
 
@@ -253,7 +234,6 @@
 
                                 </div>
 
-
                             {% elif solicitud.estado == "EMITIDA" %}
 
                                 <div class="sut-certificate-management-message sut-certificate-management-message-issued">
@@ -276,7 +256,6 @@
 
                                 </div>
 
-
                             {% elif solicitud.estado == "RECHAZADA" %}
 
                                 <div class="sut-certificate-management-message sut-certificate-management-message-rejected">
@@ -298,7 +277,6 @@
                                     </div>
 
                                 </div>
-
 
                             {% else %}
 
@@ -325,7 +303,6 @@
 
                             {% endif %}
 
-
                         </div>
 
                     </article>
@@ -334,16 +311,11 @@
 
             </div>
 
-
         </section>
-
 
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- 3. ESTADO VACIO                                  -->
-        <!-- ================================================= -->
 
         <section class="sut-certificate-management-empty">
 
@@ -366,11 +338,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}

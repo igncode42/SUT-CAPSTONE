@@ -4,23 +4,18 @@
 
 {% block content %}
 
-
 <section
     class="sut-activities-section"
     aria-labelledby="titulo-gestion-actividades"
 >
 
 
-    <!-- ===================================================== -->
-    <!-- HERO                                                  -->
-    <!-- ===================================================== -->
 
     <header
         class="sut-activities-hero p-4 p-lg-5 mb-4"
     >
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg-8">
 
@@ -41,7 +36,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-4">
 
@@ -65,20 +59,15 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
-    <!-- ===================================================== -->
-    <!-- CONTENEDOR PRINCIPAL                                  -->
-    <!-- ===================================================== -->
 
     <div class="sut-activities-shell p-4 p-lg-5">
 
 
-        <!-- CABECERA DEL LISTADO -->
 
         <header
             class="sut-activities-list-header mb-4"
@@ -107,7 +96,6 @@
 
                 </div>
 
-
                 <span class="sut-activities-count">
                     {{ actividades|length }}
                     actividad{{ actividades|length|pluralize:"es" }}
@@ -118,14 +106,10 @@
         </header>
 
 
-        <!-- ================================================= -->
-        <!-- LISTADO                                           -->
-        <!-- ================================================= -->
 
         {% if actividades %}
 
             <div class="row g-4">
-
 
                 {% for actividad in actividades %}
 
@@ -138,7 +122,6 @@
                             <div class="sut-activity-card-body">
 
 
-                                <!-- ESTADO -->
 
                                 <div
                                     class="d-flex flex-wrap
@@ -150,7 +133,6 @@
                                     <span class="sut-activity-label">
                                         Actividad vecinal
                                     </span>
-
 
                                     {% if actividad.fecha < ahora %}
 
@@ -190,12 +172,10 @@
                                 </div>
 
 
-                                <!-- INFORMACION -->
 
                                 <h3 class="h4 fw-bold mb-2">
                                     {{ actividad.nombre }}
                                 </h3>
-
 
                                 {% if actividad.descripcion %}
 
@@ -223,10 +203,8 @@
                                 {% endif %}
 
 
-                                <!-- DATOS -->
 
                                 <div class="sut-activity-details mb-4">
-
 
                                     <div>
 
@@ -243,7 +221,6 @@
                                         </span>
 
                                     </div>
-
 
                                     <div>
 
@@ -264,11 +241,9 @@
 
                                     </div>
 
-
                                 </div>
 
 
-                                <!-- OCUPACION -->
 
                                 {% if actividad.cantidad_inscritos >= actividad.cupo_maximo %}
 
@@ -339,7 +314,6 @@
                                 {% endif %}
 
 
-                                <!-- ACCIONES -->
 
                                 <div class="sut-activity-action mt-auto">
 
@@ -355,7 +329,6 @@
                                             Editar actividad
                                         </a>
 
-
                                         <a
                                             href="{% url 'actividades:eliminar' actividad.id %}"
                                             class="btn btn-outline-danger"
@@ -367,7 +340,6 @@
 
                                 </div>
 
-
                             </div>
 
                         </article>
@@ -376,15 +348,11 @@
 
                 {% endfor %}
 
-
             </div>
-
 
         {% else %}
 
-            <!-- ================================================= -->
-            <!-- ESTADO VACIO                                      -->
-            <!-- ================================================= -->
+
 
             <div class="sut-activities-empty">
 
@@ -416,11 +384,8 @@
 
         {% endif %}
 
-
     </div>
 
-
 </section>
-
 
 {% endblock %}

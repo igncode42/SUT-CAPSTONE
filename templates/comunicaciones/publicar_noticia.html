@@ -4,29 +4,22 @@
 
 {% block content %}
 
-
 <section
     class="sut-news-create-section"
     aria-labelledby="titulo-publicar-noticia"
 >
 
-
     <div class="row g-4 align-items-stretch">
 
 
-        <!-- ================================================= -->
-        <!-- 1. ORIENTACION                                    -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-5">
 
             <aside class="sut-news-create-intro p-4 p-lg-5 h-100">
 
-
                 <p class="sut-news-create-kicker mb-3">
                     Comunicaciones
                 </p>
-
 
                 <h1
                     id="titulo-publicar-noticia"
@@ -35,21 +28,18 @@
                     Publicar noticia
                 </h1>
 
-
                 <p class="lead mb-4">
                     Crea una noticia para informar a los vecinos
                     sobre novedades relevantes de la comunidad.
                 </p>
 
 
-                <!-- GUIA -->
 
                 <div class="sut-news-create-guide mb-4">
 
                     <p class="fw-semibold mb-3">
                         Antes de publicar
                     </p>
-
 
                     <div class="d-flex gap-3 mb-3">
 
@@ -72,7 +62,6 @@
 
                     </div>
 
-
                     <div class="d-flex gap-3 mb-3">
 
                         <span class="sut-news-create-step">
@@ -93,7 +82,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="d-flex gap-3">
 
@@ -119,7 +107,6 @@
                 </div>
 
 
-                <!-- VOLVER -->
 
                 <div class="sut-news-create-help">
 
@@ -136,20 +123,15 @@
 
                 </div>
 
-
             </aside>
 
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- 2. FORMULARIO                                     -->
-        <!-- ================================================= -->
 
         <div class="col-12 col-lg-7">
 
             <div class="sut-news-create-card p-4 p-md-5 h-100">
-
 
                 <header class="sut-news-create-header mb-4">
 
@@ -169,7 +151,6 @@
                 </header>
 
 
-                <!-- INFORMACION -->
 
                 <div
                     class="sut-news-create-info mb-4"
@@ -191,7 +172,6 @@
                 </div>
 
 
-                <!-- ERRORES GENERALES -->
 
                 {% if form.non_field_errors %}
 
@@ -217,7 +197,6 @@
                 {% endif %}
 
 
-                <!-- FORMULARIO -->
 
                 <form
                     method="post"
@@ -228,7 +207,6 @@
                     {% csrf_token %}
 
 
-                    <!-- TITULO -->
 
                     <div class="sut-news-create-field mb-4">
 
@@ -252,9 +230,7 @@
 
                         </label>
 
-
                         {{ form.titulo }}
-
 
                         {% if form.titulo.help_text %}
 
@@ -263,7 +239,6 @@
                             </div>
 
                         {% endif %}
-
 
                         {% for error in form.titulo.errors %}
 
@@ -279,7 +254,6 @@
                     </div>
 
 
-                    <!-- CONTENIDO -->
 
                     <div class="sut-news-create-field mb-4">
 
@@ -303,9 +277,7 @@
 
                         </label>
 
-
                         {{ form.contenido }}
-
 
                         {% if form.contenido.help_text %}
 
@@ -314,7 +286,6 @@
                             </div>
 
                         {% endif %}
-
 
                         {% for error in form.contenido.errors %}
 
@@ -330,7 +301,6 @@
                     </div>
 
 
-                    <!-- OBLIGATORIOS -->
 
                     <div class="sut-news-create-required mb-4">
 
@@ -343,7 +313,6 @@
                     </div>
 
 
-                    <!-- ACCIONES -->
 
                     <div class="sut-news-create-actions">
 
@@ -354,7 +323,6 @@
                             Publicar noticia
                         </button>
 
-
                         <a
                             href="{% url 'comunicaciones:inicio' %}"
                             class="btn btn-outline-secondary"
@@ -364,18 +332,14 @@
 
                     </div>
 
-
                 </form>
-
 
             </div>
 
         </div>
 
-
     </div>
 
 </section>
-
 
 {% endblock %}

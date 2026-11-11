@@ -4,13 +4,9 @@
 
 {% block content %}
 
-
 <section class="sut-activities-section">
 
 
-    <!-- ===================================================== -->
-    <!-- HERO                                                  -->
-    <!-- ===================================================== -->
 
     <header class="sut-activities-hero p-4 p-md-5 mb-4">
 
@@ -32,7 +28,6 @@
                 </p>
 
             </div>
-
 
             <div class="col-12 col-lg-auto">
 
@@ -60,19 +55,14 @@
 
     </header>
 
-
     {% if actividades %}
 
 
-        <!-- ================================================= -->
-        <!-- LISTADO                                           -->
-        <!-- ================================================= -->
 
         <section
             class="sut-activities-shell p-3 p-md-4"
             aria-labelledby="titulo-listado-actividades"
         >
-
 
             <div class="sut-activities-list-header mb-4">
 
@@ -98,7 +88,6 @@
 
                     </div>
 
-
                     <span class="sut-activities-count">
                         {{ actividades|length }}
                         {% if actividades|length == 1 %}
@@ -112,7 +101,6 @@
 
             </div>
 
-
             <div class="row g-4">
 
                 {% for actividad in actividades %}
@@ -124,14 +112,12 @@
                             <div class="sut-activity-card-body">
 
 
-                                <!-- Estado superior -->
 
                                 <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
 
                                     <span class="sut-activity-label">
                                         Actividad
                                     </span>
-
 
                                     {% if actividad.id in inscripciones_usuario %}
 
@@ -156,7 +142,6 @@
                                 </div>
 
 
-                                <!-- Titulo y descripcion -->
 
                                 <h3 class="h4 fw-bold mb-2">
                                     {{ actividad.nombre }}
@@ -167,7 +152,6 @@
                                 </p>
 
 
-                                <!-- Datos importantes -->
 
                                 <div class="sut-activity-details mb-4">
 
@@ -182,7 +166,6 @@
                                         </strong>
 
                                     </div>
-
 
                                     <div>
 
@@ -201,10 +184,8 @@
                                 </div>
 
 
-                                <!-- Accion -->
 
                                 <div class="sut-activity-action mt-auto">
-
 
                                     {% if actividad.id in inscripciones_usuario %}
 
@@ -229,7 +210,6 @@
 
                                         </div>
 
-
                                     {% elif actividad.cantidad_inscritos >= actividad.cupo_maximo %}
 
                                         <div class="sut-activity-message sut-activity-message-full">
@@ -253,7 +233,6 @@
 
                                         </div>
 
-
                                     {% else %}
 
                                         <form
@@ -275,7 +254,6 @@
 
                                     {% endif %}
 
-
                                 </div>
 
                             </div>
@@ -290,13 +268,9 @@
 
         </section>
 
-
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- ESTADO VACIO                                      -->
-        <!-- ================================================= -->
 
         <section class="sut-activities-shell p-3 p-md-4">
 
@@ -333,11 +307,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}

@@ -4,21 +4,16 @@
 
 {% block content %}
 
-
 <section
     class="sut-project-review-section"
     aria-labelledby="titulo-proyectos-pendientes"
 >
 
 
-    <!-- ================================================= -->
-    <!-- 1. CABECERA                                      -->
-    <!-- ================================================= -->
 
     <header class="sut-project-review-hero p-4 p-lg-5 mb-4">
 
         <div class="row g-4 align-items-center">
-
 
             <div class="col-12 col-lg">
 
@@ -40,7 +35,6 @@
 
             </div>
 
-
             <div class="col-12 col-lg-auto">
 
                 <div class="sut-project-review-hero-actions">
@@ -56,18 +50,13 @@
 
             </div>
 
-
         </div>
 
     </header>
 
-
     {% if proyectos %}
 
 
-        <!-- ================================================= -->
-        <!-- 2. ORIENTACION                                   -->
-        <!-- ================================================= -->
 
         <div
             class="sut-project-review-info mb-4"
@@ -98,15 +87,11 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- 3. LISTADO                                       -->
-        <!-- ================================================= -->
 
         <section
             class="sut-project-review-shell p-3 p-md-4"
             aria-labelledby="titulo-listado-pendientes"
         >
-
 
             <header class="sut-project-review-list-header mb-4">
 
@@ -132,7 +117,6 @@
 
                     </div>
 
-
                     <span class="sut-project-review-count">
 
                         {{ proyectos|length }}
@@ -149,7 +133,6 @@
 
             </header>
 
-
             <div class="d-grid gap-3">
 
                 {% for proyecto in proyectos %}
@@ -159,7 +142,6 @@
                         <div class="sut-project-review-card-body">
 
 
-                            <!-- CABECERA DEL PROYECTO -->
 
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
 
@@ -175,7 +157,6 @@
 
                                 </div>
 
-
                                 <span class="sut-project-review-status flex-shrink-0">
                                     Pendiente de revisión
                                 </span>
@@ -183,7 +164,6 @@
                             </div>
 
 
-                            <!-- DESCRIPCION -->
 
                             <div class="sut-project-review-description mb-3">
 
@@ -198,7 +178,6 @@
                             </div>
 
 
-                            <!-- POSTULANTE -->
 
                             <div class="sut-project-review-author mb-4">
 
@@ -213,10 +192,8 @@
                             </div>
 
 
-                            <!-- ACCIONES -->
 
                             <div class="sut-project-review-actions">
-
 
                                 <form
                                     method="post"
@@ -234,7 +211,6 @@
 
                                 </form>
 
-
                                 <form
                                     method="post"
                                     action="{% url 'proyectos:resolver' proyecto.pk 'rechazar' %}"
@@ -251,9 +227,7 @@
 
                                 </form>
 
-
                             </div>
-
 
                         </div>
 
@@ -263,16 +237,11 @@
 
             </div>
 
-
         </section>
-
 
     {% else %}
 
 
-        <!-- ================================================= -->
-        <!-- 4. ESTADO VACIO                                  -->
-        <!-- ================================================= -->
 
         <section class="sut-project-review-empty">
 
@@ -295,11 +264,8 @@
 
         </section>
 
-
     {% endif %}
 
-
 </section>
-
 
 {% endblock %}
