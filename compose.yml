@@ -1,4 +1,4 @@
-﻿services:
+services:
 
   db:
     image: postgres:18
@@ -44,7 +44,7 @@
       PSYCOPG_IMPL: binary
 
     ports:
-      - "0.0.0.0:8000:8000"
+      - "127.0.0.1:8000:8000"
 
     depends_on:
       db:
@@ -55,7 +55,7 @@
       - -c
       - |
         python manage.py migrate --noinput &&
-        python manage.py runserver 0.0.0.0:8000
+        python manage.py runserver --insecure 0.0.0.0:8000
 
     healthcheck:
       test:

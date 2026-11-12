@@ -34,6 +34,15 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "DJANGO_CSRF_TRUSTED_ORIGINS",
+        "",
+    ).split(",")
+    if origin.strip()
+]
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -148,6 +157,17 @@ LOGIN_URL = "login"
 
 
 # Seguridad dependiente del entorno.
+#
+# En la demo temporal, cloudflared recibe HTTPS desde Internet
+# y reenvía la solicitud hacia Caddy mediante HTTP local.
+#
+# Caddy informa a Django que la solicitud original utilizó HTTPS
+# mediante la cabecera X-Forwarded-Proto.
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
+
 SECURE_SSL_REDIRECT = env_bool(
     "DJANGO_SECURE_SSL_REDIRECT",
     False,
